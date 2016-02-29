@@ -90,7 +90,7 @@ public class ContextServlet extends HttpServlet implements ServletContextListene
         System.out.println("entro nel conextinitialize");
         List<Comune> list = gestoreComuni.creaListaComuni();
         System.out.println("creo lista comuni.");
-        System.out.println("primo nome:"+list.get(0).getNome());
+        //System.out.println("primo nome:"+list.get(0).getNome());
         sce.getServletContext().setAttribute("list", list);
 
     }
