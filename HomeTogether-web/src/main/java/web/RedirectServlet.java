@@ -47,10 +47,6 @@ public class RedirectServlet extends HttpServlet {
             if (action.equals("goProfile")) {
                 Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
                 request.setAttribute("profilo", p);
-                //System.out.println("foto:" + p.getFoto_profilo());
-                //request.setAttribute("interessi", p.getInteressi());
-                
-                
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile.jsp");
                 rd.forward(request, response);
             } else if (action.equals("goUserProfile")) {

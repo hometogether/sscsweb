@@ -10,7 +10,7 @@
     <head>
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-        <BASE href="http://localhost:8080/EnterpriseApplication1-war/">
+        <BASE href="http://localhost:8080/HomeTogether-web/">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <!--CSS-->
         <link href="css/bootstrap_1.css" rel='stylesheet' type='text/css' />

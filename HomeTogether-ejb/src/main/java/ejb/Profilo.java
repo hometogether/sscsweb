@@ -7,6 +7,7 @@ package ejb;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,6 +22,8 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class Profilo implements Serializable {
+    
+    
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -290,15 +293,26 @@ public class Profilo implements Serializable {
         this.following = following;
     }
     
+    @ManyToMany(mappedBy = "partecipanti")
+    private List<Diario> diari;
     
-   /* public int isFollowing(Long idprofilouser) {
-        
-        for (int i=0; i<following.size();i++){
-            if (idprofilouser.equals(following.get(i).getId())){
-                return 1;
-            }
-        }
-        return 0;
-    }*/
+    /**
+     * Get the value of diari
+     *
+     * @return the value of diari
+     */
+    public List<Diario> getDiari() {
+        return diari;
+    }
+
+    /**
+     * Set the value of diari
+     *
+     * @param diari new value of diari
+     */
+    public void setDiari(List<Diario> diari) {
+        this.diari = diari;
+    }
+    
 
 }

@@ -21,7 +21,7 @@ import utility.Constants;
 @LocalBean
 public class DiarioFacade extends AbstractFacade<Diario> implements DiarioFacadeLocal {
 
-    @PersistenceContext(unitName = "EnterpriseApplication1-ejbPU")
+    @PersistenceContext(unitName = "org.sample_HomeTogether-ejb_ejb_1.0-SNAPSHOTPU")
 
     private EntityManager em;
 
