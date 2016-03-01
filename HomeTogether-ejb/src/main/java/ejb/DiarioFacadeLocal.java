@@ -29,6 +29,8 @@ public interface DiarioFacadeLocal {
 
     int count();
 
+    public Diario getDiario(Long idDiario);
+
 
     
 }

@@ -22,8 +22,6 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class Profilo implements Serializable {
-    
-    
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -156,8 +154,8 @@ public class Profilo implements Serializable {
     public void setTipo(int tipo) {
         this.tipo = tipo;
     }
-    
-    private String foto_profilo="profile_img/default-profile.png";
+
+    private String foto_profilo = "profile_img/default-profile.png";
 
     /**
      * Get the value of foto_profilo
@@ -178,7 +176,7 @@ public class Profilo implements Serializable {
     }
 
     @ManyToOne
-        private Comune comune;
+    private Comune comune;
 
     /**
      * Get the value of comune
@@ -197,7 +195,6 @@ public class Profilo implements Serializable {
     public void setComune(Comune comune) {
         this.comune = comune;
     }
-
 
     private String occupazione;
 
@@ -292,10 +289,10 @@ public class Profilo implements Serializable {
     public void setFollowing(List<Profilo> following) {
         this.following = following;
     }
-    
+
     @ManyToMany(mappedBy = "partecipanti")
     private List<Diario> diari;
-    
+
     /**
      * Get the value of diari
      *
@@ -313,6 +310,7 @@ public class Profilo implements Serializable {
     public void setDiari(List<Diario> diari) {
         this.diari = diari;
     }
+
     
 
 }

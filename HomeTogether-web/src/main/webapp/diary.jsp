@@ -8,12 +8,15 @@
 <!DOCTYPE html>
 <html>
     <head>
+        
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="css/bootstrap_1.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap_1.min.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap-theme_1.css" rel='stylesheet' type='text/css' />
         <link href="css/ProfileStyle.css" rel='stylesheet' type='text/css' />
         <link href="css/style_1.css" rel='stylesheet' type='text/css' />
+        <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix ="c" %>
+
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -100,9 +103,7 @@
                                                                 <button class="col-md-4 btn btn-secodary borderless-btn" style="color: black;padding-left: 2px;" data-toggle="modal" data-target="#mod-info-modal">
                                                                     <i class="glyphicon glyphicon-info-sign"></i> Informazioni
                                                                 </button>
-                                                                <button class="col-md-4 btn btn-secodary borderless-btn" style="color: black;" data-toggle="modal" data-target="#following-modal">
-                                                                    <i class="  glyphicon glyphicon-user"></i>Following
-                                                                </button>
+                                                                
                                                                 </c:if>
                                                                 <button class="col-md-4 btn btn-secodary borderless-btn" style="color: black;" data-toggle="modal" data-target="#mod-interessi">
                                                                     <i class="glyphicon glyphicon-music"></i>Interessi
@@ -136,29 +137,36 @@
                                           <!-- edit form column -->
                                           <div class="col-md-9 col-sm-7 col-xs-8 personal-info" style=" position: relative; left: 8px;">
                                               <div class="col-md-1 col-sm-1 col-lg-1"></div>
-                                              <div class="col-md-9 col-sm-9 col-lg-9" style="background: #fff;border: 0px solid orangered;box-shadow: 0px 0px 5px orange;">
+                                              <c:forEach var="post" items="${diario.post}"><div class="col-md-9 col-sm-9 col-lg-9" style="background: #fff;border: 0px solid orangered;box-shadow: 0px 0px 5px orange;">
                                                   <div class="col-md-12 col-sm-12 col-lg-12">
                                                         <!--HEADER-->
+                                                        
                                                         <div class="row col-md-12 col-sm-12 col-lg-12"style="padding: 4px 0 4px 0;">
-                                                            <button class="col-md-2 col-sm-2 col-lg-2 borderless-btn"><img src="${utente.foto_profilo}" class="avatar profile-image-avatar" style="border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 50px;max-height: 50px;min-height: 50px;min-width: 50px;"/></button>
-                                                            <h4>Antonio Guarneri</h4>
+                                                            <button class="col-md-2 col-sm-2 col-lg-2 borderless-btn"><img src="${post.user.foto_profilo}" class="avatar profile-image-avatar" style="border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 50px;max-height: 50px;min-height: 50px;min-width: 50px;"/></button>
+                                                            <h4>${post.user.nome} ${post.user.cognome}</h4>
                                                         </div>
                                                         <!--HEADER-->
                                                      
                                                         <!--COMMENT AREA-->
                                                         <div class="row col-md-12 col-sm-12 col-lg-12" style="margin: 2px 0 4px 0;">
-                                                            <p>insert comment text: balbalbalbahabahgvgahv gjfagva</p>
+                                                            <p>${post.testo}</p>
                                                             <!--<textarea class="form-control" placeholder="blablalbalbba" readonly="readonly"></textarea> -->
                                                         </div>
                                                         <!--COMMENT AREA-->
                                                         <!--LISTA LIKE DA MOSTRARE SOLO SE CI SONO UNO O PIU LIKE-->
-                                                        <div class="col-md-12 col-lg-12 col-sm-12" id="like-numb">      
+                                                        
+                                                        <div class="col-md-12 col-lg-12 col-sm-12" id="like-numb">   
+                                                            
                                                             <ul id="like-list"class="list-inline">
                                                                 <li style="padding: 0000;margin: 0000;">Piace a:</li>
-                                                                <li style="padding: 0000;margin: 0000;font-size: 85%;"><a>Andrea Maira<span>,</span></a></li>
+                                                                <c:forEach var="like" items="${post.likes}">
+                                                                    <li style="padding: 0000;margin: 0000;font-size: 85%;">
+                                                                    <a>${like.nome} ${like.cognome}<span>,</span></a></li>
+                                                                </c:forEach>
                                                                 
                                                             </ul>                          
                                                         </div>
+                                                        
                                                         <!--LISTA LIKE DA MOSTRARE SOLO SE CI SONO UNO O PIU LIKE-->
                                                         <div role="separator" class="col-md-12 divider" style="border-top: 1px solid lightgray;"></div>
                                                         <div class="col-md-12 col-sm-12 col-lg-12 " style="margin: 4px 0 4px 0;">
@@ -185,11 +193,12 @@
                                                             </div>
                                                             
                                                         </div>
+                                                        
                                                         <div>
-                                                            
-                                                        </div>
+                                                         
+                                                        </div> 
                                                   </div>
-                                              </div>
+                                              </div></c:forEach>
                                               <div class="col-md-2 col-sm-2 col-lg-2"></div>
                                           </div>
                                         </div>

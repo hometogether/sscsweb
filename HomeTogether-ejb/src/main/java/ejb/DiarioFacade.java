@@ -35,5 +35,23 @@ public class DiarioFacade extends AbstractFacade<Diario> implements DiarioFacade
         super(Diario.class);
     }
 
+    @Override
+    public Diario getDiario(Long idDiario) {
+        //Query q = em.createNativeQuery(query);
+        System.out.println("entro in getDiario");
+        Query q = em.createQuery("SELECT d FROM Diario d WHERE d.id=:custId");
+        q.setParameter("custId", idDiario);
+        System.out.println("id diario:"+idDiario);
+        
+        if (q.getResultList().isEmpty()){
+            return null;
+        } else {
+            Diario d = (Diario)q.getResultList().get(0);
+            System.out.println("diario:"+d);
+
+            return d;
+        }
+    }
+
     
 }

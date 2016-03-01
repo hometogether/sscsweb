@@ -138,5 +138,27 @@ public class Post implements Serializable {
     public void setCommenti(List<Commento> commenti) {
         this.commenti = commenti;
     }
+    
+    
+    @OneToMany
+    private List<Profilo> likes;
+
+    /**
+     * Get the value of likes
+     *
+     * @return the value of likes
+     */
+    public List<Profilo> getLikes() {
+        return likes;
+    }
+
+    /**
+     * Set the value of likes
+     *
+     * @param likes new value of likes
+     */
+    public void setLikes(List<Profilo> likes) {
+        this.likes = likes;
+    }
 
 }
