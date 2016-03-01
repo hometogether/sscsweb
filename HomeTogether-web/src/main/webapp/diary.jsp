@@ -44,6 +44,9 @@
                     $('#numb').text(" "+e+" persone");
                 }
             }
+            $(function() {
+                $('#txtArea').css('overflow', 'hidden').autogrow();
+             });
         </script>
         <title>JSP Page</title>
     </head>
@@ -135,10 +138,24 @@
                                           </div>
                                           
                                           <!-- edit form column -->
-                                          <div class="col-md-9 col-sm-7 col-xs-8 personal-info" style=" position: relative; left: 8px;">
-                                              <div class="col-md-1 col-sm-1 col-lg-1"></div>
-                                              <c:forEach var="post" items="${diario.post}"><div class="col-md-9 col-sm-9 col-lg-9" style="background: #fff;border: 0px solid orangered;box-shadow: 0px 0px 5px orange;">
-                                                  <div class="col-md-12 col-sm-12 col-lg-12">
+                                          <div class="col-md-9 col-sm-9 col-xs-9 personal-info" style=" position: relative; left: 8px;">
+                                              <div id="div${commentLoop.index}" class="col-md-12" style="margin-bottom: 3%;padding: 0% 0% 0% 15%;border: 1px solid whitesmoke;border-radius: 2px;">
+                                                  <div class="col-md-10" style="background: white;  border-radius: 2px; padding: 2% 2% 2% 10%;">
+                                                      <div class="col-md-9">
+                                                         <button class="col-md-2 col-sm-2 col-lg-2 borderless-btn"><img src="${post.user.foto_profilo}" class="avatar profile-image-avatar" style="border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 50px;max-height: 50px;min-height: 50px;min-width: 50px;"/></button>
+                                                         <textarea id="txtArea" autofocus="autofocus" class="col-md-9" style="border: none;resize:none;margin: 0% 0% 0% 4%;" placeholder="#SHARETOGETHER"></textarea>
+                                                      </div>
+                                                      <div role="separator" class="col-md-10 divider" style="border-top: 1px solid lightgray; margin-bottom: 4px;margin-top: 4%; "></div>
+                                                      <div class="col-md-3" style="margin-left: 65%">
+                                                          <button class="btn btn-primary">Pubblica</button>
+                                                      </div>
+                                                  </div>
+                                                      
+                                              </div>
+                                            <div class="col-md-2 col-sm-2 col-lg-2"></div>
+                                            <c:forEach var="post" items="${diario.post}">
+                                                  <div id="div${commentLoop.index}" class="col-md-12" style="margin-bottom: 7%;padding: 0% 0% 0% 15%;border: 1px solid whitesmoke;border-radius: 2px;">
+                                                    <div class="col-md-10" style="background: white;  border-radius: 2px; padding: 2% 2% 2% 0%;box-shadow: 0px 0px 5px orange;">
                                                         <!--HEADER-->
                                                         
                                                         <div class="row col-md-12 col-sm-12 col-lg-12"style="padding: 4px 0 4px 0;">
@@ -193,13 +210,11 @@
                                                             </div>
                                                             
                                                         </div>
-                                                        
-                                                        <div>
-                                                         
-                                                        </div> 
                                                   </div>
-                                              </div></c:forEach>
+                                              </div>
+                                            </c:forEach>
                                               <div class="col-md-2 col-sm-2 col-lg-2"></div>
+                                              
                                           </div>
                                         </div>
                                       </div>
