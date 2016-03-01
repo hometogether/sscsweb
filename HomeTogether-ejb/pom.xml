@@ -26,6 +26,13 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+        
+        <dependency>
+	<groupId>org.wikidata.wdtk</groupId>
+	<artifactId>wdtk-dumpfiles</artifactId>
+	<version>0.6.0</version>
+</dependency>
+        
     </dependencies>
 
     <build>

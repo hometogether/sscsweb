@@ -40,6 +40,12 @@
             <groupId>com.google.http-client</groupId>
             <artifactId>google-http-client-jackson2</artifactId>
             <version>1.21.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.google.oauth-client</groupId>
@@ -55,6 +61,26 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>HomeTogether-ejb</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wikidata.wdtk</groupId>
+            <artifactId>wdtk-dumpfiles</artifactId>
+            <version>0.6.0</version>
+            <type>jar</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.wikidata.wdtk</groupId>
+                    <artifactId>wdtk-datamodel</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.wikidata.wdtk</groupId>
+                    <artifactId>wdtk-storage</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.wikidata.wdtk</groupId>
+                    <artifactId>wdtk-util</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>javax</groupId>

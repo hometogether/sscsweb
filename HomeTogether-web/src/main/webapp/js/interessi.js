@@ -14,7 +14,20 @@ function aggiungiInteresse() {
             //jQuery.noConflict();
             $("#nomeinteresse").val('');
             var lowerinteressi = nomeinteresse.toLowerCase();
-            $('#ulInteressi').append('<li class="col-md-3" id="'+id+'"><div class="btn-group"><form action="InterestServlet" role="form" method="post"><div class="btn-interest"><button class=" btn btn-secondary borderless-btn btn-link" title="'+lowerinteressi+'" style="text-align: center;color: black;overflow: hidden;text-overflow: ellipsis;max-width: 90%;"> '+lowerinteressi+'</button><button id="remove" type="button" class="btn-secondary close" onClick="rimuoviInteresse('+id+')">&times;</button></div></form></div></li>');
+            $('#ulInteressi').append('<li class="col-md-3" id="'+id+'"><div class="btn-group">'+
+                                            
+                                                '<div class="btn-interest">'+
+                                                    '<form action="InterestServlet" role="form" method="post">'+
+                                                    '<input type="hidden" name="action" value="goToInterest">'+
+                                                    '<input type="hidden" name="nome" value="'+lowerinteressi+'">'+
+                                                    '<button class="btn btn-secondary borderless-btn btn-link" title="'+lowerinteressi+'" style="text-align: center;color: black;overflow: hidden;text-overflow: ellipsis;max-width: 90%;">' +lowerinteressi+'</button>'+
+                                                    '</form>'+
+                                                    '<form action="InterestServlet" role="form" method="post">'+
+                                                    '<button id="remove" type="button" class="btn btn-secondary close" )">&times;</button>'+
+                                                    '</form>'+
+                                                '</div>'+
+                                            
+                                        '</div></li>');
 
 
         } else {
