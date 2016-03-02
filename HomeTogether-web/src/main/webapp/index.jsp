@@ -15,7 +15,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>The Big Picture - Start Bootstrap Template</title>
+    <title>Hometogether</title>
 
     <!-- Bootstrap Core CSS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -23,6 +23,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     
     <!-- Custom CSS -->
+    <link rel="icon" href="http://example.com/favicon.png">
     <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
     <link rel="stylesheet" type="text/css" href="css/simpletextrotator.css" />
     <link href="css/style.css" rel='stylesheet' type='text/css' />
@@ -65,8 +66,7 @@
 		});
 
     </script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+    
 
 </head>
 

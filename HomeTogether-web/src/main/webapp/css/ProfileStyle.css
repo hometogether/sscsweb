@@ -14,8 +14,9 @@ html, body{
 }
 @font-face {
     font-family: fabrik;
-    src: url(fonts/fabrik.ttf);
+    src: url('/HomeTogether-web/fonts/fabrik.ttf');
 }
+
 .header{
     padding: 0.8% 0 0 0;
     position: fixed;
@@ -216,6 +217,17 @@ input[type="color"]:focus,
     max-width: 270px;
     max-height: 254px;
     height: auto;
+}
+
+.postArea{
+    border: none;
+    resize:none;
+    
+}
+.postArea:focus{
+    outline: none;
+    outline-color: none;
+    box-shadow: none;
 }
 
 .footer{
