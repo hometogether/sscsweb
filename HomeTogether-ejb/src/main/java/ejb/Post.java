@@ -6,9 +6,10 @@
 package ejb;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Time;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +17,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.criteria.CriteriaBuilder;
 
 /**
  *
@@ -25,10 +30,11 @@ import javax.persistence.OneToMany;
 public class Post implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     public Long getId() {
         return id;
     }
@@ -57,7 +63,8 @@ public class Post implements Serializable {
     public void setUser(Profilo user) {
         this.user = user;
     }
-
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "data", nullable = false)
     private Date data;
 
     /**
@@ -77,27 +84,11 @@ public class Post implements Serializable {
     public void setData(Date data) {
         this.data = data;
     }
-
-    private Time ora;
-
-    /**
-     * Get the value of ora
-     *
-     * @return the value of ora
-     */
-    public Time getOra() {
-        return ora;
+    @PrePersist
+    protected void onCreate() {
+        data = new Date();
     }
-
-    /**
-     * Set the value of ora
-     *
-     * @param ora new value of ora
-     */
-    public void setOra(Time ora) {
-        this.ora = ora;
-    }
-
+    
     private String testo;
 
     /**

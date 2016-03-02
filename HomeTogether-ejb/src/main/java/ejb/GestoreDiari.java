@@ -19,16 +19,32 @@ import javax.ejb.Stateless;
 public class GestoreDiari {
 
     @EJB
-    private DiarioFacadeLocal comuneFacade;
-    
+    private DiarioFacadeLocal diarioFacade;
+    @EJB
+    private PostFacadeLocal postFacade;
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     public Diario getDiario(Long idDiario) {
-        System.out.println("entro in crea listaComuni");
-        Diario d = comuneFacade.getDiario(idDiario);
+        Diario d = diarioFacade.getDiario(idDiario);
         return d;
     }
        
+    public List<Post> getPosts(Long idDiario) {
+        List<Post> p = postFacade.getPosts(idDiario);
+        return p;
+    }
+    
+    public Post aggiungiPost(Diario diario, Profilo profilo, String testo) {
+        Post post = new Post();
+        post.setUser(profilo);
+        post.setTesto(testo);
+        diario.getPost().add(post);
+        
+        diarioFacade.edit(diario);
+        System.out.println("aggiunto il nuovo post");
+        return post;
+
+    }
 
 }

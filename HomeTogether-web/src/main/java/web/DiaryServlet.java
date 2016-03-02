@@ -8,6 +8,7 @@ package web;
 import ejb.Diario;
 import ejb.GestoreDiari;
 import ejb.GestoreUtenti;
+import ejb.Post;
 import ejb.Profilo;
 import ejb.ProfiloFacade;
 import java.io.File;
@@ -15,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -60,12 +62,34 @@ public class DiaryServlet extends HttpServlet {
                 Long idDiario = new Long(request.getParameter("idDiario"));
                 Diario d = gestoreDiari.getDiario(idDiario);
                 Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
+                List<Post> posts = gestoreDiari.getPosts(idDiario);
+
+                d.setPost(posts);
+                
                 request.setAttribute("profilo", p);
                 
                 request.setAttribute("diario", d);
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
                 rd.forward(request, response);
-            }  else {
+            }  else if (action.equals("submitPost")) {
+                Long idDiario = new Long(request.getParameter("idDiario"));
+                String text=request.getParameter("text");
+                Diario d = gestoreDiari.getDiario(idDiario);
+                Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
+                gestoreDiari.aggiungiPost(d, p, text);
+                
+                
+                
+                List<Post> posts = gestoreDiari.getPosts(idDiario);
+
+                d.setPost(posts);
+                
+                request.setAttribute("profilo", p);
+                
+                request.setAttribute("diario", d);
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
+                rd.forward(request, response);
+            } else {
                 //GESTIRE ERRORE
             }
 

@@ -28,7 +28,8 @@ public interface PostFacadeLocal {
     List<Post> findRange(int[] range);
 
     int count();
-
+    
+    List<Post> getPosts(Long idDiario);
 
     
 }
