@@ -148,7 +148,7 @@
                                                   <div class="col-md-1"></div>
                                                   <div class="col-md-10" style="background: white;  border-radius: 2px;">
                                                       <div class="col-md-12" style="margin-top: 3%;">
-                                                         <button class="col-md-2 col-sm-2 col-lg-2 borderless-btn"><img src="${post.user.foto_profilo}" class="avatar profile-image-avatar" style="box-shadow: 0px 0px 5px #888; max-width: 50px;max-height: 50px;min-height: 50px;min-width: 50px;"/></button>
+                                                         <button class="col-md-2 col-sm-2 col-lg-2 borderless-btn"><img src="${profilo.foto_profilo}" class="avatar profile-image-avatar" style="box-shadow: 0px 0px 5px #888; max-width: 50px;max-height: 50px;min-height: 50px;min-width: 50px;"/></button>
                                                          <textarea class="col-md-10 col-sm-10 col-lg-10 postArea" autofocus="autofocus"  placeholder="#SHARETOGETHER"></textarea>
                                                       </div>
                                                          <div class="col-md-12 col-lg-12 col-sm-12">

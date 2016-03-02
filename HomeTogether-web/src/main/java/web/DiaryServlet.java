@@ -53,15 +53,16 @@ public class DiaryServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-        HttpSession s = request.getSession();
+        HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
             if (action.equals("goToDiary")) {
                 Long idDiario = new Long(request.getParameter("idDiario"));
                 Diario d = gestoreDiari.getDiario(idDiario);
+                Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
+                request.setAttribute("profilo", p);
                 
                 request.setAttribute("diario", d);
-                
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
                 rd.forward(request, response);
             }  else {
