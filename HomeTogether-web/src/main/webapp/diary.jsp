@@ -52,6 +52,24 @@
             $(function(){
                 $('.postArea').css('overflow', 'hidden').autogrow({vertical: true, horizontal: false});
               });
+              
+              var i=0;
+            function appendComment(){
+                
+               $('#commentContainer').append("<div class='row'><div class='col-md-12'style='background:whitesmoke'>"+
+                       "<div class='row col-md-12 col-sm-12 col-lg-12' style='padding-top:2%;'>"+
+                            "<button class='col-md-1 col-sm-1 col-lg-1 borderless-btn'><img src='${profilo.foto_profilo}' class='avatar profile-image-avatar' style='border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 35px;max-height: 35px;min-height: 35px;min-width: 35px;'/></button>"+
+                            "<div class='col-md-10'><div class='col-md-12'>"+
+                            "<textarea id='commentArea"+i+"' class='postArea' readonly='readonly' style='width:100%;margin-top:0;'></textarea></div>"+
+                                "</div>"+
+                                "</div>");
+                var comment="Nome Utente "+$('#commento_utente').val();
+                $('#commentArea'+ i).append(comment);
+                $('#commentArea'+ i).css('overflow', 'hidden').autogrow({vertical: true, horizontal: false});
+                
+                i++;
+            }
+                                                                        
         </script>
         <title>Diary</title>
     </head>
@@ -152,7 +170,7 @@
                                                       <input type="hidden" name="idDiario" value="${diario.id}">
                                                       <div class="col-md-12" style="margin-top: 3%;">
                                                          <button class="col-md-2 col-sm-2 col-lg-2 borderless-btn"><img src="${profilo.foto_profilo}" class="avatar profile-image-avatar" style="box-shadow: 0px 0px 5px #888; max-width: 50px;max-height: 50px;min-height: 50px;min-width: 50px;"/></button>
-                                                         <textarea name="text" class="col-md-10 col-sm-10 col-lg-10 postArea" autofocus="autofocus"  placeholder="#SHARETOGETHER"></textarea>
+                                                         <textarea name="text" class="col-md-10 col-sm-10 col-lg-10 postArea" required="yes" autofocus="autofocus"  placeholder="#SHARETOGETHER"></textarea>
                                                       </div>
                                                          <div class="col-md-12 col-lg-12 col-sm-12">
                                                             <div class="col-md-12" style="border-top: 1px solid lightgray; margin-bottom: 1%;margin-top: 4%; "></div>
@@ -166,9 +184,9 @@
                                               </div>
                                             <div class="col-md-2 col-sm-2 col-lg-2"></div>
                                             <c:forEach var="post" items="${diario.post}">
-                                                  <div id="div${commentLoop.index}" class="col-md-12" style="margin-bottom: 7%;border: 1px solid whitesmoke;border-radius: 2px;">
+                                                  <div id="div${commentLoop.index}" class="col-md-12" style="margin-bottom: 0%;border: 1px solid whitesmoke;border-radius: 2px;"id="commentContainer">
                                                     <div class="col-md-1"></div>
-                                                    <div class="col-md-10" style="background: white;  border-radius: 2px;box-shadow: 0px 0px 5px orange;">
+                                                    <div class="col-md-10" style="background: white;  border-radius: 2px;box-shadow: 0px 0px 5px orange;margin-bottom:7%;">
                                                         <!--HEADER-->
                                                         
                                                         <div class="col-md-12 col-sm-12 col-lg-12" style="margin-top: 3%;">
@@ -211,9 +229,9 @@
                                                             
                                                             <div class="col-md-8 col-sm-8 col-lg-8">
                                                                 <div class="input-group" style="text-align: center;">                     
-                                                                    <input type="text" class="form-control" placeholder="scrivi un commento" id="ric_utente" name="ric_utente" required="yes">
+                                                                    <input type="text" class="form-control" placeholder="scrivi un commento" id="commento_utente"  required="yes">
                                                                     <div class="input-group-btn" style="text-align: left">
-                                                                        <button class="btn btn-info" type="submit" style="background: orange;" ><i class="glyphicon glyphicon-send"></i></button>
+                                                                        <button class="btn btn-info" type="submit" style="background: orange;" onclick="appendComment();"><i class="glyphicon glyphicon-send"></i></button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -227,9 +245,13 @@
                                                             
                                                         </div>
                                                         </div>
+                                                        
+                                                        <div id="commentContainer"></div>
                                                   </div>
                                                 <div class="col-md-1"></div>
                                               </div>
+                                                            
+                                               
                                             </c:forEach>
                                               <div class="col-md-2 col-sm-2 col-lg-2"></div>
                                               

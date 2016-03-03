@@ -222,6 +222,7 @@ input[type="color"]:focus,
 .postArea{
     border: none;
     resize:none;
+    background: none;
     
 }
 .postArea:focus{

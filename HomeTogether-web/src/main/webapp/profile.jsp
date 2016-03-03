@@ -327,7 +327,7 @@
 			<div class="btn-footer">
 			<button class="bg_none"><i class="glyphicon glyphicon-film"></i> </button>
 			<button class="bg_none"><i class="glyphicon glyphicon-camera"></i> </button>
-            <button class="bg_none"><i class="glyphicon glyphicon-paperclip"></i> </button>
+                        <button class="bg_none"><i class="glyphicon glyphicon-paperclip"></i> </button>
 			<button class="bg_none pull-right"><i class="glyphicon glyphicon-thumbs-up"></i> </button>
 			</div>
 			</div>

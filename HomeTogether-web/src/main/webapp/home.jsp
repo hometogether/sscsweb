@@ -27,5 +27,7 @@
     </head>
     <body>
         <%@include file="navbar.jsp" %>
+        <br/><br/><br/><br/><br/><br/>
+        <a href="chatprova.jsp">Vai alla chat!</a>
     </body>
 </html>
