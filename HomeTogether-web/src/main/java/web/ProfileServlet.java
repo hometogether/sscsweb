@@ -51,6 +51,9 @@ public class ProfileServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setDateHeader("Expires", 0); // Proxies.
         HttpSession s = request.getSession();
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
@@ -76,18 +79,18 @@ public class ProfileServlet extends HttpServlet {
                 String location = request.getParameter("localita");
                 String data = request.getParameter("data_nascita");
                 String email = (String) (s.getAttribute("email"));
-                String formazione= request.getParameter("formazione");
-                String occupazione= request.getParameter("occupazione");
-                String telefono= request.getParameter("telefono");
-                Profilo p =gestoreUtenti.modificaInfo(email, data,formazione,occupazione,telefono);
+                String formazione = request.getParameter("formazione");
+                String occupazione = request.getParameter("occupazione");
+                String telefono = request.getParameter("telefono");
+                Profilo p = gestoreUtenti.modificaInfo(email, data, formazione, occupazione, telefono);
                 request.setAttribute("profilo", p);
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile.jsp");
                 rd.forward(request, response);
             } else if (action.equals("follow")) {
                 Long idfollow = new Long(request.getParameter("id"));
-                Long id = (Long)(s.getAttribute("id"));
-                System.out.println("id request:"+request.getParameter("id"));
-                System.out.println("id sessione:"+s.getAttribute("id"));
+                Long id = (Long) (s.getAttribute("id"));
+                System.out.println("id request:" + request.getParameter("id"));
+                System.out.println("id sessione:" + s.getAttribute("id"));
                 Profilo personalProfile = profiloFacade.getProfilo(id);
                 Profilo followProfile = profiloFacade.getProfilo(idfollow);
                 int res = gestoreUtenti.aggiungiFollowing(personalProfile, followProfile);
@@ -99,7 +102,7 @@ public class ProfileServlet extends HttpServlet {
 
             } else if (action.equals("eliminafollow")) {
                 Long idfollow = new Long(request.getParameter("id"));
-                Long id = (Long)(s.getAttribute("id"));
+                Long id = (Long) (s.getAttribute("id"));
                 Profilo personalProfile = profiloFacade.getProfilo(id);
                 Profilo followProfile = profiloFacade.getProfilo(idfollow);
                 int res = gestoreUtenti.eliminaFollowing(personalProfile, followProfile);

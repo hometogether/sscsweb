@@ -76,18 +76,18 @@
                                 <c:if test="${profilo.id == id}">
                                     <li class="col-md-3"id="${interesse.id}">
                                         <div class="btn-group">
-                                            
+                                            <form action="InterestServlet" role="form" method="post">
                                                 <div class="btn-interest">
-                                                    <form action="InterestServlet" role="form" method="post">
+                                                    
                                                     <input type="hidden" name='action' value="goToInterest">
                                                     <input type="hidden" name='nome' value="${interesse.nome}">
                                                     <button class="btn btn-secondary borderless-btn btn-link" title="${interesse.nome}" style="text-align: center;color: black;overflow: hidden;text-overflow: ellipsis;max-width: 90%;"> ${interesse.nome}</button>
-                                                    </form>
-                                                    <form action="InterestServlet" role="form" method="post">
+                                                    
+                                                    
                                                     <button id="remove" type="button" class="btn btn-secondary close" onClick="rimuoviInteresse(${interesse.id})">&times;</button> 
-                                                    </form>
+                                                    
                                                 </div>
-                                            
+                                            </form>
                                         </div>
                                     </li>     
                                 </c:if>

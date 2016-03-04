@@ -50,6 +50,9 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
+        response.setHeader("Cache-Control", "no-cache, must-revalidate");
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setDateHeader("Expires", 0); // Proxies.
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
             System.out.println("action is:" + action);
@@ -62,21 +65,18 @@ public class LoginServlet extends HttpServlet {
                 if (u != null) {
                     HttpSession session = request.getSession();
                     session.setAttribute("id", u.getProfilo().getId());
-                    
-                    
+
                     //Profilo p = profiloFacade.getProfilo(email);
-                    session.setAttribute("nome",""+u.getProfilo().getNome());
-                    session.setAttribute("cognome",""+u.getProfilo().getCognome());
-                    session.setAttribute("email",""+u.getProfilo().getEmail());
-                    session.setAttribute("data",""+u.getProfilo().getData_nascita());
-                    session.setAttribute("sesso",""+u.getProfilo().getSesso());
-                    session.setAttribute("formazione",u.getProfilo().getFormazione());
-                    session.setAttribute("occupazione",u.getProfilo().getOccupazione());
-                    session.setAttribute("telefono",u.getProfilo().getTelefono());
-                  //  s.setAttribute("location",""+location);
-                    session.setAttribute("foto",""+u.getProfilo().getFoto_profilo()); 
-                    
-                     
+                    session.setAttribute("nome", "" + u.getProfilo().getNome());
+                    session.setAttribute("cognome", "" + u.getProfilo().getCognome());
+                    session.setAttribute("email", "" + u.getProfilo().getEmail());
+                    session.setAttribute("data", "" + u.getProfilo().getData_nascita());
+                    session.setAttribute("sesso", "" + u.getProfilo().getSesso());
+                    session.setAttribute("formazione", u.getProfilo().getFormazione());
+                    session.setAttribute("occupazione", u.getProfilo().getOccupazione());
+                    session.setAttribute("telefono", u.getProfilo().getTelefono());
+                    //  s.setAttribute("location",""+location);
+                    session.setAttribute("foto", "" + u.getProfilo().getFoto_profilo());
 
                     RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
                     rd.forward(request, response);
@@ -95,7 +95,7 @@ public class LoginServlet extends HttpServlet {
                 }
 
             } else {
-                
+
             }
 
         }
@@ -115,7 +115,6 @@ public class LoginServlet extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *

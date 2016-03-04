@@ -51,7 +51,10 @@ public class RegistrationServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-        HttpSession session= request.getSession();
+        response.setHeader("Cache-Control", "no-cache, must-revalidate");
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setDateHeader("Expires", 0); // Proxies.
+        HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
             System.out.println("action is:" + action);
@@ -64,23 +67,23 @@ public class RegistrationServlet extends HttpServlet {
                 String sesso = request.getParameter("sesso");
                 String foto = request.getParameter("foto_profilo");
                 String tipo_registrazione = request.getParameter("tipo_registrazione");
-                
+
                 String localita = request.getParameter("localita").toLowerCase();
-                System.out.println("localita:"+localita);
-                Comune comune=null;
+                System.out.println("localita:" + localita);
+                Comune comune = null;
                 ServletContext context = getServletContext();
                 List<Comune> list = (List<Comune>) context.getAttribute("list");
                 boolean trovato = false;
                 for (int i = 0; i < list.size() && trovato == false; i++) {
                     if ((list.get(i).getNome().toLowerCase()).equals(localita)) {
-                        
+
                         System.out.println("comune trovato!");
-                        comune=list.get(i);
+                        comune = list.get(i);
                         trovato = true;
                     }
 
                 }
-                
+
                 if (tipo_registrazione.equals("0")) {
                     String password = request.getParameter("password");
                     String r_password = request.getParameter("r_password");

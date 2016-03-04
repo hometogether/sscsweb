@@ -55,11 +55,13 @@ public class GoogleServlet extends HttpServlet {
     private ProfiloFacade profiloFacade;
 
     // private Sessione sessione = new Sessione();
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, GeneralSecurityException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
+        response.setHeader("Cache-Control", "no-cache, must-revalidate");
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setDateHeader("Expires", 0); // Proxies.
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
             if (action.equals("loginGoogle")) {

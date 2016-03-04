@@ -56,17 +56,19 @@ public class RedirectServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setDateHeader("Expires", 0); // Proxies.
         String action = request.getParameter("action");
         HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
             if (action.equals("goProfile")) {
                 Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
                 request.setAttribute("profilo", p);
-                
-                
+
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile.jsp");
                 rd.forward(request, response);
-                
+
             } else if (action.equals("goUserProfile")) {
 
                 Long idprofile = new Long(request.getParameter("idprofile"));
@@ -76,9 +78,9 @@ public class RedirectServlet extends HttpServlet {
                     Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
                     List<Profilo> listafollowing = personalProfile.getFollowing();
                     boolean trovato = false;
-                    System.out.println("id dell'amico:"+idprofile);
+                    System.out.println("id dell'amico:" + idprofile);
                     for (int i = 0; i < listafollowing.size() && trovato == false; i++) {
-                        System.out.println("id:"+i+": "+listafollowing.get(i).getId());
+                        System.out.println("id:" + i + ": " + listafollowing.get(i).getId());
                         if (listafollowing.get(i).getId().equals(idprofile)) {
                             System.out.println("trovato!");
                             trovato = true;
@@ -111,12 +113,13 @@ public class RedirectServlet extends HttpServlet {
                 } else {
                     //errore
                 }
-            }else if (action.equals("logOut")) {
+            } else if (action.equals("logOut")) {
                 session.invalidate();
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
                 rd.forward(request, response);
             } else {
                 //gestione erroi
+                
             }
             /* TODO output your page here. You may use following sample code. */
 

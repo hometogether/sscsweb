@@ -41,7 +41,7 @@ public class ContextServlet extends HttpServlet implements ServletContextListene
     private GestoreComuni gestoreComuni;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
 
         
     }

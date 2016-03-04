@@ -54,17 +54,19 @@ public class InterestServlet extends HttpServlet {
      */
     @EJB
     private GestoreInteressi gestoreInteressi;
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParserConfigurationException, SAXException, TransformerException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
+        response.setHeader("Cache-Control", "no-cache, must-revalidate");
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setDateHeader("Expires", 0); // Proxies.
         try (PrintWriter out = response.getWriter()) {
-            
 
             String action = request.getParameter("action");
-            
-            System.out.println("action is:"+action);
+
+            System.out.println("action is:" + action);
             if (action.equals("add")) {
                 HttpSession session = request.getSession();
                 System.out.println("entro in action add");
@@ -73,51 +75,44 @@ public class InterestServlet extends HttpServlet {
                 String nomeinteresse = request.getParameter("nomeinteresse");
                 nomeinteresse = nomeinteresse.toLowerCase();
                 String res = gestoreInteressi.aggiungiInteresse(idProfilo, nomeinteresse);
-                
-                System.out.println("supero aggiungi interesse, res = "+res);
-                
 
-                if (!res.equals("-1")){
+                System.out.println("supero aggiungi interesse, res = " + res);
+
+                if (!res.equals("-1")) {
                     System.out.println("pronto a tornare nella jsp");
                     out.println(res);
                 } else {
                     out.println("-1");
                 }
-                
-                
-               
+
             } else if (action.equals("remove")) {
                 HttpSession session = request.getSession();
                 Long idProfilo = (Long) session.getAttribute("id");
                 System.out.println("entro in action remove");
-                Long idInteresse =  Long.parseLong(request.getParameter("idinteresse"));
-               
+                Long idInteresse = Long.parseLong(request.getParameter("idinteresse"));
+
                 int res = gestoreInteressi.rimuoviInteresse(idProfilo, idInteresse);
-                
-                System.out.println("supero rimuovi interesse, res = "+res);
 
+                System.out.println("supero rimuovi interesse, res = " + res);
 
-                if (res == 0){
+                if (res == 0) {
                     System.out.println("pronto a tornare nella jsp");
                     out.println("0");
                 } else {
                     out.println("-1");
                 }
-                
-                
-               
+
             } else if (action.equals("goToInterest")) {
-                
+
                 String nome = request.getParameter("nome");
                 String nomereplace = nome.replaceAll(" ", "%20");
-                
-                
-                URL url = new URL("https://it.wikipedia.org/w/api.php?format=xml&action=query&prop=langlinks&prop=extracts&titles="+nomereplace+"&redirects=true");
+
+                URL url = new URL("https://it.wikipedia.org/w/api.php?format=xml&action=query&prop=langlinks&prop=extracts&titles=" + nomereplace + "&redirects=true");
                 URLConnection conn = url.openConnection();
-                
+
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder builder = factory.newDocumentBuilder();
-                org.w3c.dom.Document doc =  builder.parse(conn.getInputStream());
+                org.w3c.dom.Document doc = builder.parse(conn.getInputStream());
 
                 TransformerFactory factory2 = TransformerFactory.newInstance();
                 Transformer xform = factory2.newTransformer();
@@ -125,19 +120,19 @@ public class InterestServlet extends HttpServlet {
                 StringWriter writer = new StringWriter();
                 StreamResult result = new StreamResult(writer);
                 xform.transform(new DOMSource(doc), result);
-                
+
                 request.setAttribute("xml", writer.toString());
-                request.setAttribute("nome",nome);
+                request.setAttribute("nome", nome);
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/interesse.jsp");
                 rd.forward(request, response);
-                
-            }else {
+
+            } else {
                 out.println("-1");
                 System.out.println("Action OTHER");
             }
         }
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -193,5 +188,4 @@ public class InterestServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    
 }

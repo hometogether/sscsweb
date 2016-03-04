@@ -55,6 +55,9 @@ public class DiaryServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setDateHeader("Expires", 0); // Proxies.
         HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
@@ -65,30 +68,29 @@ public class DiaryServlet extends HttpServlet {
                 List<Post> posts = gestoreDiari.getPosts(idDiario);
 
                 d.setPost(posts);
-                
+
                 request.setAttribute("profilo", p);
-                
+
                 request.setAttribute("diario", d);
+
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
                 rd.forward(request, response);
-            }  else if (action.equals("submitPost")) {
+            } else if (action.equals("submitPost")) {
                 Long idDiario = new Long(request.getParameter("idDiario"));
-                String text=request.getParameter("text");
+                String text = request.getParameter("text");
                 Diario d = gestoreDiari.getDiario(idDiario);
                 Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
                 gestoreDiari.aggiungiPost(d, p, text);
-                
-                
-                
-                List<Post> posts = gestoreDiari.getPosts(idDiario);
+                out.println("133");
+                //List<Post> posts = gestoreDiari.getPosts(idDiario);
 
-                d.setPost(posts);
-                
-                request.setAttribute("profilo", p);
-                
-                request.setAttribute("diario", d);
-                RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
-                rd.forward(request, response);
+                //d.setPost(posts);
+
+                //request.setAttribute("profilo", p);
+
+                //request.setAttribute("diario", d);
+                //RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
+                //rd.forward(request, response);
             } else {
                 //GESTIRE ERRORE
             }

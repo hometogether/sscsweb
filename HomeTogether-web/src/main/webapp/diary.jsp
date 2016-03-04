@@ -11,7 +11,8 @@
         
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script src="js/jquery-1.11.0.min.js"></script>
-        
+        <script src="js/post.js"></script>
+
         <script src="js/wow.min.js"></script>
         <link href="css/bootstrap_1.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap.min_1.css" rel='stylesheet' type='text/css' />
@@ -26,7 +27,94 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	<script src="js/jquery.ns-autogrow.min.js"></script> 
         <script type="text/javascript">
-            var max=0;
+            
+            
+            var xhr = new XMLHttpRequest();
+            function aggiungiPost(idDiario) {
+                var testo=$('#text').val();
+                console.log('testo:'+testo);
+                xhr.open('POST', 'DiaryServlet');
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function () {
+
+                    if (!(xhr.responseText.trim() === "0")) {
+                        var idPost = xhr.responseText.trim();
+                        jQuery.noConflict();
+                        //jQuery.noConflict();
+                        var loop='${commentLoop.index}';
+                        console.log('looop:'+loop);
+                        var foto='${profilo.foto_profilo}';
+                        var nome='${profilo.nome}';
+                        var cognome='${profilo.cognome}';
+                        console.log('foto:'+foto);
+                        $('#postContainer').prepend('<div class="col-md-12" style="margin-bottom: 0%;border: 1px solid whitesmoke;border-radius: 2px;"id="commentContainer">'+
+                                                                '<div class="col-md-1"></div>'+
+                                                                '<div class="col-md-10" style="background: white;  border-radius: 2px;box-shadow: 0px 0px 5px orange;margin-bottom:7%;">'+
+                                                                    '<div class="col-md-12 col-sm-12 col-lg-12" style="margin-top: 3%;">'+
+                                                                        '<button class="col-md-2 col-sm-2 col-lg-2 borderless-btn"><img src="'+foto+'" class="avatar profile-image-avatar" style="border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 50px;max-height: 50px;min-height: 50px;min-width: 50px;"/></button>'+
+                                                                        '<h4>'+nome+' '+cognome+'</h4>'+
+                                                                    '</div>'+
+
+                                                                    '<div class="col-md-12 col-sm-12 col-lg-12">'+
+
+                                                                        '<div class="col-md-10 col-sm-10 col-lg-10"><h4 style="padding-left:2.5%;">'+testo+'</h4></div>'+
+                                                                    '</div>'+
+
+                                                                    '<div class="col-md-12 col-lg-12 col-sm-12">'+
+                                                                    '<div class="col-md-12 col-lg-12 col-sm-12" id="like-numb'+idPost+'>'+
+
+                                                                        '<ul id="like-list'+idPost+'"class="list-inline">'+
+                                                                            '<li style="padding-left:2.5%;">Piace a:</li>'+
+
+
+                                                                        '</ul>'+                        
+                                                                   ' </div>'+
+
+                                                                    '</div>'+
+                                                                    '<div class="col-md-12 col-lg-12 col-sm-12">'+
+                                                                    '<div role="separator" class="col-md-12 divider" style="border-top: 1px solid lightgray;"></div>'+
+                                                                    '<div class="col-md-12 col-sm-12 col-lg-12 " style="margin: 1% 0 1% 0;">'+
+                                                                        '<div class="col-md-2 col-sm-2 col-lg-2">'+
+                                                                            '<button class="btn borderless-btn " style="color: black;" onclick="addLike('+idPost+');">'+
+                                                                            '<i class="glyphicon glyphicon-hand-up"></i> Mi Piace'+
+                                                                          '</button>'+
+                                                                        '</div>'+
+
+                                                                       '<div class="col-md-8 col-sm-8 col-lg-8">'+
+                                                                            '<div class="input-group" style="text-align: center;">'+               
+                                                                                '<input type="text" class="form-control" placeholder="scrivi un commento" id="commento_utente"  required="yes">'+
+                                                                                '<div class="input-group-btn" style="text-align: left">'+
+                                                                                   '<button class="btn btn-info" type="submit" style="background: orange;" onclick="appendComment();"><i class="glyphicon glyphicon-send"></i></button>'+
+                                                                               '</div>'+
+                                                                            '</div>'+
+                                                                        '</div>'+
+
+
+                                                                        '<div class="col-md-2 col-sm-2 col-lg-2">'+
+                                                                            '<button class="btn borderless-btn col-md-2" style="color: black;">'+
+                                                                                '<i class=" glyphicon glyphicon-comment"></i> Commenti'+
+                                                                            '</button>'+
+                                                                        '</div>'+
+
+                                                                    '</div>'+
+                                                                    '</div>'+
+
+                                                                    '<div id="commentContainer"></div>'+
+                                                              '</div>'+
+                                                            '<div class="col-md-1"></div>'+
+                                                          '</div>');
+
+
+                    } else {
+                        // GESTIRE ERRORE
+                    }
+
+                };
+                xhr.send('action=submitPost&idDiario=' + idDiario+'&text='+testo);
+            }
+
+            
+            
             $(document).ready(function() {
                 if($('#like-list li').length > 3){
                    var e=$('#like-list li').length-1;
@@ -36,17 +124,17 @@
                 }
                 
             });
-            function addLike(){
-                console.log($('#like-list li').length);
-                $('#like-list').append("<li style='padding: 0000;margin: 0000;font-size: 85%;'><a>Nuovo utente<span>,</span></a></li>");
-                console.log($('#like-list li').length);
-                var e=$('#like-list li').length-1;
-                if($('#like-list li').length > 3 && max===0){
-                    $('#like-list').fadeOut();
-                    $('#like-numb').append("Piace a:<a id='numb' style='font-size: 85%';> "+e+" persone</a>").fadeIn();
-                    max=1;
-                }else if($('#like-list li').length > 3&& max===1){
-                    $('#numb').text(" "+e+" persone");
+            function addLike(idPost){
+                console.log($('#like-list'+idPost+' li').length);
+                $('#like-list'+idPost).append("<li style='padding: 0000;margin: 0000;font-size: 85%;'><a>Nuovo utente<span>,</span></a></li>");
+                console.log($('#like-list'+idPost+' li').length);
+                var e=$('#like-list'+idPost+' li').length-1;
+                if($('#like-list'+idPost+' li').length === 4){
+                    $('#like-list'+idPost).fadeOut();
+                    $('#like-numb'+idPost).append("Piace a:<a id='numb"+idPost+"' style='font-size: 85%';> "+e+" persone</a>").fadeIn();
+                    
+                }else if($('#like-list'+idPost+' li').length > 4){
+                    $('#numb'+idPost).text(" "+e+" persone");
                 }
             }
             $(function(){
@@ -161,28 +249,28 @@
                                           </div>
                                           
                                           <!-- edit form column -->
-                                          <div class="col-md-9 col-sm-9 col-xs-9 personal-info" style=" position: relative; ">
-                                              <div id="div${commentLoop.index}" class="col-md-12" style="margin-bottom: 3%;border: 1px solid whitesmoke;border-radius: 2px;">
+                                          <div id="div" class="col-md-9 col-sm-9 col-xs-9 personal-info" style=" position: relative; ">
+                                              <div  class="col-md-12" style="margin-bottom: 3%;border: 1px solid whitesmoke;border-radius: 2px;">
                                                   <div class="col-md-1"></div>
                                                   <div class="col-md-10" style="background: white;  border-radius: 2px;">
-                                                    <form action="DiaryServlet" method="post" id="upload" enctype="multipart/form-data">
+                                                    
                                                       <input type="hidden" name="action" value="submitPost">
                                                       <input type="hidden" name="idDiario" value="${diario.id}">
                                                       <div class="col-md-12" style="margin-top: 3%;">
                                                          <button class="col-md-2 col-sm-2 col-lg-2 borderless-btn"><img src="${profilo.foto_profilo}" class="avatar profile-image-avatar" style="box-shadow: 0px 0px 5px #888; max-width: 50px;max-height: 50px;min-height: 50px;min-width: 50px;"/></button>
-                                                         <textarea name="text" class="col-md-10 col-sm-10 col-lg-10 postArea" required="yes" autofocus="autofocus"  placeholder="#SHARETOGETHER"></textarea>
+                                                         <textarea id="text" name="text" class="col-md-10 col-sm-10 col-lg-10 postArea" required="yes" autofocus="autofocus"  placeholder="#SHARETOGETHER"></textarea>
                                                       </div>
                                                          <div class="col-md-12 col-lg-12 col-sm-12">
                                                             <div class="col-md-12" style="border-top: 1px solid lightgray; margin-bottom: 1%;margin-top: 4%; "></div>
                                                             <div class="col-md-12" style="margin-bottom: 1%;">
-                                                                <button class="btn btn-primary pull-right" style="background:linear-gradient(to bottom, orange 0%, orangered 70%, red 100%);color:whitesmoke;">Pubblica</button>
+                                                                <button class="btn btn-primary pull-right" onClick="aggiungiPost(${diario.id})" style="background:linear-gradient(to bottom, orange 0%, orangered 70%, red 100%);color:whitesmoke;">Pubblica</button>
                                                             </div>
                                                         </div>
-                                                    </form>
                                                   </div>
                                                   <div class="col-md-1"></div>    
                                               </div>
                                             <div class="col-md-2 col-sm-2 col-lg-2"></div>
+                                            <div id="postContainer" >
                                             <c:forEach var="post" items="${diario.post}">
                                                   <div id="div${commentLoop.index}" class="col-md-12" style="margin-bottom: 0%;border: 1px solid whitesmoke;border-radius: 2px;"id="commentContainer">
                                                     <div class="col-md-1"></div>
@@ -204,9 +292,9 @@
                                                         <!--COMMENT AREA-->
                                                         <!--LISTA LIKE DA MOSTRARE SOLO SE CI SONO UNO O PIU LIKE-->
                                                         <div class="col-md-12 col-lg-12 col-sm-12">
-                                                        <div class="col-md-12 col-lg-12 col-sm-12" id="like-numb">   
+                                                        <div class="col-md-12 col-lg-12 col-sm-12" id="like-numb${post.id}">   
                                                             
-                                                            <ul id="like-list"class="list-inline">
+                                                            <ul id="like-list${post.id}"class="list-inline">
                                                                 <li style="padding-left:2.5%;">Piace a:</li>
                                                                 <c:forEach var="like" items="${post.likes}">
                                                                     <li style="padding: 0000;margin: 0000;font-size: 85%;">
@@ -222,7 +310,7 @@
                                                         <div role="separator" class="col-md-12 divider" style="border-top: 1px solid lightgray;"></div>
                                                         <div class="col-md-12 col-sm-12 col-lg-12 " style="margin: 1% 0 1% 0;">
                                                             <div class="col-md-2 col-sm-2 col-lg-2">
-                                                                <button class="btn borderless-btn " style="color: black;" onclick="addLike();">
+                                                                <button class="btn borderless-btn " style="color: black;" onclick="addLike(${post.id});">
                                                                 <i class="glyphicon glyphicon-hand-up"></i> Mi Piace
                                                               </button>
                                                             </div>
@@ -252,7 +340,7 @@
                                               </div>
                                                             
                                                
-                                            </c:forEach>
+                                            </c:forEach></div>
                                               <div class="col-md-2 col-sm-2 col-lg-2"></div>
                                               
                                           </div>
