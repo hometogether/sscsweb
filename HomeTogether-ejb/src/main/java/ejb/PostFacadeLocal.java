@@ -31,5 +31,6 @@ public interface PostFacadeLocal {
     
     List<Post> getPosts(Long idDiario);
 
+    Post getPost(Long idPost);
     
 }

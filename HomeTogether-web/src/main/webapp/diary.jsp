@@ -75,7 +75,7 @@
                                                                     '<div role="separator" class="col-md-12 divider" style="border-top: 1px solid lightgray;"></div>'+
                                                                     '<div class="col-md-12 col-sm-12 col-lg-12 " style="margin: 1% 0 1% 0;">'+
                                                                         '<div class="col-md-2 col-sm-2 col-lg-2">'+
-                                                                            '<button class="btn borderless-btn " style="color: black;" onclick="addLike('+idPost+');">'+
+                                                                            '<button id="likebutton'+idPost+'"class="btn borderless-btn " style="color: black;" onclick="addLike('+idPost+');">'+
                                                                             '<i class="glyphicon glyphicon-hand-up"></i> Mi Piace'+
                                                                           '</button>'+
                                                                         '</div>'+
@@ -125,18 +125,72 @@
                 
             });
             function addLike(idPost){
-                console.log($('#like-list'+idPost+' li').length);
-                $('#like-list'+idPost).append("<li style='padding: 0000;margin: 0000;font-size: 85%;'><a>Nuovo utente<span>,</span></a></li>");
-                console.log($('#like-list'+idPost+' li').length);
-                var e=$('#like-list'+idPost+' li').length-1;
-                if($('#like-list'+idPost+' li').length === 4){
-                    $('#like-list'+idPost).fadeOut();
-                    $('#like-numb'+idPost).append("Piace a:<a id='numb"+idPost+"' style='font-size: 85%';> "+e+" persone</a>").fadeIn();
-                    
-                }else if($('#like-list'+idPost+' li').length > 4){
-                    $('#numb'+idPost).text(" "+e+" persone");
-                }
+                xhr.open('POST', 'DiaryServlet');
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function () {
+                    if (xhr.responseText.trim() === "0") {
+                        jQuery.noConflict();
+                        $('#like-list'+idPost).append("<li id='me"+idPost+"' style='padding: 0000;margin: 0000;font-size: 85%;'><a>te<span>,</span></a></li>");
+                        $("#likebutton"+idPost).attr("onclick",'removeLike('+idPost+')');
+                        $("#icona"+idPost).html("<B>Mi Piace</B>");
+                        $("#icona"+idPost).attr("style" ,"color:rgba(228, 131, 18, 0.6)");
+                        var e=$('#like-list'+idPost+' li').length-1;
+                        console.log('e add:'+e);
+                        console.log("idPost:"+idPost);
+                        if($('#like-list'+idPost+' li').length === 4){
+                            $('#like-list'+idPost).fadeOut();
+                            $('#like-numb'+idPost).html("<li style='padding-left:2.5%;'>Piace a:<a id='numb"+idPost+"' style='font-size: 85%';> "+e+" persone</a></li>").show();
+
+                        }else if($('#like-list'+idPost+' li').length > 4){
+                            $('#numb'+idPost).text(" "+e+" persone");
+                        }
+                    } /*else {
+                     // $('#googleForm').submit();
+                     }*/
+
+                };
+                xhr.send('action=addLike&idPost=' + idPost);
+                
             }
+            
+            function removeLike(idPost){
+                
+                xhr.open('POST', 'DiaryServlet');
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function () {
+                    if (xhr.responseText.trim() === "0") {
+                        jQuery.noConflict();
+
+                        $('#me'+idPost).remove();
+                        $("#likebutton"+idPost).attr("onclick",'addLike('+idPost+')');
+                        $("#icona"+idPost).html("Mi Piace");
+                        $("#icona"+idPost).attr("style" ,"");
+                       
+                        var e=$('#like-list'+idPost+' li').length-1;
+                        console.log('e remove:'+e);
+                        console.log("idPost:"+idPost);
+                        if($('#like-list'+idPost+' li').length < 4){
+                            console.log("entro quiii");
+                            $('#like-numb'+idPost).fadeOut();
+
+                            $('#like-list'+idPost).fadeIn(); 
+                        } else if($('#like-list'+idPost+' li').length === 4){
+                            $('#like-list'+idPost).fadeOut();
+                            $('#like-numb'+idPost).html("<li style='padding-left:2.5%;'>Piace a:<a id='numb"+idPost+"' style='font-size: 85%';> "+e+" persone</a></li>").fadeIn();
+
+                        }else if($('#like-list'+idPost+' li').length > 4){
+                            $('#numb'+idPost).text(" "+e+" persone");
+                        }
+                    } /*else {
+                     // $('#googleForm').submit();
+                     }*/
+
+                };
+                xhr.send('action=removeLike&idPost=' + idPost);    
+                        
+            }
+            
+            
             $(function(){
                 $('.postArea').css('overflow', 'hidden').autogrow({vertical: true, horizontal: false});
               });
@@ -292,16 +346,32 @@
                                                         <!--COMMENT AREA-->
                                                         <!--LISTA LIKE DA MOSTRARE SOLO SE CI SONO UNO O PIU LIKE-->
                                                         <div class="col-md-12 col-lg-12 col-sm-12">
-                                                        <div class="col-md-12 col-lg-12 col-sm-12" id="like-numb${post.id}">   
+                                                        <div class="col-md-12 col-lg-12 col-sm-12" >   
                                                             
                                                             <ul id="like-list${post.id}"class="list-inline">
                                                                 <li style="padding-left:2.5%;">Piace a:</li>
+                                                                <c:set var="found" value="0"/>    
                                                                 <c:forEach var="like" items="${post.likes}">
-                                                                    <li style="padding: 0000;margin: 0000;font-size: 85%;">
-                                                                    <a>${like.nome} ${like.cognome}<span>,</span></a></li>
+                                                                <c:choose> 
+                                                                <c:when test="${like.id==profilo.id}">
+                                                                    <script type="text/javascript">
+                                                                        var idPost='${post.id}';
+                                                                        $('#like-list'+idPost).append("<li id='me"+idPost+"' style='padding: 0000;margin: 0000;font-size: 85%;'><a>te<span>,</span></a></li>");
+                                                                        
+                                                                    </script>
+                                                                    <c:set var="found" value="1"/>
+
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <li style="padding: 0000;margin: 0000;font-size: 85%;">
+                                                                        <a>${like.nome} ${like.cognome}<span>,</span></a></li>
+                                                                    </c:otherwise>
+                                                                        </c:choose>   
                                                                 </c:forEach>
                                                                 
-                                                            </ul>                          
+                                                            </ul>                                                                  
+                                                            <ul id="like-numb${post.id}" class="list-inline"></ul>
+                       
                                                         </div>
                                                         
                                                         </div>
@@ -310,8 +380,17 @@
                                                         <div role="separator" class="col-md-12 divider" style="border-top: 1px solid lightgray;"></div>
                                                         <div class="col-md-12 col-sm-12 col-lg-12 " style="margin: 1% 0 1% 0;">
                                                             <div class="col-md-2 col-sm-2 col-lg-2">
-                                                                <button class="btn borderless-btn " style="color: black;" onclick="addLike(${post.id});">
-                                                                <i class="glyphicon glyphicon-hand-up"></i> Mi Piace
+                                                                <c:choose>   
+                                                                    <c:when test="${found==0}">   
+                                                                        <button id="likebutton${post.id}" class="btn borderless-btn " style="color: black;" onclick="addLike(${post.id});">
+                                                                        <i class="glyphicon glyphicon-hand-up"></i> <a id="icona${post.id}">Mi Piace</a>
+                                                                    </c:when> 
+                                                                    <c:otherwise>   
+                                                                        <button id="likebutton${post.id}" class="btn borderless-btn " style="color: black;" onclick="removeLike(${post.id});">
+                                                                            <i class="glyphicon glyphicon-hand-up"></i> <a id="icona${post.id}" style="color:rgba(228, 131, 18, 0.6)"><B>Mi Piace</B></a>
+                                                                    </c:otherwise>  
+                                                                </c:choose>   
+                                                                
                                                               </button>
                                                             </div>
                                                             

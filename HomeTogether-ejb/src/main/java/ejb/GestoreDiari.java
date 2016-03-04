@@ -6,6 +6,7 @@
 package ejb;
 
 import java.util.List;
+import java.util.Objects;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -35,6 +36,11 @@ public class GestoreDiari {
         return p;
     }
     
+    public Post getPost(Long idPost) {
+        Post p = postFacade.getPost(idPost);
+        return p;
+    }
+    
     public Post aggiungiPost(Diario diario, Profilo profilo, String testo) {
         Post post = new Post();
         post.setUser(profilo);
@@ -46,5 +52,31 @@ public class GestoreDiari {
         return post;
 
     }
+    
+    public void aggiungiLike(Post post, Profilo profilo) {
+        
+        post.getLikes().add(profilo);
+        postFacade.edit(post);
+        System.out.println("aggiunto il nuovo like");
 
+    }
+    
+     public int rimuoviLike(Post post, Profilo profilo) {
+        List<Profilo> list = post.getLikes();
+        boolean trovato = false;
+        for (int i=0;i<list.size() && trovato == false;i++){
+            if (Objects.equals(list.get(i).getId(), profilo.getId())){
+                list.remove(i);
+                postFacade.edit(post);
+                trovato = true;
+            }
+        }
+        if (trovato) {
+            return 0;
+        } else {
+            return -1;
+        }
+           
+
+    }
 }

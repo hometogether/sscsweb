@@ -91,6 +91,38 @@ public class DiaryServlet extends HttpServlet {
                 //request.setAttribute("diario", d);
                 //RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
                 //rd.forward(request, response);
+            } else if (action.equals("addLike")) {
+                Long idPost = new Long(request.getParameter("idPost"));
+                Post post = gestoreDiari.getPost(idPost);
+                Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
+                gestoreDiari.aggiungiLike(post, p);
+                
+                out.println("0");
+                //List<Post> posts = gestoreDiari.getPosts(idDiario);
+
+                //d.setPost(posts);
+
+                //request.setAttribute("profilo", p);
+
+                //request.setAttribute("diario", d);
+                //RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
+                //rd.forward(request, response);
+            } else if (action.equals("removeLike")) {
+                Long idPost = new Long(request.getParameter("idPost"));
+                Post post = gestoreDiari.getPost(idPost);
+                Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
+                int res = gestoreDiari.rimuoviLike(post, p);
+                
+                out.println(res);
+                //List<Post> posts = gestoreDiari.getPosts(idDiario);
+
+                //d.setPost(posts);
+
+                //request.setAttribute("profilo", p);
+
+                //request.setAttribute("diario", d);
+                //RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
+                //rd.forward(request, response);
             } else {
                 //GESTIRE ERRORE
             }

@@ -194,7 +194,7 @@
 
                                                         </div>        
                                                         <div class="panel-footer">
-                                                            <form action="DiaryServlet" method="post">
+                                                            <form action="DiaryServlet" method="get">
                                                                 <input type="hidden" name="action" value="goToDiary">
                                                                 <input type="hidden" name="idDiario" value="${diario.id}">   
                                                                 <button type="submit" class="btn btn-primary form-group" >Entra</button>

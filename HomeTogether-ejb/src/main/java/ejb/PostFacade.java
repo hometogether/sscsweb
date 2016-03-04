@@ -45,6 +45,15 @@ public class PostFacade extends AbstractFacade<Post> implements PostFacadeLocal 
         return posts;
     }
 
+    @Override
+    public Post getPost(Long idPost) {
+        //Query q = em.createNativeQuery(query);
+        System.out.println("entro in getPost");
+        Query q = em.createQuery("SELECT p FROM Post p WHERE p.id=:custId");
+        q.setParameter("custId", idPost);
+        Post post = (Post)q.getResultList().get(0);
+        return post;
+    }
 
     
 }
