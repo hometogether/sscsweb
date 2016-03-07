@@ -187,7 +187,7 @@
 
                                                             Partecipanti al diario:
                                                             <c:forEach var="partecipante" items="${diario.partecipanti}">
-                                                                <a href="/RedirectServlet?action=goUserProfile&idProfile=${partecipante.id}">${partecipante.nome} ${partecipante.cognome}</a>
+                                                                <a href="/HomeTogether-web/RedirectServlet?action=goUserProfile&idprofile=${partecipante.id}">${partecipante.nome} ${partecipante.cognome}</a>
                                                                 
                                                                 
                                                             </c:forEach>

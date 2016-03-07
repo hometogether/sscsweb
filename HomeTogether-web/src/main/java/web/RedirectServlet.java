@@ -13,6 +13,7 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -74,29 +75,31 @@ public class RedirectServlet extends HttpServlet {
                 Long idprofile = new Long(request.getParameter("idprofile"));
                 Profilo p = profiloFacade.getProfilo(idprofile);
                 if (p != null) {
-
-                    Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
-                    List<Profilo> listafollowing = personalProfile.getFollowing();
-                    boolean trovato = false;
-                    System.out.println("id dell'amico:" + idprofile);
-                    for (int i = 0; i < listafollowing.size() && trovato == false; i++) {
-                        System.out.println("id:" + i + ": " + listafollowing.get(i).getId());
-                        if (listafollowing.get(i).getId().equals(idprofile)) {
-                            System.out.println("trovato!");
-                            trovato = true;
+                    if (!(p.getId() == idprofile)){
+                        Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                        List<Profilo> listafollowing = personalProfile.getFollowing();
+                        boolean trovato = false;
+                        System.out.println("id dell'amico:" + idprofile);
+                        for (int i = 0; i < listafollowing.size() && trovato == false; i++) {
+                            System.out.println("id:" + i + ": " + listafollowing.get(i).getId());
+                            if (listafollowing.get(i).getId().equals(idprofile)) {
+                                System.out.println("trovato!");
+                                trovato = true;
+                            }
                         }
-                    }
-                    if (trovato) {
-                        System.out.println("trovato! è un amico");
-                        request.setAttribute("amici", 1);
+                        if (trovato) {
+                            System.out.println("trovato! è un amico");
+                            request.setAttribute("amici", 1);
 
+                        } else {
+                            System.out.println("non è un amico...");
+
+                            request.setAttribute("amici", 0);
+
+                        }
                     } else {
-                        System.out.println("non è un amico...");
-
                         request.setAttribute("amici", 0);
-
                     }
-
                     request.setAttribute("profilo", p);
 
                     RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile.jsp");

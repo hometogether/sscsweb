@@ -130,7 +130,7 @@
                 xhr.onload = function () {
                     if (xhr.responseText.trim() === "0") {
                         jQuery.noConflict();
-                        $('#like-list'+idPost).append("<li id='me"+idPost+"' style='padding: 0000;margin: 0000;font-size: 85%;'><a>te<span>,</span></a></li>");
+                        $('#piace_a'+idPost).after("<li id='me"+idPost+"' style='padding: 0000;margin: 0000;font-size: 85%;'><a>te<span>,</span></a></li>");
                         $("#likebutton"+idPost).attr("onclick",'removeLike('+idPost+')');
                         $("#icona"+idPost).html("<B>Mi Piace</B>");
                         $("#icona"+idPost).attr("style" ,"color:rgba(228, 131, 18, 0.6)");
@@ -211,7 +211,22 @@
                 
                 i++;
             }
-                                                                        
+            $(function(){
+                $('#commento_utente').keydown(function(event){
+                    console.log("I'M IN!!!!!!!!");
+                    if(event.keyCode == 13){
+                        appendComment();
+                       
+                    }
+                });  
+                $('#commento_utente').keyup(function(event){
+                    console.log("I'M IN!!!!!!!!");
+                    if(event.keyCode == 13){
+                        $('#commento_utente').val("");
+                       
+                    }
+                });  
+        });
         </script>
         <title>Diary</title>
     </head>
@@ -332,8 +347,12 @@
                                                         <!--HEADER-->
                                                         
                                                         <div class="col-md-12 col-sm-12 col-lg-12" style="margin-top: 3%;">
-                                                            <button class="col-md-2 col-sm-2 col-lg-2 borderless-btn"><img src="${post.user.foto_profilo}" class="avatar profile-image-avatar" style="border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 50px;max-height: 50px;min-height: 50px;min-width: 50px;"/></button>
-                                                            <h4>${post.user.nome} ${post.user.cognome}</h4>
+                                                            <form action="RedirectServlet" role="form" method="get">    
+                                                                <input type="hidden" name="action" value="goUserProfile">
+                                                                <input type="hidden" name="idprofile" value="${post.user.id}">
+                                                                <button class="col-md-2 col-sm-2 col-lg-2 borderless-btn"><img src="${post.user.foto_profilo}" class="avatar profile-image-avatar" style="border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 50px;max-height: 50px;min-height: 50px;min-width: 50px;"/></button>
+                                                            </form>
+                                                            <h4><a href="/HomeTogether-web/RedirectServlet?action=goUserProfile&idprofile=${post.user.id}">${post.user.nome} ${post.user.cognome}</a></h4>
                                                         </div>
                                                         <!--HEADER-->
                                                      
@@ -349,14 +368,16 @@
                                                         <div class="col-md-12 col-lg-12 col-sm-12" >   
                                                             
                                                             <ul id="like-list${post.id}"class="list-inline">
-                                                                <li style="padding-left:2.5%;">Piace a:</li>
+                                                                
+                                                                <li id="piace_a${post.id}" style="padding-left:2.5%;">Piace a:</li>
+                                                                
                                                                 <c:set var="found" value="0"/>    
                                                                 <c:forEach var="like" items="${post.likes}">
                                                                 <c:choose> 
                                                                 <c:when test="${like.id==profilo.id}">
                                                                     <script type="text/javascript">
                                                                         var idPost='${post.id}';
-                                                                        $('#like-list'+idPost).append("<li id='me"+idPost+"' style='padding: 0000;margin: 0000;font-size: 85%;'><a>te<span>,</span></a></li>");
+                                                                        $('#piace_a'+idPost).after("<li id='me"+idPost+"' style='padding: 0000;margin: 0000;font-size: 85%;'><a>te<span>,</span></a></li>");
                                                                         
                                                                     </script>
                                                                     <c:set var="found" value="1"/>
@@ -364,7 +385,7 @@
                                                                     </c:when>
                                                                     <c:otherwise>
                                                                         <li style="padding: 0000;margin: 0000;font-size: 85%;">
-                                                                        <a>${like.nome} ${like.cognome}<span>,</span></a></li>
+                                                                        <a href="/HomeTogether-web/RedirectServlet?action=goUserProfile&idprofile=${like.id}">${like.nome} ${like.cognome}<span>,</span></a></li>
                                                                     </c:otherwise>
                                                                         </c:choose>   
                                                                 </c:forEach>
@@ -395,11 +416,8 @@
                                                             </div>
                                                             
                                                             <div class="col-md-8 col-sm-8 col-lg-8">
-                                                                <div class="input-group" style="text-align: center;">                     
-                                                                    <input type="text" class="form-control" placeholder="scrivi un commento" id="commento_utente"  required="yes">
-                                                                    <div class="input-group-btn" style="text-align: left">
-                                                                        <button class="btn btn-info" type="submit" style="background: orange;" onclick="appendComment();"><i class="glyphicon glyphicon-send"></i></button>
-                                                                    </div>
+                                                                <div style="text-align: center;">
+                                                                    <textarea id="commento_utente" placeholder="scrivi un commento" required="yes" class="postArea" style="width:100%;margin-top:0;border: 1px solid lightgray;"></textarea>
                                                                 </div>
                                                             </div>
                                                             
