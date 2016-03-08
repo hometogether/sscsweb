@@ -14,6 +14,8 @@ import java.util.Set;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonWriter;
+import javax.servlet.http.HttpSession;
+import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
@@ -24,17 +26,19 @@ import javax.websocket.server.ServerEndpoint;
  *
  * @author Antonio
  */
-@ServerEndpoint("/chatendpoint")
+@ServerEndpoint(value="/chatendpoint", configurator = GetHttpSessionConfigurator.class)
 public class chatWebSocket {
-
+    private Session wsSession;
+    private HttpSession httpSession;
     private static final Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
+
     @OnMessage
     public void onMessage(String message,Session peer) throws IOException{
         //mandando il primo messaggio si prende l'username dalla sessione altrimenti inseriso in sessione il primo messaggio come username
         String username=(String) peer.getUserProperties().get("username");
         if(username==null){
-            peer.getUserProperties().put("username", message);
-            peer.getBasicRemote().sendText(buildJsonData("System","you are not connected as "+ message));
+            peer.getUserProperties().put("username", httpSession.getAttribute("nome"));
+            peer.getBasicRemote().sendText(buildJsonData("System","you connected as "+ peer.getUserProperties()));
         }else{
             Iterator<Session> iterator= peers.iterator();
             while (iterator.hasNext()) {
@@ -45,8 +49,11 @@ public class chatWebSocket {
     }
 
     @OnOpen
-    public void onOpen(Session peer) {
-        peers.add(peer); 
+    public void onOpen(Session session, EndpointConfig config) {
+        this.wsSession = session;
+        this.httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
+        System.out.println(httpSession.getAttribute("nome"));
+        peers.add(wsSession); 
     }
 
     @OnClose

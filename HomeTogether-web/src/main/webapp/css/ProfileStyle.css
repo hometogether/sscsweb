@@ -192,7 +192,36 @@ input[type="color"]:focus,
     color: whitesmoke;
     color: white;
 }
+.popover{
+    background: white;
+}
+.popover-title {
+    display: none;
+}
+.popover-content {
+    text-align: center;
+    color: gray;
+    font-size: 80%;
+    width: 130px;
+} 
 
+.dropdown-comment ul.dropdown-menu {
+    border-radius:4px;
+    box-shadow: 0 0 3px #888 ;
+    top:20px;
+    left: 30px;
+    text-align: center;
+    position: relative;
+}
+
+.dropdown-post ul.dropdown-menu {
+    border-radius:4px;
+    box-shadow: 0 0 3px #888 ;
+    top:15px;
+    left: 30px;
+    text-align: center;
+    position: relative;
+}
 
 .dropdown ul.dropdown-menu {
     border-radius:4px;

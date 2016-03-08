@@ -51,6 +51,14 @@
                                                                 '<div class="col-md-1"></div>'+
                                                                 '<div class="col-md-10" style="background: white;  border-radius: 2px;box-shadow: 0px 0px 5px orange;margin-bottom:7%;">'+
                                                                     '<div class="col-md-12 col-sm-12 col-lg-12" style="margin-top: 3%;">'+
+                                                                    '<div class="dropdown-post pull-right">'+
+                                                                        '<span class="glyphicon glyphicon-chevron-down dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></span>'+
+                                                                        '<ul class="dropdown-menu">'+
+                                                                            '<li><a href="#"><span class="glyphicon glyphicon-edit"> </span> Modifica</a></li>'+
+                                                                            '<li><a href="#"><span class="glyphicon glyphicon-remove"> </span> Elimina</a></li>'+
+                                                                            
+                                                                        '</ul>'+
+                                                                    '</div>'+
                                                                         '<button class="col-md-2 col-sm-2 col-lg-2 borderless-btn"><img src="'+foto+'" class="avatar profile-image-avatar" style="border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 50px;max-height: 50px;min-height: 50px;min-width: 50px;"/></button>'+
                                                                         '<h4>'+nome+' '+cognome+'</h4>'+
                                                                     '</div>'+
@@ -61,7 +69,7 @@
                                                                     '</div>'+
 
                                                                     '<div class="col-md-12 col-lg-12 col-sm-12">'+
-                                                                    '<div class="col-md-12 col-lg-12 col-sm-12" id="like-numb'+idPost+'>'+
+                                                                    '<div class="col-md-12 col-lg-12 col-sm-12" id="like-numb'+idPost+'">'+
 
                                                                         '<ul id="like-list'+idPost+'"class="list-inline">'+
                                                                             '<li style="padding-left:2.5%;">Piace a:</li>'+
@@ -205,6 +213,7 @@
                     if (xhr.responseText.trim() === "0") {
                         $('#commentContainer'+idPost).append("<div class='row'><div class='col-md-12'style='background:whitesmoke'>"+
                                 "<div class='row col-md-12 col-sm-12 col-lg-12' style='padding-top:2%;'>"+
+                                '<span class="glyphicon glyphicon-pencil pull-right btn-sm"></span>'+
                                      "<button class='col-md-1 col-sm-1 col-lg-1 borderless-btn'><img src='${profilo.foto_profilo}' class='avatar profile-image-avatar' style='border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 35px;max-height: 35px;min-height: 35px;min-width: 35px;'/></button>"+
                                      "<div class='col-md-10'><div class='col-md-12'>"+
 
@@ -374,6 +383,13 @@
                                                         <!--HEADER-->
                                                         
                                                         <div class="col-md-12 col-sm-12 col-lg-12" style="margin-top: 3%;">
+                                                            <div class="dropdown-post pull-right">
+                                                                <span class="glyphicon glyphicon-chevron-down dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></span>
+                                                                <ul class="dropdown-menu ">
+                                                                    <li><a href="#"><span class="glyphicon glyphicon-edit"> </span> Modifica</a></li>
+                                                                    <li><a href="#"><span class="glyphicon glyphicon-remove"> </span> Elimina</a></li>
+                                                                </ul>
+                                                            </div>
                                                             <form action="RedirectServlet" role="form" method="get">    
                                                                 <input type="hidden" name="action" value="goUserProfile">
                                                                 <input type="hidden" name="idprofile" value="${post.user.id}">
@@ -462,6 +478,34 @@
                                                             <c:forEach var="commento" items="${post.commenti}">
                                                             <div class='row'><div class='col-md-12'style='background:whitesmoke'>
                                                                 <div class='row col-md-12 col-sm-12 col-lg-12' style='padding-top:2%;'>
+                                                                    <script>
+                                                                        $('.popover-markup>.trigger').popover({
+                                                                            html: true,
+                                                                            content: function () {
+                                                                                return $(this).parent().find('.content').html();
+                                                                            }
+                                                                        });
+                                                                        $('body').on('click', function (e) {
+                                                                            $('[data-toggle="popover"]').each(function () {
+                                                                                //the 'is' for buttons that trigger popups
+                                                                                //the 'has' for icons within a button that triggers a popup
+                                                                                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                                                                                    $(this).popover('hide');
+                                                                                }
+                                                                            });
+                                                                        });
+                                                                    </script>
+                                                                    <div class="popover-markup pull-right"> <span class="btn btn-secodary btn-sm glyphicon glyphicon-pencil trigger" data-toggle="popover"></span> 
+                                                                    <div class="head hide">Lorem Ipsum</div>
+                                                                    <div class="content hide">
+                                                                        <ul class="list-unstyled">
+                                                                            <li style="margin-bottom: 5px;"><a href="#"><span class="glyphicon glyphicon-edit"> </span> Modifica</a></li>
+                                                                            <li><a href="#"><span class="glyphicon glyphicon-remove"> </span> Elimina</a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <div class="footer hide">test</div>
+                                                                </div>
+                                                                    
                                                                     <button class='col-md-1 col-sm-1 col-lg-1 borderless-btn'><img src='${commento.user.foto_profilo}' class='avatar profile-image-avatar' style='border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 35px;max-height: 35px;min-height: 35px;min-width: 35px;'/></button>
                                                                     <div class='col-md-10'><div class='col-md-12'>
                                                                         <textarea id='commentArea${commento.id}' class='postArea' readonly='readonly' style='width:100%;margin-top:0;'>${commento.user.nome} ${commento.user.cognome} - ${commento.testo}</textarea></div>
