@@ -123,6 +123,24 @@ public class DiaryServlet extends HttpServlet {
                 //request.setAttribute("diario", d);
                 //RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
                 //rd.forward(request, response);
+            } else if (action.equals("addComment")) {
+                Long idPost = new Long(request.getParameter("idPost"));
+                String testo = request.getParameter("testo");
+                
+                Post post = gestoreDiari.getPost(idPost);
+                Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
+                gestoreDiari.aggiungiCommento(post, p, testo);
+                
+                out.println("0");
+                //List<Post> posts = gestoreDiari.getPosts(idDiario);
+
+                //d.setPost(posts);
+
+                //request.setAttribute("profilo", p);
+
+                //request.setAttribute("diario", d);
+                //RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
+                //rd.forward(request, response);
             } else {
                 //GESTIRE ERRORE
             }

@@ -195,38 +195,65 @@
                 $('.postArea').css('overflow', 'hidden').autogrow({vertical: true, horizontal: false});
               });
               
-              var i=0;
-            function appendComment(){
+              var idCommento=0;
+            function addComment(idPost){
+                var testo = $('#commento_utente'+idPost).val();
+                console.log("testo:"+testo);
+                xhr.open('POST', 'DiaryServlet');
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function () {
+                    if (xhr.responseText.trim() === "0") {
+                        $('#commentContainer'+idPost).append("<div class='row'><div class='col-md-12'style='background:whitesmoke'>"+
+                                "<div class='row col-md-12 col-sm-12 col-lg-12' style='padding-top:2%;'>"+
+                                     "<button class='col-md-1 col-sm-1 col-lg-1 borderless-btn'><img src='${profilo.foto_profilo}' class='avatar profile-image-avatar' style='border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 35px;max-height: 35px;min-height: 35px;min-width: 35px;'/></button>"+
+                                     "<div class='col-md-10'><div class='col-md-12'>"+
+
+                                     "<textarea id='commentArea"+idCommento+"' class='postArea' readonly='readonly' style='width:100%;margin-top:0;'></textarea></div>"+
+                                         "</div>"+
+                                         "</div>"+
+                                         
+                                         "</div>");
+                         var nome='${profilo.nome}';
+                         var cognome='${profilo.cognome}';
+                         /*var id='${profilo.id}';
+                         console.log (nome);
+                         console.log(cognome);*/
+                         var comment=nome+' '+cognome+' - '+testo;
+                         $('#commentArea'+ idCommento).append(comment);
+                         $('#commentArea'+ idCommento).css('overflow', 'hidden').autogrow({vertical: true, horizontal: false});
+                         console.log("idcommento:"+idCommento);
+                         idCommento++;
+                    } /*else {
+                     // $('#googleForm').submit();
+                     }*/
+
+                };
+                xhr.send('action=addComment&idPost='+idPost+'&testo='+testo);   
                 
-               $('#commentContainer').append("<div class='row'><div class='col-md-12'style='background:whitesmoke'>"+
-                       "<div class='row col-md-12 col-sm-12 col-lg-12' style='padding-top:2%;'>"+
-                            "<button class='col-md-1 col-sm-1 col-lg-1 borderless-btn'><img src='${profilo.foto_profilo}' class='avatar profile-image-avatar' style='border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 35px;max-height: 35px;min-height: 35px;min-width: 35px;'/></button>"+
-                            "<div class='col-md-10'><div class='col-md-12'>"+
-                            "<textarea id='commentArea"+i+"' class='postArea' readonly='readonly' style='width:100%;margin-top:0;'></textarea></div>"+
-                                "</div>"+
-                                "</div>");
-                var comment="Nome Utente "+$('#commento_utente').val();
-                $('#commentArea'+ i).append(comment);
-                $('#commentArea'+ i).css('overflow', 'hidden').autogrow({vertical: true, horizontal: false});
                 
-                i++;
+                
+                
+                
+                
+                
             }
-            $(function(){
-                $('#commento_utente').keydown(function(event){
-                    console.log("I'M IN!!!!!!!!");
-                    if(event.keyCode == 13){
-                        appendComment();
+            
+            function keyDownComment (idPost){
+                console.log("keyDownComment");
+                console.log("valore textbox:"+$('#commento_utente'+idPost).val());
+                if(event.keyCode == 13){
+                    addComment(idPost);
                        
-                    }
-                });  
-                $('#commento_utente').keyup(function(event){
-                    console.log("I'M IN!!!!!!!!");
-                    if(event.keyCode == 13){
-                        $('#commento_utente').val("");
-                       
-                    }
-                });  
-        });
+                }
+            }
+            function keyUpComment (idPost){
+                console.log("keyUpComment");
+                console.log("valore textbox:"+$('#commento_utente'+idPost).val());
+                if(event.keyCode == 13){
+                    $('#commento_utente'+idPost).val("");
+                }
+            }
+                
         </script>
         <title>Diary</title>
     </head>
@@ -341,7 +368,7 @@
                                             <div class="col-md-2 col-sm-2 col-lg-2"></div>
                                             <div id="postContainer" >
                                             <c:forEach var="post" items="${diario.post}">
-                                                  <div id="div${commentLoop.index}" class="col-md-12" style="margin-bottom: 0%;border: 1px solid whitesmoke;border-radius: 2px;"id="commentContainer">
+                                                  <div class="col-md-12" style="margin-bottom: 0%;border: 1px solid whitesmoke;border-radius: 2px;">
                                                     <div class="col-md-1"></div>
                                                     <div class="col-md-10" style="background: white;  border-radius: 2px;box-shadow: 0px 0px 5px orange;margin-bottom:7%;">
                                                         <!--HEADER-->
@@ -417,7 +444,7 @@
                                                             
                                                             <div class="col-md-8 col-sm-8 col-lg-8">
                                                                 <div style="text-align: center;">
-                                                                    <textarea id="commento_utente" placeholder="scrivi un commento" required="yes" class="postArea" style="width:100%;margin-top:0;border: 1px solid lightgray;"></textarea>
+                                                                    <textarea id="commento_utente${post.id}" placeholder="#TalkTogether" onkeydown="keyDownComment(${post.id})" onkeyup="keyUpComment(${post.id})" required="yes" class="postArea" style="width:100%;margin-top:0;border: 1px solid lightgray;"></textarea>
                                                                 </div>
                                                             </div>
                                                             
@@ -431,11 +458,21 @@
                                                         </div>
                                                         </div>
                                                         
-                                                        <div id="commentContainer"></div>
-                                                  </div>
-                                                <div class="col-md-1"></div>
-                                              </div>
-                                                            
+                                                        <div id="commentContainer${post.id}">
+                                                            <c:forEach var="commento" items="${post.commenti}">
+                                                            <div class='row'><div class='col-md-12'style='background:whitesmoke'>
+                                                                <div class='row col-md-12 col-sm-12 col-lg-12' style='padding-top:2%;'>
+                                                                    <button class='col-md-1 col-sm-1 col-lg-1 borderless-btn'><img src='${commento.user.foto_profilo}' class='avatar profile-image-avatar' style='border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 35px;max-height: 35px;min-height: 35px;min-width: 35px;'/></button>
+                                                                    <div class='col-md-10'><div class='col-md-12'>
+                                                                        <textarea id='commentArea${commento.id}' class='postArea' readonly='readonly' style='width:100%;margin-top:0;'>${commento.user.nome} ${commento.user.cognome} - ${commento.testo}</textarea></div>
+                                                                    </div>
+                                                                </div>
+                                                           </div></div>
+                                                        <div class="col-md-1"></div>
+                                                            </c:forEach>
+                                                        </div>
+                                                         </div>
+                                                            </div>
                                                
                                             </c:forEach></div>
                                               <div class="col-md-2 col-sm-2 col-lg-2"></div>

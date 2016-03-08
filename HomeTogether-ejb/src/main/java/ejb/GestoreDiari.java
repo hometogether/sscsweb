@@ -79,4 +79,14 @@ public class GestoreDiari {
            
 
     }
+     
+     public void aggiungiCommento(Post post, Profilo profilo, String testo) {
+        Commento commento = new Commento();
+        commento.setTesto(testo);
+        commento.setUser(profilo);
+        post.getCommenti().add(commento);
+        postFacade.edit(post);
+        System.out.println("aggiunto il nuovo like");
+
+    }
 }
