@@ -9,12 +9,16 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -57,14 +61,16 @@ public class Commento implements Serializable {
         this.user = user;
     }
 
-    private Date data;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "data", nullable = false)
+    private java.util.Date data;
 
     /**
      * Get the value of data
      *
      * @return the value of data
      */
-    public Date getData() {
+    public java.util.Date getData() {
         return data;
     }
 
@@ -73,28 +79,12 @@ public class Commento implements Serializable {
      *
      * @param data new value of data
      */
-    public void setData(Date data) {
+    public void setData(java.util.Date data) {
         this.data = data;
     }
-
-    private Time ora;
-
-    /**
-     * Get the value of ora
-     *
-     * @return the value of ora
-     */
-    public Time getOra() {
-        return ora;
-    }
-
-    /**
-     * Set the value of ora
-     *
-     * @param ora new value of ora
-     */
-    public void setOra(Time ora) {
-        this.ora = ora;
+    @PrePersist
+    protected void onCreate() {
+        data = new java.util.Date();
     }
 
     private String testo;

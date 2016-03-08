@@ -5,6 +5,7 @@
  */
 package web;
 
+import ejb.Commento;
 import ejb.Diario;
 import ejb.GestoreDiari;
 import ejb.GestoreUtenti;
@@ -80,8 +81,8 @@ public class DiaryServlet extends HttpServlet {
                 String text = request.getParameter("text");
                 Diario d = gestoreDiari.getDiario(idDiario);
                 Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
-                gestoreDiari.aggiungiPost(d, p, text);
-                out.println("133");
+                Long idPost = gestoreDiari.aggiungiPost(d, p, text);
+                out.println(idPost);
                 //List<Post> posts = gestoreDiari.getPosts(idDiario);
 
                 //d.setPost(posts);
@@ -91,6 +92,21 @@ public class DiaryServlet extends HttpServlet {
                 //request.setAttribute("diario", d);
                 //RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
                 //rd.forward(request, response);
+            } else if (action.equals("editPost")) {
+                Long idPost = new Long(request.getParameter("idPost"));
+                String testo = request.getParameter("testo");
+                
+                Post post = gestoreDiari.getPost(idPost);
+                gestoreDiari.modificaPost(post, testo);
+                
+                out.println("0");
+            } else if (action.equals("removePost")) {
+                Long idPost = new Long(request.getParameter("idPost"));
+                
+                Post post = gestoreDiari.getPost(idPost);
+                gestoreDiari.eliminaPost(post);
+                
+                out.println("0");
             } else if (action.equals("addLike")) {
                 Long idPost = new Long(request.getParameter("idPost"));
                 Post post = gestoreDiari.getPost(idPost);
@@ -129,18 +145,24 @@ public class DiaryServlet extends HttpServlet {
                 
                 Post post = gestoreDiari.getPost(idPost);
                 Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
-                gestoreDiari.aggiungiCommento(post, p, testo);
+                Long idCommento = gestoreDiari.aggiungiCommento(post, p, testo);
+                
+                out.println(idCommento);
+            } else if (action.equals("editComment")) {
+                Long idCommento = new Long(request.getParameter("idCommento"));
+                String testo = request.getParameter("testo");
+                
+                Commento commento = gestoreDiari.getCommento(idCommento);
+                gestoreDiari.modificaCommento(commento, testo);
                 
                 out.println("0");
-                //List<Post> posts = gestoreDiari.getPosts(idDiario);
-
-                //d.setPost(posts);
-
-                //request.setAttribute("profilo", p);
-
-                //request.setAttribute("diario", d);
-                //RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
-                //rd.forward(request, response);
+            } else if (action.equals("removeComment")) {
+                Long idCommento = new Long(request.getParameter("idCommento"));
+                
+                Commento commento = gestoreDiari.getCommento(idCommento);
+                gestoreDiari.eliminaCommento(commento);
+                
+                out.println("0");
             } else {
                 //GESTIRE ERRORE
             }

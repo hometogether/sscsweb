@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -25,34 +26,24 @@ public class GestoreInteressi {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    public String aggiungiInteresse(Long idProfilo, String nomeinteresse) {
+    public Long aggiungiInteresse(Long idProfilo, String nomeinteresse) {
         //il tipo di ritorno è una Stringa, perché in alcuni casi dovremo tornare un Long (tipo non primitivo) e in altri un int.
         System.out.println("entro in agggiungiInteresse");
         System.out.println("nome interesse:" + nomeinteresse);
         if (idProfilo == null || nomeinteresse == null) {
             System.out.println("Errore: id Profilo = 0 o nome interesse non valido");
-            System.out.println("idProfilo=" + idProfilo);
-            System.out.println("nomeinteresse=" + nomeinteresse);
-
-            return "-1";
+            return null;
         } else {
             Interesse interesse = interesseFacade.getInteresse(nomeinteresse);
-            System.out.println("supero il get Interesse. interesse = " + interesse);
-
             if (interesse == null) {
                 //l'interesse non esiste nel DB. Dobbiamo crearlo.
                 interesse = new Interesse();
-
                 interesse.setNome(nomeinteresse);
-
                 interesseFacade.create(interesse);
-                System.out.println("supero il create");
 
             }
 
             Profilo p = profiloFacade.getProfilo(idProfilo);
-            System.out.println("supero il get profilo. Profilo = " + p);
-
             List<Interesse> interessi = p.getInteressi();
 
             //dobbiamo controllare che l'interesse non sia già associato all'user
@@ -61,13 +52,15 @@ public class GestoreInteressi {
             if (contain == false) {
                 interessi.add(interesse);
                 p.setInteressi(interessi);
+                EntityManager em = profiloFacade.getEntityManager();
+                em.persist(interesse);
+                em.flush();
                 profiloFacade.edit(p);
-                System.out.println("supero l'edit");
 
-                return ""+interesse.getId();
+                return interesse.getId();
             } else {
                 System.out.println("non devo fare niente, l'interesse è già associato!");
-                return "-1"; //da cambiare...
+                return null; //da cambiare...
             }
         }
 

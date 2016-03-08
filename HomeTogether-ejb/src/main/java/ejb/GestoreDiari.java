@@ -10,6 +10,7 @@ import java.util.Objects;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -23,6 +24,8 @@ public class GestoreDiari {
     private DiarioFacadeLocal diarioFacade;
     @EJB
     private PostFacadeLocal postFacade;
+    @EJB
+    private CommentoFacadeLocal commentoFacade;
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
@@ -41,15 +44,33 @@ public class GestoreDiari {
         return p;
     }
     
-    public Post aggiungiPost(Diario diario, Profilo profilo, String testo) {
+    public Long aggiungiPost(Diario diario, Profilo profilo, String testo) {
         Post post = new Post();
         post.setUser(profilo);
         post.setTesto(testo);
         diario.getPost().add(post);
-        
+        EntityManager em = diarioFacade.getEntityManager();
+        em.persist(post);
+        em.flush();
         diarioFacade.edit(diario);
-        System.out.println("aggiunto il nuovo post");
-        return post;
+        System.out.println("aggiunto il nuovo post. Id: "+post.getId());
+        return post.getId();
+
+    }
+    
+    public void modificaPost(Post post, String testo) {
+        post.setTesto(testo);
+        postFacade.edit(post);
+        System.out.println("Post Modificato");
+        
+
+    }
+    
+    public void eliminaPost(Post post) {
+        
+        postFacade.remove(post);
+        System.out.println("Post Eliminato");
+        
 
     }
     
@@ -80,13 +101,38 @@ public class GestoreDiari {
 
     }
      
-     public void aggiungiCommento(Post post, Profilo profilo, String testo) {
+    public Commento getCommento(Long idCommento) {
+        Commento c = commentoFacade.getCommento(idCommento);
+        return c;
+    }
+    
+     public Long aggiungiCommento(Post post, Profilo profilo, String testo) {
         Commento commento = new Commento();
         commento.setTesto(testo);
         commento.setUser(profilo);
         post.getCommenti().add(commento);
+        EntityManager em = diarioFacade.getEntityManager();
+        em.persist(commento);
+        em.flush();
         postFacade.edit(post);
-        System.out.println("aggiunto il nuovo like");
+        System.out.println("aggiunto il nuovo commento. Id: "+commento.getId());
+        return commento.getId();
+
+    }
+     
+    public void modificaCommento(Commento commento, String testo) {
+        commento.setTesto(testo);
+        commentoFacade.edit(commento);
+        System.out.println("Commento Modificato");
+        
+
+    }
+    
+    public void eliminaCommento(Commento commento) {
+        
+        commentoFacade.remove(commento);
+        System.out.println("Commento Eliminato");
+        
 
     }
 }

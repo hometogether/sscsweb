@@ -11,6 +11,7 @@ package ejb;
  */
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 @Local
 public interface PostFacadeLocal {
@@ -32,5 +33,7 @@ public interface PostFacadeLocal {
     List<Post> getPosts(Long idDiario);
 
     Post getPost(Long idPost);
+    
+    EntityManager getEntityManager();
     
 }

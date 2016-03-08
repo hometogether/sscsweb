@@ -11,6 +11,7 @@ package ejb;
  */
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 @Local
 public interface DiarioFacadeLocal {
@@ -30,6 +31,8 @@ public interface DiarioFacadeLocal {
     int count();
 
     public Diario getDiario(Long idDiario);
+
+    EntityManager getEntityManager();
 
 
     

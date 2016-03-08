@@ -35,5 +35,13 @@ public class CommentoFacade extends AbstractFacade<Commento> implements Commento
         super(Commento.class);
     }
 
+    @Override
+    public Commento getCommento(Long idCommento) {
+        System.out.println("entro in getCommento");
+        Query q = em.createQuery("SELECT c FROM Commento c WHERE c.id=:custId");
+        q.setParameter("custId", idCommento);
+        Commento c = (Commento)q.getResultList().get(0);
+        return c;
+    }
     
 }

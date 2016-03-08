@@ -21,6 +21,7 @@
         
         <link href="css/style_1.css" rel='stylesheet' type='text/css' />
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix ="c" %>
+        <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
         
       
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -122,22 +123,22 @@
             }
 
             
+            function rimuoviPost(idDiario) {
+                xhr.open('POST', 'DiaryServlet');
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function () {
             
-            $(document).ready(function() {
-                if($('#like-list li').length > 3){
-                   var e=$('#like-list li').length-1;
-                   $('#like-list').hide();
-                   $('#like-numb').append("Piace a:<a id='numb' style='font-size: 85%';> "+e+" persone</a>");
-                   max=1;
                 }
-                
-            });
+            }
             function addLike(idPost){
                 xhr.open('POST', 'DiaryServlet');
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.onload = function () {
                     if (xhr.responseText.trim() === "0") {
                         jQuery.noConflict();
+                        if($('#like-list'+idPost+' li').length === 1){
+                            $('#piace_a'+idPost).fadeIn();
+                        }
                         $('#piace_a'+idPost).after("<li id='me"+idPost+"' style='padding: 0000;margin: 0000;font-size: 85%;'><a>te<span>,</span></a></li>");
                         $("#likebutton"+idPost).attr("onclick",'removeLike('+idPost+')');
                         $("#icona"+idPost).html("<B>Mi Piace</B>");
@@ -189,6 +190,9 @@
                         }else if($('#like-list'+idPost+' li').length > 4){
                             $('#numb'+idPost).text(" "+e+" persone");
                         }
+                        if($('#like-list'+idPost+' li').length === 1){
+                            $('#piace_a'+idPost).fadeOut();
+                        }
                     } /*else {
                      // $('#googleForm').submit();
                      }*/
@@ -210,7 +214,8 @@
                 xhr.open('POST', 'DiaryServlet');
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.onload = function () {
-                    if (xhr.responseText.trim() === "0") {
+                    if (!(xhr.responseText.trim() === "0")) {
+                        var idCommento = xhr.responseText.trim();
                         $('#commentContainer'+idPost).append("<div class='row'><div class='col-md-12'style='background:whitesmoke'>"+
                                 "<div class='row col-md-12 col-sm-12 col-lg-12' style='padding-top:2%;'>"+
                                 '<span class="glyphicon glyphicon-pencil pull-right btn-sm"></span>'+
@@ -413,6 +418,16 @@
                                                             <ul id="like-list${post.id}"class="list-inline">
                                                                 
                                                                 <li id="piace_a${post.id}" style="padding-left:2.5%;">Piace a:</li>
+                                                                
+                                                                <c:if test= "${fn:length(post.likes) == 0}" >
+                                                                   <script type="text/javascript">
+                                                                        var idPost='${post.id}';
+                                                                        $('#piace_a'+idPost).fadeOut();
+                                                                        
+                                                                    </script>
+                                                                   
+                                                                </c:if>
+                                                                
                                                                 
                                                                 <c:set var="found" value="0"/>    
                                                                 <c:forEach var="like" items="${post.likes}">

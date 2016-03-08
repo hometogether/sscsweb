@@ -10,7 +10,7 @@ function aggiungiInteresse() {
         if (!(xhr.responseText.trim() === "-1")) {
             var id = xhr.responseText.trim();
             jQuery.noConflict();
-            console.log("entro nel trim");
+            console.log("id interesse:"+id);
             //jQuery.noConflict();
             $("#nomeinteresse").val('');
             var lowerinteressi = nomeinteresse.toLowerCase();
@@ -22,8 +22,7 @@ function aggiungiInteresse() {
                                                     '<input type="hidden" name="nome" value="'+lowerinteressi+'">'+
                                                     '<button class="btn btn-secondary borderless-btn btn-link" title="'+lowerinteressi+'" style="text-align: center;color: black;overflow: hidden;text-overflow: ellipsis;max-width: 90%;">' +lowerinteressi+'</button>'+
                                                     
-                                                    
-                                                    '<button id="remove" type="button" class="btn btn-secondary close" )">&times;</button>'+
+                                                    '<button id="remove" type="button" class="btn btn-secondary close" onClick="rimuoviInteresse('+id+')" >&times;</button>'+
                                                     
                                                 '</div>'+
                                             '</form>'+

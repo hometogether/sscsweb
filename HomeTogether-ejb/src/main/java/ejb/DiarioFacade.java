@@ -27,7 +27,7 @@ public class DiarioFacade extends AbstractFacade<Diario> implements DiarioFacade
     private EntityManager em;
 
     @Override
-    protected EntityManager getEntityManager() {
+     public EntityManager getEntityManager() {
 
         return em;
     }

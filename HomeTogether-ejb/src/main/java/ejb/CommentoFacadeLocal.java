@@ -29,6 +29,7 @@ public interface CommentoFacadeLocal {
 
     int count();
 
+    Commento getCommento(Long idCommento);
 
     
 }

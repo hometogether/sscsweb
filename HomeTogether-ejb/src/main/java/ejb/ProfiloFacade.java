@@ -26,7 +26,7 @@ public class ProfiloFacade extends AbstractFacade<Profilo> implements ProfiloFac
     private EntityManager em;
 
     @Override
-    protected EntityManager getEntityManager() {
+    public EntityManager getEntityManager() {
 
         return em;
     }

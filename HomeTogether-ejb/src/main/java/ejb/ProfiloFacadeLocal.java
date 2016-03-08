@@ -11,6 +11,7 @@ package ejb;
  */
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 @Local
 public interface ProfiloFacadeLocal {
@@ -37,5 +38,6 @@ public interface ProfiloFacadeLocal {
      
     int count();
 
+    EntityManager getEntityManager();
     
 }
