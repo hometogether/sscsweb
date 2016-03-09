@@ -26,7 +26,7 @@ public class CommentoFacade extends AbstractFacade<Commento> implements Commento
     private EntityManager em;
 
     @Override
-    protected EntityManager getEntityManager() {
+    public EntityManager getEntityManager() {
 
         return em;
     }

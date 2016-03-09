@@ -11,6 +11,7 @@ package ejb;
  */
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 @Local
 public interface CommentoFacadeLocal {
@@ -31,5 +32,6 @@ public interface CommentoFacadeLocal {
 
     Commento getCommento(Long idCommento);
 
+    EntityManager getEntityManager();
     
 }

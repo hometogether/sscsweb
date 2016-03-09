@@ -536,7 +536,7 @@
                                                                     <div class="content hide">
                                                                         <ul class="list-unstyled">
                                                                             <li style="margin-bottom: 5px;"><a href="#"><span class="glyphicon glyphicon-edit"> </span> Modifica</a></li>
-                                                                            <li><a href="#"><span class="glyphicon glyphicon-remove"> </span> Elimina</a></li>
+                                                                            <li><a href="javascript:removeComment(${commento.id})"><span class="glyphicon glyphicon-remove"> </span> Elimina</a></li>
                                                                         </ul>
                                                                     </div>
                                                                     <div class="footer hide">test</div>
