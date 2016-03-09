@@ -5,10 +5,12 @@
  */
 package ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -30,6 +32,18 @@ public class ProvinciaFacade extends AbstractFacade<Provincia> implements Provin
 
     public ProvinciaFacade() {
         super(Provincia.class);
+    }
+    
+    public List<Provincia> getProvincie() {
+        
+        Query q = em.createQuery("SELECT p FROM Provincia p");
+        List l = q.getResultList();
+        //System.out.println(l);
+        if (l.isEmpty()){
+            return null;
+        } else {
+            return l;
+        }
     }
     
 }

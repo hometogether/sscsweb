@@ -171,6 +171,31 @@ input[type="color"]:focus,
   box-shadow: 0 1px 1px rgba(228, 131, 18, 0.6) inset, 0 0 8px rgba(228, 131, 18, 0.6);
   outline: 0 none;
 }
+.white-element{
+    background: #fff;
+    position: relative;
+    border: 1px solid lightgray;
+    padding: 5px 10px 10px 10px; 
+}
+
+.double-input .form-control {
+  width: 50%;
+  border-right-width: 0px;
+}
+
+.double-input .form-control:focus {
+  border-right-width: 1px;
+}
+
+.triple-input .form-control {
+  width: 33.3%;
+  border-right-width: 0px;
+}
+
+.triple-input .form-control:focus {
+  border-right-width: 1px;
+}
+
 .profile-image {
     width: 40px;
     height: 40px;

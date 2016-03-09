@@ -7,7 +7,11 @@ package web;
 
 import ejb.Comune;
 import ejb.GestoreComuni;
+import ejb.GestoreProvincie;
+import ejb.GestoreRegioni;
 import ejb.GestoreUtenti;
+import ejb.Provincia;
+import ejb.Regione;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -39,6 +43,10 @@ public class ContextServlet extends HttpServlet implements ServletContextListene
     private GestoreUtenti gestoreUtenti;
     @EJB
     private GestoreComuni gestoreComuni;
+    @EJB
+    private GestoreProvincie gestoreProvincie;
+    @EJB
+    private GestoreRegioni gestoreRegioni;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -89,9 +97,13 @@ public class ContextServlet extends HttpServlet implements ServletContextListene
     public void contextInitialized(ServletContextEvent sce) {
         System.out.println("entro nel conextinitialize");
         List<Comune> list = gestoreComuni.creaListaComuni();
+        List<Provincia> listPro = gestoreProvincie.creaListaProvincie() ;
+        List<Regione> listRe = gestoreRegioni.creaListaRegioni() ;
         System.out.println("creo lista comuni.");
         //System.out.println("primo nome:"+list.get(0).getNome());
         sce.getServletContext().setAttribute("list", list);
+        sce.getServletContext().setAttribute("list", listPro);
+        sce.getServletContext().setAttribute("list", listRe);
 
     }
 

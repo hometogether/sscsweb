@@ -110,6 +110,8 @@ public class RedirectServlet extends HttpServlet {
             } else if (action.equals("loginSocial")) {
 
                 if (session != null) {
+                    Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
+                    request.setAttribute("profilo", p);
                     RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
                     rd.forward(request, response);
 

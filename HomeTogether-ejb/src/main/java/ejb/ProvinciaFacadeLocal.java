@@ -29,5 +29,7 @@ public interface ProvinciaFacadeLocal {
 
     int count();
 
+    public List<Provincia> getProvincie();
+
     
 }

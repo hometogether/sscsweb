@@ -29,5 +29,7 @@ public interface RegioneFacadeLocal {
 
     int count();
 
+    public List<Regione> getRegioni();
+
     
 }

@@ -5,10 +5,12 @@
  */
 package ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -30,6 +32,18 @@ public class RegioneFacade extends AbstractFacade<Regione> implements RegioneFac
 
     public RegioneFacade() {
         super(Regione.class);
+    }
+    
+    public List<Regione> getRegioni() {
+        
+        Query q = em.createQuery("SELECT r FROM Regione r");
+        List l = q.getResultList();
+        //System.out.println(l);
+        if (l.isEmpty()){
+            return null;
+        } else {
+            return l;
+        }
     }
     
 }

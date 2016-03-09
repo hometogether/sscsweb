@@ -10,17 +10,22 @@
     <head>
         
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-        
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+       
         <link href="css/bootstrap_1.css" rel='stylesheet' type='text/css' />
-        <link href="css/bootstrap_1.min.css" rel='stylesheet' type='text/css' />
+        <link href="css/bootstrap.min_1.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap-theme_1.css" rel='stylesheet' type='text/css' />
         <link href="css/ProfileStyle.css" rel='stylesheet' type='text/css' />
         <link href="css/style_1.css" rel='stylesheet' type='text/css' />
-
+        <link href="css/the-big-picture.css" rel='stylesheet' type='text/css' />
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <script type="text/javascript" src="js/comuni.js"></script>
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-        <script src="js/Facebook.js"></script>
+        
+        
         
         <!--CSS-->
         
@@ -28,7 +33,31 @@
     </head>
     <body>
         <%@include file="navbar.jsp" %>
-        <br/><br/><br/><br/><br/><br/>
-        <a href="chatprova.jsp">Vai alla chat!</a>
+        <br/><br/><br/><br/>
+        
+        <div class="col-md-2">
+            <div class="white-element">
+                <h3>${profilo.nome}<span> </span>${profilo.cognome}</h3>
+                <p>${profilo.comune.nome}<span>, </span>${profilo.comune.provincia.regione.nome}</p>
+            </div>
+        </div>
+        <div class="col-md-8 white-element">
+            <h1>
+                <strong>
+                    <span style="color:#f1c40f;">#Find</span>
+                </strong>
+                <span style="color : lightgrey">Together</span> 
+            </h1>
+            
+            <div class="input-group triple-input">
+              <input type="text" id="localita" placeholder="Regione" class="form-control" onkeyup="autocompile()" /> 
+              <input type="text" placeholder="Provincia" class="form-control" /> 
+              <input type="text" placeholder="Comune" class="form-control"/> 
+              <span class="input-group-btn">
+                  <button class="btn btn-default " type="button"><i class="glyphicon glyphicon-search"></i>Vai!</button>
+              </span>
+            </div>
+          </div>
+        <div class="col-md-2" ><h1><a href="chatprova.jsp">Vai alla chat!</a></h1></div>
     </body>
 </html>
