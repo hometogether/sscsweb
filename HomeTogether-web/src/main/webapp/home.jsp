@@ -50,9 +50,9 @@
             </h1>
             
             <div class="input-group triple-input">
-              <input type="text" id="localita" placeholder="Regione" class="form-control" onkeyup="autocompile()" /> 
-              <input type="text" placeholder="Provincia" class="form-control" /> 
-              <input type="text" placeholder="Comune" class="form-control"/> 
+               <input type="text" id="regione" placeholder="Regione" class="form-control" onkeyup="autocompileRe()"  /> 
+              <input type="text" id="provincia" placeholder="Provincia" class="form-control" onkeyup="autocompilePro()" /> 
+              <input type="text" id="localita" placeholder="Comune" class="form-control" onkeyup="autocompile()"/> 
               <span class="input-group-btn">
                   <button class="btn btn-default " type="button"><i class="glyphicon glyphicon-search"></i>Vai!</button>
               </span>

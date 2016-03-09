@@ -46,4 +46,4 @@ public class RegioneFacade extends AbstractFacade<Regione> implements RegioneFac
         }
     }
     
-}
+        }

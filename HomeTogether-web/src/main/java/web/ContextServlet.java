@@ -97,13 +97,13 @@ public class ContextServlet extends HttpServlet implements ServletContextListene
     public void contextInitialized(ServletContextEvent sce) {
         System.out.println("entro nel conextinitialize");
         List<Comune> list = gestoreComuni.creaListaComuni();
-        List<Provincia> listPro = gestoreProvincie.creaListaProvincie() ;
-        List<Regione> listRe = gestoreRegioni.creaListaRegioni() ;
+        List<Provincia> listPro = gestoreProvincie.creaListaProvincie();
+        List<Regione> listRe = gestoreRegioni.creaListaRegioni();
         System.out.println("creo lista comuni.");
         //System.out.println("primo nome:"+list.get(0).getNome());
         sce.getServletContext().setAttribute("list", list);
-        sce.getServletContext().setAttribute("list", listPro);
-        sce.getServletContext().setAttribute("list", listRe);
+        sce.getServletContext().setAttribute("listPro", listPro);
+        sce.getServletContext().setAttribute("listRe", listRe);
 
     }
 

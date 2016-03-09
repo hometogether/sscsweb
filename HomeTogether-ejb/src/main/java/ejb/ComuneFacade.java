@@ -37,10 +37,8 @@ public class ComuneFacade extends AbstractFacade<Comune> implements ComuneFacade
     @Override
     public List<Comune> getComuni() {
         //Query q = em.createNativeQuery(query);
-        System.out.println("entro in getutente Google");
         Query q = em.createQuery("SELECT c FROM Comune c");
         List l = q.getResultList();
-        //System.out.println(l);
         if (l.isEmpty()){
             return null;
         } else {

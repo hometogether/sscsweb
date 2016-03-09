@@ -31,5 +31,5 @@ public interface ProvinciaFacadeLocal {
 
     public List<Provincia> getProvincie();
 
-    
+
 }

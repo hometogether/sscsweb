@@ -31,5 +31,5 @@ public interface RegioneFacadeLocal {
 
     public List<Regione> getRegioni();
 
-    
+
 }

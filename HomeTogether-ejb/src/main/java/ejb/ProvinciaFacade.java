@@ -45,5 +45,4 @@ public class ProvinciaFacade extends AbstractFacade<Provincia> implements Provin
             return l;
         }
     }
-    
 }
