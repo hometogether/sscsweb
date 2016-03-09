@@ -9,6 +9,7 @@
 <html>
     <head>
         <title>Start Page</title>
+    
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     </head>

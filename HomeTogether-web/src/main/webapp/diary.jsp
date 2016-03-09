@@ -20,12 +20,14 @@
         <link href="css/ProfileStyle.css" rel='stylesheet' type='text/css' />
         
         <link href="css/style_1.css" rel='stylesheet' type='text/css' />
+        <link href="css/bootstrap-dialog.css" rel='stylesheet' type='text/css' />
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix ="c" %>
         <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
         
       
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="js/bootstrap-dialog.js"></script>
 	<script src="js/jquery.ns-autogrow.min.js"></script> 
         <script type="text/javascript">
             
@@ -41,6 +43,7 @@
             var xhr = new XMLHttpRequest();
             function aggiungiPost(idDiario) {
                 var testo=$('#text').val();
+                if($("#text")[0].checkValidity()) { 
                 console.log('testo:'+testo);
                 xhr.open('POST', 'DiaryServlet');
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -126,6 +129,10 @@
 
                 };
                 xhr.send('action=submitPost&idDiario=' + idDiario+'&text='+testo);
+            }else{
+                    console.log("No");
+                    BootstrapDialog.warning('Non puoi pubblicare un post vuoto!');
+                }
             }
 
             
@@ -397,7 +404,7 @@
                                                       <input type="hidden" name="idDiario" value="${diario.id}">
                                                       <div class="col-md-12" style="margin-top: 3%;">
                                                          <button class="col-md-2 col-sm-2 col-lg-2 borderless-btn"><img src="${profilo.foto_profilo}" class="avatar profile-image-avatar" style="box-shadow: 0px 0px 5px #888; max-width: 50px;max-height: 50px;min-height: 50px;min-width: 50px;"/></button>
-                                                         <textarea id="text" name="text" class="col-md-10 col-sm-10 col-lg-10 postArea" required="yes" autofocus="autofocus"  placeholder="#SHARETOGETHER"></textarea>
+                                                         <textarea id="text" name="text" class="col-md-10 col-sm-10 col-lg-10 postArea" autofocus="autofocus"  placeholder="#SHARETOGETHER" required="yes"></textarea>
                                                       </div>
                                                          <div class="col-md-12 col-lg-12 col-sm-12">
                                                             <div class="col-md-12" style="border-top: 1px solid lightgray; margin-bottom: 1%;margin-top: 4%; "></div>

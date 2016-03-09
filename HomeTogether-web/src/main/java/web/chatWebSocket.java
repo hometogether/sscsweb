@@ -35,6 +35,7 @@ public class chatWebSocket {
     @OnMessage
     public void onMessage(String message,Session peer) throws IOException{
         //mandando il primo messaggio si prende l'username dalla sessione altrimenti inseriso in sessione il primo messaggio come username
+        peer.getUserProperties().put("username", httpSession.getAttribute("nome"));
         String username=(String) peer.getUserProperties().get("username");
         if(username==null){
             peer.getUserProperties().put("username", httpSession.getAttribute("nome"));
@@ -42,7 +43,6 @@ public class chatWebSocket {
         }else{
             Iterator<Session> iterator= peers.iterator();
             while (iterator.hasNext()) {
-                //if(iterator.next().getId().equals("userId"))
                 iterator.next().getBasicRemote().sendText(buildJsonData(username,message));
             }
         }

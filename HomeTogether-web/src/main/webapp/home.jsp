@@ -8,8 +8,9 @@
 <!DOCTYPE html>
 <html>
     <head>
+        
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-        <BASE href="http://localhost:8080/HomeTogether-web/">
+        
         <link href="css/bootstrap_1.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap_1.min.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap-theme_1.css" rel='stylesheet' type='text/css' />

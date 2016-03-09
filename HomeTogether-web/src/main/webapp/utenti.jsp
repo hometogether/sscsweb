@@ -131,8 +131,8 @@
         <%@include file="navbar.jsp" %>
         <div class="content col-md-12 ">
             <br><br><br>
-            <div class="container col-md-2" style="background: yellow" >
-                <h3>DESTRA</h3>
+            <div class="container col-md-2" >
+                
                 
             </div>
             <div class="col-md-8" id="list" rel="1">
@@ -186,8 +186,8 @@
                 </div>  
                 </c:forEach>
             </div>
-            <div class="col-md-2" style="background: blue">
-                <h3>SINISTRA</h3>
+            <div class="col-md-2">
+                
             </div>
         </div>
     </body>
