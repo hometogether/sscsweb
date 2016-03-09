@@ -293,13 +293,41 @@
                 };
                 xhr.send('action=addComment&idPost='+idPost+'&testo='+testo);   
                 
-                
-                
-                
-                
-                
+            }
+            
+            function goToEditComment(idComment){
+                $('#commentArea'+idComment).prop("readonly",false);
                 
             }
+            
+            function editComment(idCommento) {
+                console.log("entro in editPost");
+                var testo = $('#commentArea'+idCommento).val();
+                var nome='${profilo.nome}';
+                var cognome='${profilo.cognome}';
+                if($('#commentArea'+idCommento)[0].checkValidity()) {
+                    xhr.open('POST', 'DiaryServlet');
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr.onload = function () {
+                        if (xhr.responseText.trim() === "0") {
+                            jQuery.noConflict();
+                            $('#commentArea'+idCommento).val(nome+" "+cognome+" - "+testo);
+                            $('#commentArea'+idCommento).prop("readonly",true);
+                            
+                            console.log('commento editato');
+
+                        } else {
+                            BootstrapDialog.warning('Impossibile modificare il Post');
+                        }
+                    };
+                    xhr.send('action=editComment&idCommento='+idCommento+"&testo="+testo);
+                    
+                } else{
+                    BootstrapDialog.warning('Non puoi pubblicare un commento vuoto!');
+                }
+                
+            }
+            
             function removeComment(idCommento) {
                 console.log("entro in removeComment");
                 xhr.open('POST', 'DiaryServlet');
@@ -331,6 +359,15 @@
                     $('#commento_utente'+idPost).val("");
                 }
             }
+            function keyDownEditComment (idCommento){
+                console.log("keyDownEditComment");
+                if(event.keyCode == 13){
+                    editComment(idCommento);
+                       
+                }
+            }
+            
+            
                 
         </script>
         <title>Diary</title>
@@ -453,13 +490,16 @@
                                                         <!--HEADER-->
                                                         
                                                         <div class="col-md-12 col-sm-12 col-lg-12" style="margin-top: 3%;">
+                                                            <c:if test="${post.user.id == profilo.id}">
+
                                                             <div class="dropdown-post pull-right">
                                                                 <span class="glyphicon glyphicon-chevron-down dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></span>
                                                                 <ul class="dropdown-menu ">
                                                                     <li><a href="javascript:goToEditPost(${post.id})"><span class="glyphicon glyphicon-edit"> </span> Modifica</a></li>
                                                                     <li><a href="javascript:removePost(${post.id})"><span class="glyphicon glyphicon-remove"> </span> Elimina</a></li>
                                                                 </ul>
-                                                            </div>
+                                                            </div
+                                                            </c:if>
                                                             <form action="RedirectServlet" role="form" method="get">    
                                                                 <input type="hidden" name="action" value="goUserProfile">
                                                                 <input type="hidden" name="idprofile" value="${post.user.id}">
@@ -559,21 +599,21 @@
                                                             <c:forEach var="commento" items="${post.commenti}">
                                                             <div id="commento${commento.id}" class='row'><div class='col-md-12'style='background:whitesmoke'>
                                                                 <div class='row col-md-12 col-sm-12 col-lg-12' style='padding-top:2%;'>
-                                                                    
+                                                                     <c:if test="${commento.user.id == profilo.id}">
                                                                     <div class="popover-markup pull-right"> <span class="btn btn-secodary btn-sm glyphicon glyphicon-pencil trigger" data-toggle="popover"></span> 
                                                                     <div class="head hide">Lorem Ipsum</div>
                                                                     <div class="content hide">
                                                                         <ul class="list-unstyled">
-                                                                            <li style="margin-bottom: 5px;"><a href="#"><span class="glyphicon glyphicon-edit"> </span> Modifica</a></li>
+                                                                            <li style="margin-bottom: 5px;"><a href="javascript:goToEditComment(${commento.id})"><span class="glyphicon glyphicon-edit"> </span> Modifica</a></li>
                                                                             <li><a href="javascript:removeComment(${commento.id})"><span class="glyphicon glyphicon-remove"> </span> Elimina</a></li>
                                                                         </ul>
                                                                     </div>
                                                                     <div class="footer hide">test</div>
                                                                 </div>
-                                                                    
+                                                                     </c:if>
                                                                     <button class='col-md-1 col-sm-1 col-lg-1 borderless-btn'><img src='${commento.user.foto_profilo}' class='avatar profile-image-avatar' style='border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 35px;max-height: 35px;min-height: 35px;min-width: 35px;'/></button>
                                                                     <div class='col-md-10'><div class='col-md-12'>
-                                                                        <textarea id='commentArea${commento.id}' class='postArea' readonly='readonly' style='width:100%;margin-top:0;'>${commento.user.nome} ${commento.user.cognome} - ${commento.testo}</textarea></div>
+                                                                        <textarea id='commentArea${commento.id}' class='postArea' onkeydown="keyDownEditComment(${commento.id})" readonly='readonly' style='width:100%;margin-top:0;'>${commento.user.nome} ${commento.user.cognome} - ${commento.testo}</textarea></div>
                                                                     </div>
                                                                 </div>
                                                            </div></div>
