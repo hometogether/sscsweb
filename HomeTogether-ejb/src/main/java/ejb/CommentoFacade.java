@@ -40,6 +40,8 @@ public class CommentoFacade extends AbstractFacade<Commento> implements Commento
         System.out.println("entro in getCommento");
         Query q = em.createQuery("SELECT c FROM Commento c WHERE c.id=:custId");
         q.setParameter("custId", idCommento);
+        System.out.println("commento ottenuto:"+q.getResultList());
+
         Commento c = (Commento)q.getResultList().get(0);
         return c;
     }

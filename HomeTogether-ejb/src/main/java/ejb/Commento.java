@@ -9,8 +9,10 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,7 +28,16 @@ import javax.persistence.TemporalType;
  */
 @Entity
 public class Commento implements Serializable {
+    @ManyToOne
+    private Post post;
+    public Post getPost() {
+        return post;
+    }
 
+    public void setPost(Post post) {
+        this.post = post;
+    }
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

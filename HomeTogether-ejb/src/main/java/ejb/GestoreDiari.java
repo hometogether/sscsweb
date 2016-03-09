@@ -7,6 +7,7 @@ package ejb;
 
 import java.util.List;
 import java.util.Objects;
+import javax.ejb.ApplicationException;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -18,6 +19,7 @@ import javax.persistence.EntityManager;
  */
 @Stateless
 @LocalBean
+@ApplicationException(rollback=true)
 public class GestoreDiari {
 
     @EJB
@@ -48,6 +50,7 @@ public class GestoreDiari {
         Post post = new Post();
         post.setUser(profilo);
         post.setTesto(testo);
+        post.setDiario(diario);
         diario.getPost().add(post);
         EntityManager em = diarioFacade.getEntityManager();
         em.persist(post);
@@ -67,8 +70,8 @@ public class GestoreDiari {
     }
     
     public void eliminaPost(Post post) {
-        
         postFacade.remove(post);
+
         System.out.println("Post Eliminato");
         
 
@@ -110,6 +113,7 @@ public class GestoreDiari {
         Commento commento = new Commento();
         commento.setTesto(testo);
         commento.setUser(profilo);
+        commento.setPost(post);
         post.getCommenti().add(commento);
         EntityManager em = diarioFacade.getEntityManager();
         em.persist(commento);

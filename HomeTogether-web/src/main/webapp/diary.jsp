@@ -42,8 +42,6 @@
                         var idPost = xhr.responseText.trim();
                         jQuery.noConflict();
                         //jQuery.noConflict();
-                        var loop='${commentLoop.index}';
-                        console.log('looop:'+loop);
                         var foto='${profilo.foto_profilo}';
                         var nome='${profilo.nome}';
                         var cognome='${profilo.cognome}';
@@ -108,7 +106,7 @@
                                                                     '</div>'+
                                                                     '</div>'+
 
-                                                                    '<div id="commentContainer"></div>'+
+                                                                    
                                                               '</div>'+
                                                             '<div class="col-md-1"></div>'+
                                                           '</div>');
@@ -123,12 +121,21 @@
             }
 
             
-            function rimuoviPost(idDiario) {
+            function removePost(idPost) {
+                console.log("entro in removePost");
                 xhr.open('POST', 'DiaryServlet');
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.onload = function () {
-            
-                }
+                    if (xhr.responseText.trim() === "0") {
+                        jQuery.noConflict();
+                        $('#post'+idPost).remove();
+                        console.log('post rimosso');
+
+                    } else {
+                        // GESTIRE ERRORE
+                    }
+                };
+                 xhr.send('action=removePost&idPost='+idPost);
             }
             function addLike(idPost){
                 xhr.open('POST', 'DiaryServlet');
@@ -207,7 +214,6 @@
                 $('.postArea').css('overflow', 'hidden').autogrow({vertical: true, horizontal: false});
               });
               
-              var idCommento=0;
             function addComment(idPost){
                 var testo = $('#commento_utente'+idPost).val();
                 console.log("testo:"+testo);
@@ -216,7 +222,7 @@
                 xhr.onload = function () {
                     if (!(xhr.responseText.trim() === "0")) {
                         var idCommento = xhr.responseText.trim();
-                        $('#commentContainer'+idPost).append("<div class='row'><div class='col-md-12'style='background:whitesmoke'>"+
+                        $('#commentContainer'+idPost).append("<div id='commento'"+idCommento+" class='row'><div class='col-md-12'style='background:whitesmoke'>"+
                                 "<div class='row col-md-12 col-sm-12 col-lg-12' style='padding-top:2%;'>"+
                                 '<span class="glyphicon glyphicon-pencil pull-right btn-sm"></span>'+
                                      "<button class='col-md-1 col-sm-1 col-lg-1 borderless-btn'><img src='${profilo.foto_profilo}' class='avatar profile-image-avatar' style='border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 35px;max-height: 35px;min-height: 35px;min-width: 35px;'/></button>"+
@@ -236,7 +242,7 @@
                          $('#commentArea'+ idCommento).append(comment);
                          $('#commentArea'+ idCommento).css('overflow', 'hidden').autogrow({vertical: true, horizontal: false});
                          console.log("idcommento:"+idCommento);
-                         idCommento++;
+                         
                     } /*else {
                      // $('#googleForm').submit();
                      }*/
@@ -251,7 +257,22 @@
                 
                 
             }
-            
+            function removeComment(idCommento) {
+                console.log("entro in removeComment");
+                xhr.open('POST', 'DiaryServlet');
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function () {
+                    if (xhr.responseText.trim() === "0") {
+                        jQuery.noConflict();
+                        $('#commento'+idCommento).remove();
+                        console.log('post rimosso');
+
+                    } else {
+                        // GESTIRE ERRORE
+                    }
+                };
+                 xhr.send('action=removeComment&idCommento='+idCommento);
+            }
             function keyDownComment (idPost){
                 console.log("keyDownComment");
                 console.log("valore textbox:"+$('#commento_utente'+idPost).val());
@@ -382,7 +403,7 @@
                                             <div class="col-md-2 col-sm-2 col-lg-2"></div>
                                             <div id="postContainer" >
                                             <c:forEach var="post" items="${diario.post}">
-                                                  <div class="col-md-12" style="margin-bottom: 0%;border: 1px solid whitesmoke;border-radius: 2px;">
+                                                  <div id="post${post.id}" class="col-md-12" style="margin-bottom: 0%;border: 1px solid whitesmoke;border-radius: 2px;">
                                                     <div class="col-md-1"></div>
                                                     <div class="col-md-10" style="background: white;  border-radius: 2px;box-shadow: 0px 0px 5px orange;margin-bottom:7%;">
                                                         <!--HEADER-->
@@ -392,7 +413,7 @@
                                                                 <span class="glyphicon glyphicon-chevron-down dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></span>
                                                                 <ul class="dropdown-menu ">
                                                                     <li><a href="#"><span class="glyphicon glyphicon-edit"> </span> Modifica</a></li>
-                                                                    <li><a href="#"><span class="glyphicon glyphicon-remove"> </span> Elimina</a></li>
+                                                                    <li><a href="javascript:removePost(${post.id})"><span class="glyphicon glyphicon-remove"> </span> Elimina</a></li>
                                                                 </ul>
                                                             </div>
                                                             <form action="RedirectServlet" role="form" method="get">    
@@ -491,7 +512,7 @@
                                                         
                                                         <div id="commentContainer${post.id}">
                                                             <c:forEach var="commento" items="${post.commenti}">
-                                                            <div class='row'><div class='col-md-12'style='background:whitesmoke'>
+                                                            <div id="commento${commento.id}" class='row'><div class='col-md-12'style='background:whitesmoke'>
                                                                 <div class='row col-md-12 col-sm-12 col-lg-12' style='padding-top:2%;'>
                                                                     <script>
                                                                         $('.popover-markup>.trigger').popover({
@@ -515,7 +536,7 @@
                                                                     <div class="content hide">
                                                                         <ul class="list-unstyled">
                                                                             <li style="margin-bottom: 5px;"><a href="#"><span class="glyphicon glyphicon-edit"> </span> Modifica</a></li>
-                                                                            <li><a href="#"><span class="glyphicon glyphicon-remove"> </span> Elimina</a></li>
+                                                                            <li><a href="javascript:removeComment(${commento.id})"><span class="glyphicon glyphicon-remove"> </span> Elimina</a></li>
                                                                         </ul>
                                                                     </div>
                                                                     <div class="footer hide">test</div>

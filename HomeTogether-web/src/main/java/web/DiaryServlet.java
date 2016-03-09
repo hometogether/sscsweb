@@ -104,6 +104,7 @@ public class DiaryServlet extends HttpServlet {
                 Long idPost = new Long(request.getParameter("idPost"));
                 
                 Post post = gestoreDiari.getPost(idPost);
+                
                 gestoreDiari.eliminaPost(post);
                 
                 out.println("0");

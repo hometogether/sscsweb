@@ -7,6 +7,7 @@ package ejb;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,6 +23,10 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class Profilo implements Serializable {
+    @OneToMany(mappedBy = "user",cascade=CascadeType.REMOVE)
+    private List<Post> posts;
+    @OneToMany(mappedBy = "user",cascade=CascadeType.REMOVE)
+    private List<Commento> commentos;
 
     private static final long serialVersionUID = 1L;
     @Id

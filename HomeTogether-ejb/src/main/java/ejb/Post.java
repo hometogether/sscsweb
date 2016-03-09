@@ -9,14 +9,17 @@ import java.io.Serializable;
 import java.util.Date;
 import java.sql.Time;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,7 +31,15 @@ import javax.persistence.criteria.CriteriaBuilder;
  */
 @Entity
 public class Post implements Serializable {
+    @ManyToOne
+    private Diario diario;
+    public Diario getDiario() {
+        return diario;
+    }
 
+    public void setDiario(Diario diario) {
+        this.diario = diario;
+    }
     private static final long serialVersionUID = 1L;
     
 
@@ -43,7 +54,7 @@ public class Post implements Serializable {
         this.id = id;
     }
 
-    @ManyToOne
+    @OneToOne
     private Profilo user;
 
     /**
@@ -109,7 +120,8 @@ public class Post implements Serializable {
         this.testo = testo;
     }
 
-    @OneToMany
+    @OneToMany(mappedBy = "post",cascade=CascadeType.REMOVE)
+
     private List<Commento> commenti;
 
     /**

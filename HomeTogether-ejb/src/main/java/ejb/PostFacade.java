@@ -42,6 +42,8 @@ public class PostFacade extends AbstractFacade<Post> implements PostFacadeLocal 
         Query q = em.createQuery("SELECT p FROM Diario d JOIN d.post p WHERE d.id=:custId ORDER BY p.data DESC");
         q.setParameter("custId", idDiario);
         List<Post> posts = q.getResultList();
+        System.out.println("lista:"+posts);
+
         return posts;
     }
 

@@ -8,7 +8,9 @@ package ejb;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -96,7 +98,7 @@ public class Diario implements Serializable {
         this.data_fine = data_fine;
     }
 
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.REMOVE)
     private List<Profilo> partecipanti;
 
     /**
@@ -117,7 +119,7 @@ public class Diario implements Serializable {
         this.partecipanti = partecipanti;
     }
 
-    @OneToMany
+    @OneToMany(mappedBy = "diario",cascade=CascadeType.REMOVE)
     private List<Post> post;
 
     /**
