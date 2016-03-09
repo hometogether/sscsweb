@@ -519,26 +519,11 @@
                                                         </div>
                                                         
                                                         <div id="commentContainer${post.id}">
+                                                            
                                                             <c:forEach var="commento" items="${post.commenti}">
                                                             <div id="commento${commento.id}" class='row'><div class='col-md-12'style='background:whitesmoke'>
                                                                 <div class='row col-md-12 col-sm-12 col-lg-12' style='padding-top:2%;'>
-                                                                    <script>
-                                                                        $('.popover-markup>.trigger').popover({
-                                                                            html: true,
-                                                                            content: function () {
-                                                                                return $(this).parent().find('.content').html();
-                                                                            }
-                                                                        });
-                                                                        $('body').on('click', function (e) {
-                                                                            $('[data-toggle="popover"]').each(function () {
-                                                                                //the 'is' for buttons that trigger popups
-                                                                                //the 'has' for icons within a button that triggers a popup
-                                                                                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-                                                                                    $(this).popover('hide');
-                                                                                }
-                                                                            });
-                                                                        });
-                                                                    </script>
+                                                                    
                                                                     <div class="popover-markup pull-right"> <span class="btn btn-secodary btn-sm glyphicon glyphicon-pencil trigger" data-toggle="popover"></span> 
                                                                     <div class="head hide">Lorem Ipsum</div>
                                                                     <div class="content hide">
@@ -558,6 +543,23 @@
                                                            </div></div>
                                                         <div class="col-md-1"></div>
                                                             </c:forEach>
+                                                        <script>
+                                                                        $('.popover-markup>.trigger').popover({
+                                                                            html: true,
+                                                                            content: function () {
+                                                                                return $(this).parent().find('.content').html();
+                                                                            }
+                                                                        });
+                                                                        $('body').on('click', function (e) {
+                                                                            $('[data-toggle="popover"]').each(function () {
+                                                                                //the 'is' for buttons that trigger popups
+                                                                                //the 'has' for icons within a button that triggers a popup
+                                                                                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                                                                                    $(this).popover('hide');
+                                                                                }
+                                                                            });
+                                                                        });
+                                                                    </script>
                                                         </div>
                                                          </div>
                                                             </div>
