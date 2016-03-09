@@ -29,7 +29,15 @@
 	<script src="js/jquery.ns-autogrow.min.js"></script> 
         <script type="text/javascript">
             
-            
+            $(document).ready(function() {
+                if($('#like-list li').length > 3){
+                   var e=$('#like-list li').length-1;
+                   $('#like-list').hide();
+                   $('#like-numb').append("Piace a:<a id='numb' style='font-size: 85%';> "+e+" persone</a>");
+                   max=1;
+                }
+                
+            });
             var xhr = new XMLHttpRequest();
             function aggiungiPost(idDiario) {
                 var testo=$('#text').val();
@@ -536,7 +544,7 @@
                                                                     <div class="content hide">
                                                                         <ul class="list-unstyled">
                                                                             <li style="margin-bottom: 5px;"><a href="#"><span class="glyphicon glyphicon-edit"> </span> Modifica</a></li>
-                                                                            <li><a href="javascript:removeComment(${commento.id})"><span class="glyphicon glyphicon-remove"> </span> Elimina</a></li>
+                                                                            <li><a href="#"><span class="glyphicon glyphicon-remove"> </span> Elimina</a></li>
                                                                         </ul>
                                                                     </div>
                                                                     <div class="footer hide">test</div>
