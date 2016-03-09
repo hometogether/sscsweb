@@ -70,8 +70,10 @@ public class GestoreDiari {
     }
     
     public void eliminaPost(Post post) {
+        Diario diario= post.getDiario();
+        diario.getPost().remove(post);
+        diarioFacade.edit(diario);
         postFacade.remove(post);
-
         System.out.println("Post Eliminato");
         
 
@@ -133,8 +135,11 @@ public class GestoreDiari {
     }
     
     public void eliminaCommento(Commento commento) {
-        
+        Post post= commento.getPost();
+        post.getCommenti().remove(commento);
+        postFacade.edit(post);
         commentoFacade.remove(commento);
+        
         System.out.println("Commento Eliminato");
         
 

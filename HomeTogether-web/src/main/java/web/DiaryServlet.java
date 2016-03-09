@@ -5,6 +5,7 @@
  */
 package web;
 
+import com.google.common.collect.Lists;
 import ejb.Commento;
 import ejb.Diario;
 import ejb.GestoreDiari;
@@ -66,9 +67,9 @@ public class DiaryServlet extends HttpServlet {
                 Long idDiario = new Long(request.getParameter("idDiario"));
                 Diario d = gestoreDiari.getDiario(idDiario);
                 Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
-                List<Post> posts = gestoreDiari.getPosts(idDiario);
-
-                d.setPost(posts);
+                //List<Post> posts = gestoreDiari.getPosts(idDiario);
+                
+                d.setPost(Lists.reverse(d.getPost()));
 
                 request.setAttribute("profilo", p);
 

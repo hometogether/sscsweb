@@ -134,7 +134,35 @@
                     BootstrapDialog.warning('Non puoi pubblicare un post vuoto!');
                 }
             }
+            
+            function goToEditPost(idPost){
+                //$('#textPost'+idPost).attr('readonly','');
+                $("#textPost"+idPost).prop("disabled", false);
+            }
+            
+            function editPost(idPost) {
+                console.log("entro in editPost");
+                var testo = $('#textPost'+idPost).val();
+                if($('#textPost'+idPost)[0].checkValidity()) {
+                    xhr.open('POST', 'DiaryServlet');
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr.onload = function () {
+                        if (!(xhr.responseText.trim() === "//||\\error//||\\")) {
+                            jQuery.noConflict();
+                            $('#textPost'+idPost).val(xhr.responseText.trim());
+                            console.log('post editato');
 
+                        } else {
+                            BootstrapDialog.warning('Impossibile modificare il Post');
+                        }
+                    };
+                    xhr.send('action=editPost&idPost='+idPost+"&testo="+testo);
+                    
+                } else{
+                    BootstrapDialog.warning('Non puoi pubblicare un post vuoto!');
+                }
+                
+            }
             
             function removePost(idPost) {
                 console.log("entro in removePost");
@@ -418,6 +446,7 @@
                                             <div class="col-md-2 col-sm-2 col-lg-2"></div>
                                             <div id="postContainer" >
                                             <c:forEach var="post" items="${diario.post}">
+                                                
                                                   <div id="post${post.id}" class="col-md-12" style="margin-bottom: 0%;border: 1px solid whitesmoke;border-radius: 2px;">
                                                     <div class="col-md-1"></div>
                                                     <div class="col-md-10" style="background: white;  border-radius: 2px;box-shadow: 0px 0px 5px orange;margin-bottom:7%;">
@@ -427,7 +456,7 @@
                                                             <div class="dropdown-post pull-right">
                                                                 <span class="glyphicon glyphicon-chevron-down dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></span>
                                                                 <ul class="dropdown-menu ">
-                                                                    <li><a href="#"><span class="glyphicon glyphicon-edit"> </span> Modifica</a></li>
+                                                                    <li><a href="javascript:goToEditPost(${post.id})"><span class="glyphicon glyphicon-edit"> </span> Modifica</a></li>
                                                                     <li><a href="javascript:removePost(${post.id})"><span class="glyphicon glyphicon-remove"> </span> Elimina</a></li>
                                                                 </ul>
                                                             </div>
@@ -443,7 +472,7 @@
                                                         <!--COMMENT AREA-->
                                                         <div class="col-md-12 col-sm-12 col-lg-12">
                                                             
-                                                            <div class="col-md-10 col-sm-10 col-lg-10"><h4 style="padding-left:2.5%;">${post.testo}</h4></div>
+                                                            <div id="textPost${post.id}" class="col-md-10 col-sm-10 col-lg-10"><h4 style="padding-left:2.5%;">${post.testo}</h4></div>
                                                             <!--<textarea class="form-control" placeholder="blablalbalbba" readonly="readonly"></textarea> -->
                                                         </div>
                                                         <!--COMMENT AREA-->
