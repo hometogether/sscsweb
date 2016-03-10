@@ -35,13 +35,23 @@ function autocompilePro() {
     xhr.onload = function () {
         console.log('torno dalla servlet. Messaggio di ritorno:' + xhr.responseText);
         if (!(xhr.responseText.trim() === "-1")) {
-            provincie = xhr.responseText.trim().split("/");
+            provincie = jQuery.parseJSON(xhr.responseText);
             //mettere il classico $ al posto di jQuery porta ad un conflitto con l'implementazione del modal.
-            jQuery("#provincia").autocomplete("option", "source", provincie);
+            jQuery('#provincia').autocomplete({
+                source:function (request, response) {
+                        response($.map(provincie, function (value, key) {
+                             return {
+                                 label: value.nome,
+                                 value: value.nome,
+                                 region: value.regione.nome,
+                             }
+                         }));
+
+                 }
+            });
             jQuery("#provincia").autocomplete({
                 select: function (event, ui) {
-                    
-                    jQuery("#regione").val(xhr.responseText.trim().split("/")[1]);
+                    jQuery("#regione").val(ui.item.region);
                 }
             });
         } else {
@@ -55,24 +65,34 @@ function autocompilePro() {
 
 
 
-var comuni = [];
+var comuni=[];
 var xhr = new XMLHttpRequest();
 function autocompile() {
 
     xhr.open('POST', 'RegistrationServlet');
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     var comune = $("#localita").val();
-    xhr.onload = function () {
-        
+    xhr.onload = function () { 
         if (!(xhr.responseText.trim() === "-1")) {
-            console.log(xhr.responseText.trim().split("/"));
-            comuni = xhr.responseText.trim().split("/");
+            comuni = jQuery.parseJSON(xhr.responseText);
             //mettere il classico $ al posto di jQuery porta ad un conflitto con l'implementazione del modal.
-            jQuery("#localita").autocomplete("option", "source", comuni);
+            jQuery('#localita').autocomplete({
+                source:function (request, response) {
+                        response($.map(comuni, function (value, key) {
+                             return {
+                                 label: value.nome,
+                                 value: value.nome,
+                                 province: value.provincia.nome,
+                                 region: value.provincia.regione.nome
+                             }
+                         }));
+
+                 }
+            });
             jQuery("#localita").autocomplete({
                 select: function (event, ui) {
-                    jQuery("#provincia").val(xhr.responseText.trim().split("/")[1]);
-                    jQuery("#regione").val(xhr.responseText.trim().split("/")[2]);
+                    jQuery("#provincia").val(ui.item.province);
+                    jQuery("#regione").val(ui.item.region);
                 }
             });
 

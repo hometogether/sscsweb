@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import ejb.Comune;
 import ejb.GestoreComuni;
 import ejb.GestoreUtenti;
+import ejb.Profilo;
 import ejb.Provincia;
 import ejb.Regione;
 import ejb.UtenteApp;
@@ -174,17 +175,17 @@ public class RegistrationServlet extends HttpServlet {
                 List<Provincia> list = (List<Provincia>) context.getAttribute("listPro");
                 
                 String nomeDigitato = request.getParameter("provincia").toLowerCase(); 
-                String res = "";
+                List<Provincia> res = new ArrayList<Provincia>();
                 int cont = 0;
                 if (nomeDigitato != null && list != null) {
                     for (int i = 0; i < list.size() && cont < 5; i++) {
                         if ((list.get(i).getNome().toLowerCase()).startsWith(nomeDigitato)) {
-                            res += list.get(i).getNome() + "/"+list.get(i).getRegione().getNome()+"/";
+                            res.add(list.get(i));
                             cont++;
                         }
 
                     }
-                    out.println(res);
+                    out.println(buildGsonP(res));
                 } else {
                     out.println("-1");
                 }
@@ -194,17 +195,17 @@ public class RegistrationServlet extends HttpServlet {
                 List<Comune> list = (List<Comune>) context.getAttribute("list");
                 
                 String nomeDigitato = request.getParameter("comune").toLowerCase(); 
-                String res = "";
+                List<Comune> res = new ArrayList<Comune>();
                 int cont = 0;
                 if (nomeDigitato != null && list != null) {
                     for (int i = 0; i < list.size() && cont < 5; i++) {
                         if ((list.get(i).getNome().toLowerCase()).startsWith(nomeDigitato)) {
-                            res += list.get(i).getNome() + "/"+list.get(i).getProvincia().getNome()+"/"+list.get(i).getProvincia().getRegione().getNome()+"/";
+                            res.add(list.get(i));
                             cont++;
                         }
 
                     }
-                    out.println(res);
+                    out.println(buildGson(res));
                 } else {
                     out.println("-1");
                 }
@@ -237,6 +238,31 @@ public class RegistrationServlet extends HttpServlet {
 
         }
     }
+    private String buildGson(List<Comune> c) {
+
+        Gson gson = new Gson();
+        String json = gson.toJson(c);
+
+        if (json == null) {
+            System.out.println("servlet buildGson: NULL");
+        } else {
+            System.out.println("servlet buildGson: NOT NULL  " + json);
+        }
+        return json;
+    }
+    private String buildGsonP(List<Provincia> c) {
+
+        Gson gson = new Gson();
+        String json = gson.toJson(c);
+
+        if (json == null) {
+            System.out.println("servlet buildGson: NULL");
+        } else {
+            System.out.println("servlet buildGson: NOT NULL  " + json);
+        }
+        return json;
+    }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
