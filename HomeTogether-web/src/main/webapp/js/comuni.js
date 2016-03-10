@@ -59,9 +59,15 @@ function autocompile() {
     xhr.onload = function () {
         console.log('torno dalla servlet. Messaggio di ritorno:' + xhr.responseText);
         if (!(xhr.responseText.trim() === "-1")) {
-            comuni = xhr.responseText.trim().split("_");
+            comuni = xhr.responseText.trim().split("/");
             //mettere il classico $ al posto di jQuery porta ad un conflitto con l'implementazione del modal.
             jQuery("#localita").autocomplete("option", "source", comuni);
+            jQuery("#localita").autocomplete({
+                select: function (event, ui) {
+                    jQuery("#provincia").val(xhr.responseText.trim().split("/")[1]);
+                    jQuery("#regione").val(xhr.responseText.trim().split("/")[2]);
+                }
+            });
 
         } else {
             // GESTIRE ERRORE

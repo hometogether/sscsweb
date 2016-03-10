@@ -512,7 +512,7 @@
                                                         <!--COMMENT AREA-->
                                                         <div class="col-md-12 col-sm-12 col-lg-12">
                                                             
-                                                            <div id="textPost${post.id}" class="col-md-10 col-sm-10 col-lg-10"><h4 style="padding-left:2.5%;">${post.testo}</h4></div>
+                                                            <div id="textPost${post.id}" class="col-md-10 col-sm-10 col-lg-10"><textarea class="postArea" style="padding-left:2.5%; width: 100%">${post.testo}</textarea></div>
                                                             <!--<textarea class="form-control" placeholder="blablalbalbba" readonly="readonly"></textarea> -->
                                                         </div>
                                                         <!--COMMENT AREA-->
