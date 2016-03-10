@@ -179,7 +179,7 @@ public class RegistrationServlet extends HttpServlet {
                 if (nomeDigitato != null && list != null) {
                     for (int i = 0; i < list.size() && cont < 5; i++) {
                         if ((list.get(i).getNome().toLowerCase()).startsWith(nomeDigitato)) {
-                            res += list.get(i).getNome() + "_";
+                            res += list.get(i).getNome() + "/"+list.get(i).getRegione().getNome()+"/";
                             cont++;
                         }
 
@@ -199,7 +199,7 @@ public class RegistrationServlet extends HttpServlet {
                 if (nomeDigitato != null && list != null) {
                     for (int i = 0; i < list.size() && cont < 5; i++) {
                         if ((list.get(i).getNome().toLowerCase()).startsWith(nomeDigitato)) {
-                            res += list.get(i).getNome() + "/"+list.get(i).getProvincia().getNome()+"/"+list.get(i).getProvincia().getRegione().getNome();
+                            res += list.get(i).getNome() + "/"+list.get(i).getProvincia().getNome()+"/"+list.get(i).getProvincia().getRegione().getNome()+"/";
                             cont++;
                         }
 

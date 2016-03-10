@@ -35,9 +35,15 @@ function autocompilePro() {
     xhr.onload = function () {
         console.log('torno dalla servlet. Messaggio di ritorno:' + xhr.responseText);
         if (!(xhr.responseText.trim() === "-1")) {
-            provincie = xhr.responseText.trim().split("_");
+            provincie = xhr.responseText.trim().split("/");
             //mettere il classico $ al posto di jQuery porta ad un conflitto con l'implementazione del modal.
             jQuery("#provincia").autocomplete("option", "source", provincie);
+            jQuery("#provincia").autocomplete({
+                select: function (event, ui) {
+                    
+                    jQuery("#regione").val(xhr.responseText.trim().split("/")[1]);
+                }
+            });
         } else {
             // GESTIRE ERRORE
         }
@@ -57,8 +63,9 @@ function autocompile() {
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     var comune = $("#localita").val();
     xhr.onload = function () {
-        console.log('torno dalla servlet. Messaggio di ritorno:' + xhr.responseText);
+        
         if (!(xhr.responseText.trim() === "-1")) {
+            console.log(xhr.responseText.trim().split("/"));
             comuni = xhr.responseText.trim().split("/");
             //mettere il classico $ al posto di jQuery porta ad un conflitto con l'implementazione del modal.
             jQuery("#localita").autocomplete("option", "source", comuni);
