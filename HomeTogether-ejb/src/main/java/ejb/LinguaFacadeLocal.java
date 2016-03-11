@@ -29,5 +29,10 @@ public interface LinguaFacadeLocal {
 
     int count();
 
+    Lingua getLingua(String nomelingua);
+    
+    Lingua getLingua(Long idlingua);
+    
+    List<Lingua> getLingue();
     
 }

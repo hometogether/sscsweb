@@ -37,6 +37,8 @@
         <%@include file="modal-modInfo.jsp"%>
         <!--MODAL PER LA MODIFICA DEGLI INTERESSI-->
         <%@include file="modal-interessi.jsp"%>
+        <!--MODAL PER LA MODIFICA DELLE LINGUE-->
+        <%@include file="modal-lingue.jsp"%>
         <!--MODAL PER LA VISUALIZZAZIONE DEI FOLLOWING-->
         <%@include file="modal-following.jsp"%>
     </head>
@@ -106,6 +108,9 @@
                                                                 </c:if>
                                                                 <button class="col-md-4 btn btn-secodary borderless-btn" style="color: black;" data-toggle="modal" data-target="#mod-interessi">
                                                                     <i class="glyphicon glyphicon-music"></i>Interessi
+                                                                </button>
+                                                                <button class="col-md-4 btn btn-secodary borderless-btn" style="color: black;" data-toggle="modal" data-target="#mod-lingue">
+                                                                    <i class="glyphicon glyphicon-globe"></i>Lingue
                                                                 </button>
                                                             </div>
                                                             

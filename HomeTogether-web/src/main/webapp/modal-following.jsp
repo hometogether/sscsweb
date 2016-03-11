@@ -14,7 +14,7 @@
 
 <html lang="it">
 
-    <script src="js/jquery-1.11.0.min.js"></script>
+
     
     <div class="modal fade" id="following-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">

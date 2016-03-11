@@ -264,6 +264,17 @@ public class Profilo implements Serializable {
     public List<Interesse> getInteressi() {
         return interessi;
     }
+    
+    @OneToMany
+    private List<Lingua> lingue;
+
+    public List<Lingua> getLingue() {
+        return lingue;
+    }
+
+    public void setLingue(List<Lingua> lingue) {
+        this.lingue = lingue;
+    }
 
     /**
      * Set the value of interessi

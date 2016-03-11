@@ -7,9 +7,11 @@ package web;
 
 import ejb.Comune;
 import ejb.GestoreComuni;
+import ejb.GestoreLingue;
 import ejb.GestoreProvincie;
 import ejb.GestoreRegioni;
 import ejb.GestoreUtenti;
+import ejb.Lingua;
 import ejb.Provincia;
 import ejb.Regione;
 import java.io.IOException;
@@ -40,7 +42,7 @@ public class ContextServlet extends HttpServlet implements ServletContextListene
      * @throws IOException if an I/O error occurs
      */
     @EJB
-    private GestoreUtenti gestoreUtenti;
+    private GestoreLingue gestoreLingue;
     @EJB
     private GestoreComuni gestoreComuni;
     @EJB
@@ -99,17 +101,22 @@ public class ContextServlet extends HttpServlet implements ServletContextListene
         List<Comune> list = gestoreComuni.creaListaComuni();
         List<Provincia> listPro = gestoreProvincie.creaListaProvincie();
         List<Regione> listRe = gestoreRegioni.creaListaRegioni();
-        System.out.println("creo lista comuni.");
-        //System.out.println("primo nome:"+list.get(0).getNome());
+        List<Lingua> lingue = gestoreLingue.creaListaLingue();
+        System.out.println("creo liste comuni, provincie, regioni e lingue.");
+
         sce.getServletContext().setAttribute("list", list);
         sce.getServletContext().setAttribute("listPro", listPro);
         sce.getServletContext().setAttribute("listRe", listRe);
+        sce.getServletContext().setAttribute("listLingue", lingue);
 
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         sce.getServletContext().removeAttribute("list");
+        sce.getServletContext().removeAttribute("listPro");
+        sce.getServletContext().removeAttribute("listRe");
+        sce.getServletContext().removeAttribute("listLingue");
     }
 
     

@@ -14,7 +14,6 @@
 <html lang="it">
 
     <script src="js/interessi.js"></script>
-    <script src="js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript">
 
 
@@ -59,14 +58,14 @@
                         </a>
                         
                         <div id="additem">
-                            <form action="InterestServlet" role="form" method="post">
+                            
                                  <div class="input-group col-lg-6 col-md-6 col-sm-6">
                                     <input type="text" name='nomeinteresse' class="form-control" id="nomeinteresse" placeholder="Nuovo interesse..." style="height: 2%">
                                     <span class="input-group-btn">
                                       <button id="add" class="btn btn-default" type="button" onClick="aggiungiInteresse()">Aggiungi interesse</button>
                                     </span>
                                  </div>
-                            </form>
+                            
                         </div>
                         
                         <div id='todolist'>
@@ -92,13 +91,19 @@
                                     </li>     
                                 </c:if>
                                 <c:if test="${profilo.id != id}">
-                                    <li class="col-md-3"id="${interesse.id}">                                       
-                                        <form action="InterestServlet" role="form" method="post">
-                                            <input type="hidden" name='action' value="goToInterest">
-                                            <input type="hidden" name='nome' value="${interesse.nome}">
-                                            <button class="btn btn-secondary borderless-btn btn-link" title="${interesse.nome}" style="text-align: center;color: black;overflow: hidden;text-overflow: ellipsis;max-width: 90%;"> ${interesse.nome}</button>
-                                        </form>
-                                    </li>
+                                    <li class="col-md-3"id="${interesse.id}">
+                                        <div class="btn-group">
+                                            <form action="InterestServlet" role="form" method="post">
+                                                <div class="btn-interest">
+                                                    
+                                                    <input type="hidden" name='action' value="goToInterest">
+                                                    <input type="hidden" name='nome' value="${interesse.nome}">
+                                                    <button class="btn btn-secondary borderless-btn btn-link" title="${interesse.nome}" style="text-align: center;color: black;overflow: hidden;text-overflow: ellipsis;max-width: 90%;"> ${interesse.nome}</button>
+                                                    
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </li> 
                                 </c:if>
                                 <!--<div id="${interesse.id}">
                                     <form action="InterestServlet" role="form" method="post">
