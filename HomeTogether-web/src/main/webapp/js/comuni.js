@@ -17,6 +17,12 @@ function autocompileRe() {
             regioni = xhr.responseText.trim().split("_");
             //mettere il classico $ al posto di jQuery porta ad un conflitto con l'implementazione del modal.
             jQuery("#regione").autocomplete("option", "source", regioni);
+            jQuery("#regione").autocomplete({
+                select: function (event, ui) {
+                    jQuery("#provincia").val("");
+                    jQuery("#localita").val("");
+                }
+            });
         } else {
             // GESTIRE ERRORE
         }
@@ -52,6 +58,7 @@ function autocompilePro() {
             jQuery("#provincia").autocomplete({
                 select: function (event, ui) {
                     jQuery("#regione").val(ui.item.region);
+                    jQuery("#localita").val("");
                 }
             });
         } else {

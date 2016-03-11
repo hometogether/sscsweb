@@ -40,4 +40,10 @@ public interface ProfiloFacadeLocal {
 
     EntityManager getEntityManager();
     
+    List<Profilo> getMatchComune(Long comune, Long idprofilo);
+    
+    List<Profilo> getMatchProvincia(Long provincia, Long idprofilo);
+    
+    List<Profilo> getMatchRegione(Long regione, Long idprofilo);
+    
 }

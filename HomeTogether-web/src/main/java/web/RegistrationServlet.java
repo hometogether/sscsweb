@@ -198,10 +198,12 @@ public class RegistrationServlet extends HttpServlet {
                 List<Comune> res = new ArrayList<Comune>();
                 int cont = 0;
                 if (nomeDigitato != null && list != null) {
-                    for (int i = 0; i < list.size() && cont < 5; i++) {
-                        if ((list.get(i).getNome().toLowerCase()).startsWith(nomeDigitato)) {
+                    for (int i = 0; i < list.size(); i++) {
+                        if (cont!=5 && (list.get(i).getNome().toLowerCase()).startsWith(nomeDigitato)) {
                             res.add(list.get(i));
                             cont++;
+                        }else if ((list.get(i).getNome().toLowerCase()).equals(nomeDigitato)) {
+                            res.add(list.get(i));
                         }
 
                     }

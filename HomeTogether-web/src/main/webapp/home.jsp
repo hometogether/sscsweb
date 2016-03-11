@@ -48,15 +48,20 @@
                 </strong>
                 <span style="color : lightgrey">Together</span> 
             </h1>
-            
+            <form action="MatchServlet" method="post" id="formatchservlet" >
             <div class="input-group triple-input">
-               <input type="text" id="regione" placeholder="Regione" class="form-control" onkeyup="autocompileRe()"  /> 
-              <input type="text" id="provincia" placeholder="Provincia" class="form-control" onkeyup="autocompilePro()" /> 
-              <input type="text" id="localita" placeholder="Comune" class="form-control" onkeyup="autocompile()"/> 
-              <span class="input-group-btn">
-                  <button class="btn btn-default " type="button"><i class="glyphicon glyphicon-search"></i>Vai!</button>
-              </span>
+               
+                    <input type="hidden" name="action" value="searchUtente" /> 
+
+                    <input type="text" id="regione" name="regione" placeholder="Regione" class="form-control" onkeyup="autocompileRe()"  /> 
+                    <input type="text" id="provincia" name="provincia" placeholder="Provincia" class="form-control" onkeyup="autocompilePro()" /> 
+                    <input type="text" id="localita" name="localita" placeholder="Comune" class="form-control" onkeyup="autocompile()"/> 
+                    <span class="input-group-btn">
+                        <button class="btn btn-default " type="submit"><i class="glyphicon glyphicon-search"></i>Vai!</button>
+                    </span>
+              
             </div>
+                 </form>
           </div>
         <div class="col-md-2" ><h1><a href="chatprova.jsp">Vai alla chat!</a></h1></div>
     </body>
