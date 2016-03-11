@@ -54,14 +54,14 @@ public class ProfileServlet extends HttpServlet {
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
         response.setDateHeader("Expires", 0); // Proxies.
-        HttpSession s = request.getSession();
+        HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
             if (action.equals("add_profile_image")) {
-                String email = (String) s.getAttribute("email");
+                String email = (String) session.getAttribute("email");
                 Part filePart = request.getPart("nomeFile");
                 InputStream filecontent = filePart.getInputStream();
-                FileOutputStream prova = new FileOutputStream("C:\\Users\\Antonio\\Documents\\NetBeansProjects\\EnterpriseApplication1\\EnterpriseApplication1-war\\web\\profile_img\\" + filePart.getSubmittedFileName());
+                FileOutputStream prova = new FileOutputStream("C:/Users/Antonio/Documents/NetBeansProjects/HomeTogether/HomeTogether-web/src/main/webapp/profile_img/" + filePart.getSubmittedFileName());
                 int read = 0;
                 final byte[] bytes = new byte[1024];
 
@@ -70,15 +70,17 @@ public class ProfileServlet extends HttpServlet {
                 }
                 String foto = "profile_img/" + filePart.getSubmittedFileName();
                 gestoreUtenti.modificaFotoProfilo(email, foto);
-                s.setAttribute("foto", "profile_img/" + filePart.getSubmittedFileName());
+                session.setAttribute("foto", "profile_img/" + filePart.getSubmittedFileName());
                 filecontent.close();
                 prova.close();
+                Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
+                request.setAttribute("profilo", p);
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile.jsp");
                 rd.forward(request, response);
             } else if (action.equals("mod_info")) {
                 String location = request.getParameter("localita");
                 String data = request.getParameter("data_nascita");
-                String email = (String) (s.getAttribute("email"));
+                String email = (String) (session.getAttribute("email"));
                 String formazione = request.getParameter("formazione");
                 String occupazione = request.getParameter("occupazione");
                 String telefono = request.getParameter("telefono");
@@ -88,9 +90,9 @@ public class ProfileServlet extends HttpServlet {
                 rd.forward(request, response);
             } else if (action.equals("follow")) {
                 Long idfollow = new Long(request.getParameter("id"));
-                Long id = (Long) (s.getAttribute("id"));
+                Long id = (Long) (session.getAttribute("id"));
                 System.out.println("id request:" + request.getParameter("id"));
-                System.out.println("id sessione:" + s.getAttribute("id"));
+                System.out.println("id sessione:" + session.getAttribute("id"));
                 Profilo personalProfile = profiloFacade.getProfilo(id);
                 Profilo followProfile = profiloFacade.getProfilo(idfollow);
                 int res = gestoreUtenti.aggiungiFollowing(personalProfile, followProfile);
@@ -102,7 +104,7 @@ public class ProfileServlet extends HttpServlet {
 
             } else if (action.equals("eliminafollow")) {
                 Long idfollow = new Long(request.getParameter("id"));
-                Long id = (Long) (s.getAttribute("id"));
+                Long id = (Long) (session.getAttribute("id"));
                 Profilo personalProfile = profiloFacade.getProfilo(id);
                 Profilo followProfile = profiloFacade.getProfilo(idfollow);
                 int res = gestoreUtenti.eliminaFollowing(personalProfile, followProfile);
