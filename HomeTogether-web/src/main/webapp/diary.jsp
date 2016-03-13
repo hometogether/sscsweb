@@ -512,7 +512,10 @@
                                                         <!--COMMENT AREA-->
                                                         <div class="col-md-12 col-sm-12 col-lg-12">
                                                             
-                                                            <div id="textPost${post.id}" class="col-md-10 col-sm-10 col-lg-10"><textarea class="postArea" style="padding-left:2.5%; width: 100%">${post.testo}</textarea></div>
+                                                            <div id="textPost${post.id}" class="col-md-10 col-sm-10 col-lg-10">
+                                                                <p style="word-wrap:break-word;margin-top: 2%; margin-left: 2%;"> ${post.testo}</p>
+                                                                <!--<textarea class="postArea" style="padding-left:2.5%; width: 100%">${post.testo}</textarea>-->
+                                                            </div>
                                                             <!--<textarea class="form-control" placeholder="blablalbalbba" readonly="readonly"></textarea> -->
                                                         </div>
                                                         <!--COMMENT AREA-->
@@ -560,6 +563,7 @@
                                                         
                                                         </div>
                                                         <!--LISTA LIKE DA MOSTRARE SOLO SE CI SONO UNO O PIU LIKE-->
+                                                        
                                                         <div class="col-md-12 col-lg-12 col-sm-12">
                                                         <div role="separator" class="col-md-12 divider" style="border-top: 1px solid lightgray;"></div>
                                                         <div class="col-md-12 col-sm-12 col-lg-12 " style="margin: 1% 0 1% 0;">
@@ -612,8 +616,14 @@
                                                                 </div>
                                                                      </c:if>
                                                                     <button class='col-md-1 col-sm-1 col-lg-1 borderless-btn'><img src='${commento.user.foto_profilo}' class='avatar profile-image-avatar' style='border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 35px;max-height: 35px;min-height: 35px;min-width: 35px;'/></button>
-                                                                    <div class='col-md-10'><div class='col-md-12'>
-                                                                        <textarea id='commentArea${commento.id}' class='postArea' onkeydown="keyDownEditComment(${commento.id})" readonly='readonly' style='width:100%;margin-top:0;'>${commento.user.nome} ${commento.user.cognome} - ${commento.testo}</textarea></div>
+                                                                    <div class='col-md-10'>
+                                                                        <div class='col-md-12'>
+                                                                        <p><a href="URL" title="Description">${commento.user.nome} ${commento.user.cognome} </a></p>
+                                                                        <p style="word-wrap:break-word;"> ${commento.testo}</p>
+                                                                        </div>
+                                                                        <!--<div class='col-md-12'>
+                                                                        <textarea id='commentArea${commento.id}' class='postArea' onkeydown="keyDownEditComment(${commento.id})" readonly='readonly' style='width:100%;margin-top:0;'>${commento.user.nome} ${commento.user.cognome} - ${commento.testo}</textarea>
+                                                                        </div>-->
                                                                     </div>
                                                                 </div>
                                                            </div></div>

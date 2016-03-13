@@ -10,14 +10,13 @@ and open the template in the editor.
 
 .popup-box {
    background-color: #ffffff;
-    border: 1px solid #b0b0b0;
+    border: 1px solid orange;
     bottom: 0;
     display: none;
     height: 415px;
     position: fixed;
     right: 70px;
     width: 300px;
-    font-family: 'Open Sans', sans-serif;
 }
 #addClass{
     border: 2px solid #ff6701;
@@ -60,7 +59,7 @@ and open the template in the editor.
 .popup-box .popup-head {
     background-color: #fff;
     clear: both;
-    color: #7b7b7b;
+    color: orange;
     display: inline-table;
     font-size: 21px;
     padding: 7px 10px;
@@ -95,7 +94,7 @@ and open the template in the editor.
 .popup-box .popup-messages {
 }
 .popup-head-left img {
-    border: 1px solid #7b7b7b;
+    border: 1px solid orangered;
     border-radius: 50%;
     width: 44px;
 }
@@ -150,7 +149,7 @@ and open the template in the editor.
     text-align: center;
 }
 .popup-messages abbr.timestamp {
-    background: #3f9684 none repeat scroll 0 0;
+    background: orangered none repeat scroll 0 0;
     color: #fff;
     padding: 0 11px;
 }
@@ -162,7 +161,8 @@ and open the template in the editor.
 }
 .chat-header-button {
     background: transparent none repeat scroll 0 0;
-    border: 1px solid #636364;
+    border: 1px solid #ff6701;
+    color: #ff6701;
     border-radius: 50%;
     font-size: 14px;
     height: 30px;
@@ -180,7 +180,7 @@ and open the template in the editor.
 }
 
 .popup-messages abbr.timestamp {
-    background: #3f9684  none repeat scroll 0 0;
+    background: orangered  none repeat scroll 0 0;
     color: #fff;
     padding: 0 11px;
 }
@@ -194,9 +194,9 @@ and open the template in the editor.
 .popup-messages .direct-chat-messages {
     height: auto;
 }
-.popup-messages .direct-chat-text {
-    background: #dfece7 none repeat scroll 0 0;
-    border: 1px solid #dfece7;
+.popup-messages .direct-chat-text{
+    background: orange none repeat scroll 0 0;
+    border: 1px solid orangered;
     border-radius: 2px;
     color: #1f2121;
 }
@@ -223,7 +223,7 @@ and open the template in the editor.
 }
 .popup-messages  .direct-chat-img {
     border: 1px solid #fff;
-	background: #3f9684  none repeat scroll 0 0;
+    background: orange  none repeat scroll 0 0;
     border-radius: 50%;
     float: left;
     height: 40px;

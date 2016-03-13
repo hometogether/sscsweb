@@ -22,6 +22,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     
+    
     <!-- Custom CSS -->
     <link rel="icon" href="http://example.com/favicon.png">
     <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
@@ -185,6 +186,7 @@
                     <div class="form-group col-lg-12" id="div_password">
                         <!--<label>Password</label>-->
                         <input type="password" name="password" class="form-control" id="password" value="" placeholder="Nuova password">
+                        
                     </div>
 
                     <div class="form-group col-lg-12" id="div_r_password">

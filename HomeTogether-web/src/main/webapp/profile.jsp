@@ -9,13 +9,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="it">
     <head>
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+        
         
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <!--CSS-->
         <link href="css/popUpChat.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap_1.css" rel='stylesheet' type='text/css' />
-        <link href="css/bootstrap_1.min.css" rel='stylesheet' type='text/css' />
+        <link href="css/bootstrap.min_1.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap-theme_1.css" rel='stylesheet' type='text/css' />
         <link href="css/ProfileStyle.css" rel='stylesheet' type='text/css' />
         <link href="css/style_1.css" rel='stylesheet' type='text/css' />
@@ -24,8 +24,11 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="js/following.js"></script>
         <script src="js/popUpChat.js"></script>
+        
+        
 
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        
         <!--CSS-->
         
         
@@ -45,6 +48,8 @@
     
     <body>
         <%@include file="navbar.jsp" %>
+        <script type="text/javascript" src="js/websocket.js"></script>
+        
         <!--HEADER-->
 
         <!--CONTENT-->
@@ -123,9 +128,19 @@
                                                         <li class="list-group-item list-group-item-info colored">
                                                           Amici Facebook
                                                         </li>
+                                                        <c:forEach items="${profilo.following}" var="utente">
+                                                            <li class="list-group-item ">
+                                                                <form action="RedirectServlet" role="form" method="get">    
+                                                                    <input type="hidden" name="action" value="goUserProfile">
+                                                                    <input type="hidden" name="idprofile" value="${utente.id}">
+                                                                        <button class="borderless-btn btn-link pull-xs-right" style="color:graytext"><span class="pull-xs-right"><img src="${utente.foto_profilo}" class="avatar img-circle" style="box-shadow: 0px 0px 2px orangered; " height='40px' width='40px'/></span>
+                                                                        ${utente.nome} ${utente.cognome} </button><span id="addClass" class="pull-right glyphicon glyphicon-comment"></span>
+                                                                </form>
+                                                            </li>
+                                                        </c:forEach>
                                                         <li class="list-group-item">
                                                           <span class="pull-xs-right"><img src="http://lorempixel.com/200/200/people/9/" class="avatar img-circle" alt="avatar" height='40px' width='40px'></span>
-                                                          Cras justo odio<span id="addClass" class="pull-right glyphicon glyphicon-comment"></span>
+                                                          Cras justo odio<span id="addClass" class=" pull-right glyphicon glyphicon-comment"></span>
        
                                                         </li>
                                                         <li class="list-group-item">
@@ -229,114 +244,7 @@
         <!--FOOTER-->
         
         <div class="footer col-md-12">
-            <div class="popup-box chat-popup" id="qnimate">
-    		  <div class="popup-head">
-				<div class="popup-head-left pull-left"><img src="http://bootsnipp.com/img/avatars/bcf1c0d13e5500875fdd5a7e8ad9752ee16e7462.jpg" alt="iamgurdeeposahan">Gurdeep Osahan</div>
-					  <div class="popup-head-right pull-right">
-						<div class="btn-group">
-    								  <button class="chat-header-button" data-toggle="dropdown" type="button" aria-expanded="false">
-									   <i class="glyphicon glyphicon-cog"></i> </button>
-									  <ul role="menu" class="dropdown-menu pull-right">
-										<li><a href="#">Media</a></li>
-										<li><a href="#">Block</a></li>
-										<li><a href="#">Clear Chat</a></li>
-										<li><a href="#">Email Chat</a></li>
-									  </ul>
-						</div>
-						
-						<button data-widget="remove" id="removeClass" class="chat-header-button pull-right" type="button"><i class="glyphicon glyphicon-off"></i></button>
-                      </div>
-			  </div>
-			<div class="popup-messages">
-    		
-			
-			
-			
-			<div class="direct-chat-messages">
-                    
-					
-					<div class="chat-box-single-line">
-								<abbr class="timestamp">October 8th, 2015</abbr>
-					</div>
-					
-					
-					<!-- Message. Default to the left -->
-                    <div class="direct-chat-msg doted-border">
-                      <div class="direct-chat-info clearfix">
-                        <span class="direct-chat-name pull-left">Osahan</span>
-                      </div>
-                      <!-- /.direct-chat-info -->
-                      <img alt="message user image" src="http://bootsnipp.com/img/avatars/bcf1c0d13e5500875fdd5a7e8ad9752ee16e7462.jpg" class="direct-chat-img"><!-- /.direct-chat-img -->
-                      <div class="direct-chat-text">
-                        Hey bro, how’s everything going ?
-                      </div>
-					  <div class="direct-chat-info clearfix">
-                        <span class="direct-chat-timestamp pull-right">3.36 PM</span>
-                      </div>
-						<div class="direct-chat-info clearfix">
-						<span class="direct-chat-img-reply-small pull-left">
-							
-						</span>
-						<span class="direct-chat-reply-name">Singh</span>
-						</div>
-                      <!-- /.direct-chat-text -->
-                    </div>
-                    <!-- /.direct-chat-msg -->
-					
-					
-					<div class="chat-box-single-line">
-						<abbr class="timestamp">October 9th, 2015</abbr>
-					</div>
-			
-					
-					
-					<!-- Message. Default to the left -->
-                    <div class="direct-chat-msg doted-border">
-                      <div class="direct-chat-info clearfix">
-                        <span class="direct-chat-name pull-left">Osahan</span>
-                      </div>
-                      <!-- /.direct-chat-info -->
-                      <img alt="" src="" class="direct-chat-img"><!-- /.direct-chat-img -->
-                      <div class="direct-chat-text">
-                        Hey bro, how’s everything going ?
-                      </div>
-					  <div class="direct-chat-info clearfix">
-                        <span class="direct-chat-timestamp pull-right">3.36 PM</span>
-                      </div>
-						<div class="direct-chat-info clearfix">
-						  <img alt="" src="" class="direct-chat-img big-round">
-						<span class="direct-chat-reply-name">Singh</span>
-						</div>
-                      <!-- /.direct-chat-text -->
-                    </div>
-                    <!-- /.direct-chat-msg -->
-					
-					
-                    
-
-                    
-
-                  </div>
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			</div>
-			<div class="popup-messages-footer">
-			<textarea id="status_message" placeholder="Type a message..." rows="10" cols="40" name="message"></textarea>
-			<div class="btn-footer">
-			<button class="bg_none"><i class="glyphicon glyphicon-film"></i> </button>
-			<button class="bg_none"><i class="glyphicon glyphicon-camera"></i> </button>
-                        <button class="bg_none"><i class="glyphicon glyphicon-paperclip"></i> </button>
-			<button class="bg_none pull-right"><i class="glyphicon glyphicon-thumbs-up"></i> </button>
-			</div>
-			</div>
-	  </div>
+            <%@include file="popUpChat.jsp"%>
         </div>
         <!--FOOTER-->
     </body>
