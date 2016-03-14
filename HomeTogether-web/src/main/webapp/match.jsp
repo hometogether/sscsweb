@@ -69,11 +69,10 @@
                                           ${match.match_totale*100} % generale
                                     </div>
                                 </div>
+                                    <button class="btn btn-warning pull-right">Invia richiesta</button>
                             </div> 
                         </div>
-                        <div class="col-md-12">
-                            <button class="btn btn-warning pull-right">Invia richiesta</button>
-                        </div>
+                        
                     </div>
 
                 </div>  
