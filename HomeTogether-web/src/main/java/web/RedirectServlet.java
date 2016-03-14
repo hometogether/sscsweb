@@ -122,6 +122,11 @@ public class RedirectServlet extends HttpServlet {
                 session.invalidate();
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
                 rd.forward(request, response);
+            } else if (action.equals("goHome")) {
+                Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
+                request.setAttribute("profilo", p);
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                rd.forward(request, response);
             } else {
                 //gestione erroi
                 

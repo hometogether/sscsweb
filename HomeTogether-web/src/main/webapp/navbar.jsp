@@ -26,7 +26,10 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                     </button>
-                        <a class="navbar-brand logo-sx" href="#" style="position: relative;left: 15%;"><img alt="Brand" src="images/logoRettangolare.png"></a>
+                    <form role="form" method="POST" action="RedirectServlet">
+                        <input type="hidden" name="action" value="goHome">
+                        <button type="submit" class="navbar-brand borderless-btn logo-sx" style="position: relative;left: 15%;"><img alt="Brand" src="images/logoRettangolare.png"></button>
+                    </form>
                     </div>
                     <!--COLLAPSE NAVBAR-->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
