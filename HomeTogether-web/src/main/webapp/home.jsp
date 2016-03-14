@@ -41,7 +41,7 @@
                 <p>${profilo.comune.nome}<span>, </span>${profilo.comune.provincia.regione.nome}</p>
             </div>
         </div>
-        <div class="col-md-8 white-element">
+            <div class="col-md-8 white-element" style="margin-left: 3%;">
             <h1>
                 <strong>
                     <span style="color:#f1c40f;">#Find</span>
@@ -63,6 +63,6 @@
             </div>
                  </form>
           </div>
-        <div class="col-md-2" ><h1><a href="chatprova.jsp">Vai alla chat!</a></h1></div>
+        <div class="col-md-2" ></div>
     </body>
 </html>

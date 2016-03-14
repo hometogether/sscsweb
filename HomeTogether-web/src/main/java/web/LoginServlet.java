@@ -77,6 +77,8 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("telefono", u.getProfilo().getTelefono());
                     //  s.setAttribute("location",""+location);
                     session.setAttribute("foto", "" + u.getProfilo().getFoto_profilo());
+                    Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
+                    request.setAttribute("profilo", p);
 
                     RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
                     rd.forward(request, response);
