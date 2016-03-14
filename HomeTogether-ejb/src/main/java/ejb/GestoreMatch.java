@@ -70,6 +70,7 @@ public class GestoreMatch {
         if (Math.min(sizeuserlistalingue, sizeprofilolistalingue)!=0){
             match_lingue = (intersezioneLingue.size())/(Math.min(sizeuserlistalingue, sizeprofilolistalingue));
         }
+        match.setProfilo(profilo);
         match.setMatch_lingue(match_lingue);
         match.setMatch_totale((match_interessi+match_lingue)/2);
         

@@ -18,7 +18,7 @@ and open the template in the editor.
     right: 70px;
     width: 300px;
 }
-#addClass{
+.addClass{
     border: 2px solid #ff6701;
     border-radius: 35px;
     color: red;

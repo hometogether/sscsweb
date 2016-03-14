@@ -46,7 +46,7 @@ public class Match {
         this.lingue = lingue;
     }
     
-    private float match_totale;
+    public float match_totale;
 
     public float getMatch_totale() {
         return match_totale;

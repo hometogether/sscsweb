@@ -13,7 +13,7 @@
             $('.postArea').css('overflow', 'hidden').autogrow({vertical: true, horizontal: false});
           });
     </script>
-    <div class="popup-box chat-popup" id="qnimate">
+    <div class="popup-box chat-popup qnimate" id="qnimate">
             <div class="popup-head">
                 <div class="popup-head-left pull-left">
                     <img src="${profilo.foto_profilo}" alt="profile_img">
@@ -33,7 +33,7 @@
                                 </ul>
                         </div>
 
-                        <button data-widget="remove" id="removeClass" class="chat-header-button pull-right" type="button"><i class="glyphicon glyphicon-off"></i></button>
+                        <button data-widget="remove" id="removeClass" class=" removeClass chat-header-button pull-right" type="button"><i class="glyphicon glyphicon-off"></i></button>
                     </div>
             </div>
             <div class="popup-messages">

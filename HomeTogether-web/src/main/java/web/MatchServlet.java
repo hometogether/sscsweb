@@ -6,6 +6,7 @@
 package web;
 
 import com.google.gson.Gson;
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
 import ejb.Comune;
 import ejb.GestoreMatch;
 import ejb.Profilo;
@@ -14,6 +15,8 @@ import ejb.UtenteGoogle;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -125,8 +128,16 @@ public class MatchServlet extends HttpServlet {
                         for (int i = 0; i < profili.size(); i++){
                             res.add(gestoreMatch.getMatch(profilo, profili.get(i)));
                         }
-                        
-                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                        // Sorting
+                        Collections.sort(res, new Comparator<Match>() {
+                                @Override
+                                public int compare(Match item2, Match item1)
+                                {   
+                                    return  Float.compare(item1.getMatch_totale(), item2.getMatch_totale());
+                                }
+                            });
+                        request.setAttribute("match", res);
+                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/match.jsp");
                         rd.forward(request, response);
 
                         /*String name="";
