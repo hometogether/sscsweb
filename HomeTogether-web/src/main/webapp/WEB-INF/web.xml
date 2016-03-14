@@ -18,6 +18,27 @@
 
     <filter-mapping>
         <filter-name>SessionFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/InterestServlet</url-pattern>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionFilter</filter-name>
+        <url-pattern>/LanguageServlet</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionFilter</filter-name>
+        <url-pattern>/MatchServlet</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionFilter</filter-name>
+        <url-pattern>/NavbarServlet</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionFilter</filter-name>
+        <url-pattern>/ProfileServlet</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionFilter</filter-name>
+        <url-pattern>/RedirectServlet</url-pattern>
+    </filter-mapping>
+    
 </web-app>
