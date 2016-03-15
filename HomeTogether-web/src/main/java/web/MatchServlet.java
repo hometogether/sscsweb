@@ -133,7 +133,7 @@ public class MatchServlet extends HttpServlet {
                                 @Override
                                 public int compare(Match item2, Match item1)
                                 {   
-                                    return  Float.compare(item1.getMatch_totale(), item2.getMatch_totale());
+                                    return  Double.compare(item1.getMatch_totale(), item2.getMatch_totale());
                                 }
                             });
                         request.setAttribute("match", res);

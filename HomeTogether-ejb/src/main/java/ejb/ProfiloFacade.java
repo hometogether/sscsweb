@@ -114,7 +114,7 @@ public class ProfiloFacade extends AbstractFacade<Profilo> implements ProfiloFac
     @Override
     public List<Profilo> getMatchProvincia(Long provincia, Long idprofilo) {
         Query q = em.createQuery("SELECT p FROM Profilo p WHERE p.comune.provincia.id =:custId AND p.id !=:custProf");
-        q.setParameter("custNome", provincia);
+        q.setParameter("custId", provincia);
         q.setParameter("custProf", idprofilo);
 
         List l = q.getResultList();
