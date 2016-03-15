@@ -41,4 +41,39 @@
         <url-pattern>/RedirectServlet</url-pattern>
     </filter-mapping>
     
+    
+    <filter>
+        <filter-name>CounterFilter</filter-name>
+        <filter-class>utility.CounterFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CounterFilter</filter-name>
+        <url-pattern>/LoginServlet</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CounterFilter</filter-name>
+        <url-pattern>/GoogleServlet</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CounterFilter</filter-name>
+        <url-pattern>/FacebookServlet</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CounterFilter</filter-name>
+        <url-pattern>/RegistrationServlet</url-pattern>
+    </filter-mapping>
+    
+    
+    
+    <filter>
+        <filter-name>HomeFilter</filter-name>
+        <filter-class>utility.HomeFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>HomeFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
 </web-app>

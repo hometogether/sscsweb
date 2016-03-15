@@ -41,6 +41,7 @@
                 
             });
             var xhr = new XMLHttpRequest();
+            
             function aggiungiPost(idDiario) {
                 var testo=$('#text').val();
                 if($("#text")[0].checkValidity()) { 
@@ -57,70 +58,85 @@
                         var nome='${profilo.nome}';
                         var cognome='${profilo.cognome}';
                         console.log('foto:'+foto);
-                        $('#postContainer').prepend('<div class="col-md-12" style="margin-bottom: 0%;border: 1px solid whitesmoke;border-radius: 2px;"id="commentContainer">'+
-                                                                '<div class="col-md-1"></div>'+
-                                                                '<div class="col-md-10" style="background: white;  border-radius: 2px;box-shadow: 0px 0px 5px orange;margin-bottom:7%;">'+
-                                                                    '<div class="col-md-12 col-sm-12 col-lg-12" style="margin-top: 3%;">'+
-                                                                    '<div class="dropdown-post pull-right">'+
-                                                                        '<span class="glyphicon glyphicon-chevron-down dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></span>'+
-                                                                        '<ul class="dropdown-menu">'+
-                                                                            '<li><a href="#"><span class="glyphicon glyphicon-edit"> </span> Modifica</a></li>'+
-                                                                            '<li><a href="#"><span class="glyphicon glyphicon-remove"> </span> Elimina</a></li>'+
-                                                                            
-                                                                        '</ul>'+
-                                                                    '</div>'+
-                                                                        '<button class="col-md-2 col-sm-2 col-lg-2 borderless-btn"><img src="'+foto+'" class="avatar profile-image-avatar" style="border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 50px;max-height: 50px;min-height: 50px;min-width: 50px;"/></button>'+
-                                                                        '<h4>'+nome+' '+cognome+'</h4>'+
-                                                                    '</div>'+
-
-                                                                    '<div class="col-md-12 col-sm-12 col-lg-12">'+
-
-                                                                        '<div class="col-md-10 col-sm-10 col-lg-10"><h4 style="padding-left:2.5%;">'+testo+'</h4></div>'+
-                                                                    '</div>'+
-
-                                                                    '<div class="col-md-12 col-lg-12 col-sm-12">'+
-                                                                    '<div class="col-md-12 col-lg-12 col-sm-12" id="like-numb'+idPost+'">'+
-
-                                                                        '<ul id="like-list'+idPost+'"class="list-inline">'+
-                                                                            '<li style="padding-left:2.5%;">Piace a:</li>'+
-
-
-                                                                        '</ul>'+                        
-                                                                   ' </div>'+
-
-                                                                    '</div>'+
-                                                                    '<div class="col-md-12 col-lg-12 col-sm-12">'+
-                                                                    '<div role="separator" class="col-md-12 divider" style="border-top: 1px solid lightgray;"></div>'+
-                                                                    '<div class="col-md-12 col-sm-12 col-lg-12 " style="margin: 1% 0 1% 0;">'+
-                                                                        '<div class="col-md-2 col-sm-2 col-lg-2">'+
-                                                                            '<button id="likebutton'+idPost+'"class="btn borderless-btn " style="color: black;" onclick="addLike('+idPost+');">'+
-                                                                            '<i class="glyphicon glyphicon-hand-up"></i> Mi Piace'+
-                                                                          '</button>'+
-                                                                        '</div>'+
-
-                                                                       '<div class="col-md-8 col-sm-8 col-lg-8">'+
-                                                                            '<div class="input-group" style="text-align: center;">'+               
-                                                                                '<input type="text" class="form-control" placeholder="scrivi un commento" id="commento_utente"  required="yes">'+
-                                                                                '<div class="input-group-btn" style="text-align: left">'+
-                                                                                   '<button class="btn btn-info" type="submit" style="background: orange;" onclick="appendComment();"><i class="glyphicon glyphicon-send"></i></button>'+
-                                                                               '</div>'+
-                                                                            '</div>'+
-                                                                        '</div>'+
-
-
-                                                                        '<div class="col-md-2 col-sm-2 col-lg-2">'+
-                                                                            '<button class="btn borderless-btn col-md-2" style="color: black;">'+
-                                                                                '<i class=" glyphicon glyphicon-comment"></i> Commenti'+
-                                                                            '</button>'+
-                                                                        '</div>'+
-
-                                                                    '</div>'+
-                                                                    '</div>'+
-
+                        $('#postContainer').prepend('<div id="post'+idPost+'" class="col-md-12" style="margin-bottom: 0%;border: 1px solid whitesmoke;border-radius: 2px;">'+
+                                                    '<div class="col-md-1"></div>'+
+                                                    '<div class="col-md-10" style="background: white;  border-radius: 2px;box-shadow: 0px 0px 5px orange;margin-bottom:7%;">'+
+                                                        '<div class="col-md-12 col-sm-12 col-lg-12" style="margin-top: 3%;">'+
+                                                            '<div class="dropdown-post pull-right">'+
+                                                                '<span class="glyphicon glyphicon-chevron-down dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></span>'+
+                                                                '<ul class="dropdown-menu ">'+
+                                                                    '<li><a href="javascript:goToEditPost('+idPost+')"><span class="glyphicon glyphicon-edit"> </span> Modifica</a></li>'+
+                                                                    '<li><a href="javascript:removePost('+idPost+')"><span class="glyphicon glyphicon-remove"> </span> Elimina</a></li>'+
+                                                                '</ul>'+
+                                                            '</div>'+
+                                                            
+                                                            '<form action="RedirectServlet" role="form" method="get">'+
+                                                                '<input type="hidden" name="action" value="goUserProfile">'+
+                                                                '<input type="hidden" name="idprofile" value="'+idPost+'">'+
+                                                                '<button class="col-md-2 col-sm-2 col-lg-2 borderless-btn"><img src="'+foto+'" class="avatar profile-image-avatar" style="border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 50px;max-height: 50px;min-height: 50px;min-width: 50px;"/></button>'+
+                                                            '</form>'+
+                                                            '<h4><a href="/HomeTogether-web/RedirectServlet?action=goUserProfile&idprofile='+idPost+'">'+nome+' '+cognome+'</a></h4>'+
+                                                        '</div>'+
+                                                        
+                                                        '<div class="col-md-12 col-sm-12 col-lg-12">'+
+                                                            
+                                                            '<div class="col-md-10 col-sm-10 col-lg-10">'+
+                                                                '<p id="textPost'+idPost+'" style="word-wrap:break-word;margin-top: 2%; margin-left: 2%;" onkeydown="keyDownEditPost('+idPost+')"> '+testo+'</p>'+
+                                                                
+                                                            '</div>'+
+                                                        '</div>'+
+                                                        
+                                                        '<div class="col-md-12 col-lg-12 col-sm-12">'+
+                                                        '<div class="col-md-12 col-lg-12 col-sm-12" >'+
+                                                            
+                                                            '<ul id="like-list'+idPost+'"class="list-inline">'+
+                                                                
+                                                                '<li id="piace_a'+idPost+'" style="padding-left:2.5%;">Piace a:</li>'+
+                                                                
+                                                                
+                                                                
+                                                                
+                                                            '</ul>'+                                                                
+                                                            '<ul id="like-numb'+idPost+'" class="list-inline"></ul>'+
+                       
+                                                        '</div>'+
+                                                        
+                                                        '</div>'+
+                                                        
+                                                        '<div class="col-md-12 col-lg-12 col-sm-12">'+
+                                                        '<div role="separator" class="col-md-12 divider" style="border-top: 1px solid lightgray;"></div>'+
+                                                        '<div class="col-md-12 col-sm-12 col-lg-12 " style="margin: 1% 0 1% 0;">'+
+                                                            '<div class="col-md-2 col-sm-2 col-lg-2">'+
+                                                                '<button id="likebutton'+idPost+'" class="btn borderless-btn " style="color: black;" onclick="addLike('+idPost+');">'+
+                                                                '<i class="glyphicon glyphicon-hand-up"></i> <a id="icona'+idPost+'">Mi Piace</a>'+
                                                                     
-                                                              '</div>'+
-                                                            '<div class="col-md-1"></div>'+
-                                                          '</div>');
+                                                                
+                                                              '</button>'+
+                                                            '</div>'+
+                                                            
+                                                            '<div class="col-md-8 col-sm-8 col-lg-8">'+
+                                                                '<div style="text-align: center;">'+
+                                                                    '<textarea id="commento_utente'+idPost+'" placeholder="#TalkTogether" onkeydown="keyDownComment('+idPost+')" onkeyup="keyUpComment('+idPost+')" required="yes" class="postArea" style="width:100%;margin-top:0;border: 1px solid lightgray;"></textarea>'+
+                                                                '</div>'+
+                                                            '</div>'+
+                                                            
+                                                            
+                                                            '<div class="col-md-2 col-sm-2 col-lg-2">'+
+                                                                '<button class="btn borderless-btn col-md-2" style="color: black;">'+
+                                                                    '<i class=" glyphicon glyphicon-comment"></i> Commenti'+
+                                                                '</button>' +
+                                                            '</div>'+
+                                                            
+                                                        '</div>'+
+                                                        '</div>'+
+                                                        
+                                                        '<div id="commentContainer'+idPost+'">'+
+                                                        
+                                                        
+                                                        '</div>'+
+                                                         '</div>'+
+                                                            '</div>');
+                                                    $('#piace_a'+idPost).fadeOut();
 
 
                     } else {
@@ -136,21 +152,25 @@
             }
             
             function goToEditPost(idPost){
-                //$('#textPost'+idPost).attr('readonly','');
-                $("#textPost"+idPost).prop("disabled", false);
+                $("#textPost"+idPost).attr('contenteditable','true');
+                placeCaretAtEnd( document.getElementById("textPost"+idPost) );
+                
             }
             
             function editPost(idPost) {
                 console.log("entro in editPost");
-                var testo = $('#textPost'+idPost).val();
-                if($('#textPost'+idPost)[0].checkValidity()) {
+                var testo = $('#textPost'+idPost).text();
+                if($('#textPost'+idPost)[0]!=="") {
                     xhr.open('POST', 'DiaryServlet');
                     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                     xhr.onload = function () {
-                        if (!(xhr.responseText.trim() === "//||\\error//||\\")) {
+                        if (xhr.responseText.trim() === "0") {
+                            
                             jQuery.noConflict();
-                            $('#textPost'+idPost).val(xhr.responseText.trim());
+                            $('#textPost'+idPost).text(testo);
+                            $('#textPost'+idPost).attr('contenteditable','false');
                             console.log('post editato');
+                            $('#textPost'+idPost).val(xhr.responseText.trim());
 
                         } else {
                             BootstrapDialog.warning('Impossibile modificare il Post');
@@ -296,24 +316,41 @@
             }
             
             function goToEditComment(idComment){
-                $('#commentArea'+idComment).prop("readonly",false);
+                
+                $("#commentArea"+idComment).attr('contenteditable','true');
+                placeCaretAtEnd( document.getElementById("commentArea"+idComment) );
                 
             }
             
+            function placeCaretAtEnd(el) {
+                el.focus();
+                if (typeof window.getSelection != "undefined"
+                        && typeof document.createRange != "undefined") {
+                    var range = document.createRange();
+                    range.selectNodeContents(el);
+                    range.collapse(false);
+                    var sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                } else if (typeof document.body.createTextRange != "undefined") {
+                    var textRange = document.body.createTextRange();
+                    textRange.moveToElementText(el);
+                    textRange.collapse(false);
+                    textRange.select();
+                }
+            }
+            
             function editComment(idCommento) {
-                console.log("entro in editPost");
-                var testo = $('#commentArea'+idCommento).val();
-                var nome='${profilo.nome}';
-                var cognome='${profilo.cognome}';
-                if($('#commentArea'+idCommento)[0].checkValidity()) {
+                var testo = $('#commentArea'+idCommento).text();
+                console.log("testo:"+testo);
+                if($('#commentArea'+idCommento)[0]!=="") {
                     xhr.open('POST', 'DiaryServlet');
                     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                     xhr.onload = function () {
                         if (xhr.responseText.trim() === "0") {
                             jQuery.noConflict();
-                            $('#commentArea'+idCommento).val(nome+" "+cognome+" - "+testo);
-                            $('#commentArea'+idCommento).prop("readonly",true);
-                            
+                            $('#commentArea'+idCommento).text(testo);
+                            $("#commentArea"+idCommento).attr('contenteditable','false');
                             console.log('commento editato');
 
                         } else {
@@ -359,10 +396,19 @@
                     $('#commento_utente'+idPost).val("");
                 }
             }
+            
             function keyDownEditComment (idCommento){
                 console.log("keyDownEditComment");
                 if(event.keyCode == 13){
                     editComment(idCommento);
+                       
+                }
+            }
+            
+            function keyDownEditPost (idPost){
+                console.log("keyDownEditPost");
+                if(event.keyCode == 13){
+                    editPost(idPost);
                        
                 }
             }
@@ -469,7 +515,7 @@
                                                       <input type="hidden" name="idDiario" value="${diario.id}">
                                                       <div class="col-md-12" style="margin-top: 3%;">
                                                          <button class="col-md-2 col-sm-2 col-lg-2 borderless-btn"><img src="${profilo.foto_profilo}" class="avatar profile-image-avatar" style="box-shadow: 0px 0px 5px #888; max-width: 50px;max-height: 50px;min-height: 50px;min-width: 50px;"/></button>
-                                                         <textarea id="text" name="text" class="col-md-10 col-sm-10 col-lg-10 postArea" autofocus="autofocus"  placeholder="#SHARETOGETHER" required="yes"></textarea>
+                                                         <textarea id="text" name="text" class="col-md-10 col-sm-10 col-lg-10 postArea" autofocus="autofocus"  placeholder="#ShareTogether" required="yes"></textarea>
                                                       </div>
                                                          <div class="col-md-12 col-lg-12 col-sm-12">
                                                             <div class="col-md-12" style="border-top: 1px solid lightgray; margin-bottom: 1%;margin-top: 4%; "></div>
@@ -512,9 +558,9 @@
                                                         <!--COMMENT AREA-->
                                                         <div class="col-md-12 col-sm-12 col-lg-12">
                                                             
-                                                            <div id="textPost${post.id}" class="col-md-10 col-sm-10 col-lg-10">
-                                                                <p style="word-wrap:break-word;margin-top: 2%; margin-left: 2%;"> ${post.testo}</p>
-                                                                <!--<textarea class="postArea" style="padding-left:2.5%; width: 100%">${post.testo}</textarea>-->
+                                                            <div class="col-md-10 col-sm-10 col-lg-10">
+                                                                <p id="textPost${post.id}" style="word-wrap:break-word;margin-top: 2%; margin-left: 2%;" onkeydown="keyDownEditPost(${post.id})"> ${post.testo}</p>
+                                                                
                                                             </div>
                                                             <!--<textarea class="form-control" placeholder="blablalbalbba" readonly="readonly"></textarea> -->
                                                         </div>
@@ -619,7 +665,7 @@
                                                                     <div class='col-md-10'>
                                                                         <div class='col-md-12'>
                                                                         <p><a href="URL" title="Description">${commento.user.nome} ${commento.user.cognome} </a></p>
-                                                                        <p style="word-wrap:break-word;"> ${commento.testo}</p>
+                                                                        <p id="commentArea${commento.id}" onkeydown="keyDownEditComment(${commento.id})" style="word-wrap:break-word;"> ${commento.testo}</p>
                                                                         </div>
                                                                         <!--<div class='col-md-12'>
                                                                         <textarea id='commentArea${commento.id}' class='postArea' onkeydown="keyDownEditComment(${commento.id})" readonly='readonly' style='width:100%;margin-top:0;'>${commento.user.nome} ${commento.user.cognome} - ${commento.testo}</textarea>
