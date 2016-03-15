@@ -48,7 +48,7 @@
                     {
                         var element = document.getElementById(popups[iii]);
                         element.style.right = right + "px";
-                        right = right + 320;
+                        right = right + 300;
                         element.style.display = "block";
                     }
                 }

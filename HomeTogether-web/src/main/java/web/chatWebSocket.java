@@ -35,17 +35,23 @@ public class chatWebSocket {
     @OnMessage
     public void onMessage(String message,Session peer) throws IOException{
         //mandando il primo messaggio si prende l'username dalla sessione altrimenti inseriso in sessione il primo messaggio come username
-        peer.getUserProperties().put("username", httpSession.getAttribute("nome"));
-        peer.getUserProperties().put("id", httpSession.getAttribute("id"));
         String username=(String) peer.getUserProperties().get("username");
+        String messageText= message.split(":")[0];
+        Long receiveId= Long.parseLong(message.split(":")[1]);
         Long id= (Long) peer.getUserProperties().get("id");
         if(username==null){
             peer.getUserProperties().put("username", httpSession.getAttribute("nome"));
            // peer.getBasicRemote().sendText(buildJsonData("System","you connected as "+ peer.getUserProperties()));
         }else{
             Iterator<Session> iterator= peers.iterator();
+            Session s;
             while (iterator.hasNext()) {
-                iterator.next().getBasicRemote().sendText(buildJsonData(username,message,id));
+                s= iterator.next();
+                Long it=(Long)s.getUserProperties().get("id");
+                if(it.equals(receiveId) || it.equals(id) ){
+                    
+                    s.getBasicRemote().sendText(buildJsonData(username,messageText,id));
+                }
             }
         }
     }
@@ -55,6 +61,8 @@ public class chatWebSocket {
         this.wsSession = session;
         this.httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
         System.out.println(httpSession.getAttribute("nome"));
+        wsSession.getUserProperties().put("username", httpSession.getAttribute("nome"));
+        wsSession.getUserProperties().put("id", httpSession.getAttribute("id"));
         peers.add(wsSession); 
     }
 

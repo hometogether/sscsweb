@@ -104,17 +104,17 @@
                                                         <div class="panel-footer" style="padding:3% 0 3% 0; ">
                                                             <div class="btn-group" role="group"> 
                                                                 <c:if test="${profilo.id == id}">
-                                                                <button class="col-md-4 btn btn-secodary borderless-btn" style="color: black;padding-left: 2px;" data-toggle="modal" data-target="#mod-info-modal">
-                                                                    <i class="glyphicon glyphicon-info-sign"></i> Informazioni
+                                                                <button class="col-md-3 btn btn-secodary borderless-btn" style="color: black;padding-left: 2px;" data-toggle="modal" data-target="#mod-info-modal">
+                                                                    <i class="glyphicon glyphicon-info-sign"></i>Informazioni
                                                                 </button>
-                                                                <button class="col-md-4 btn btn-secodary borderless-btn" style="color: black;" data-toggle="modal" data-target="#following-modal">
+                                                                <button class="col-md-3 btn btn-secodary borderless-btn" style="color: black;" data-toggle="modal" data-target="#following-modal">
                                                                     <i class="  glyphicon glyphicon-user"></i>Following
                                                                 </button>
                                                                 </c:if>
-                                                                <button class="col-md-4 btn btn-secodary borderless-btn" style="color: black;" data-toggle="modal" data-target="#mod-interessi">
+                                                                <button class="col-md-3 btn btn-secodary borderless-btn" style="color: black;" data-toggle="modal" data-target="#mod-interessi">
                                                                     <i class="glyphicon glyphicon-music"></i>Interessi
                                                                 </button>
-                                                                <button class="col-md-4 btn btn-secodary borderless-btn" style="color: black;" data-toggle="modal" data-target="#mod-lingue">
+                                                                <button class="col-md-3 btn btn-secodary borderless-btn" style="color: black;" data-toggle="modal" data-target="#mod-lingue">
                                                                     <i class="glyphicon glyphicon-globe"></i>Lingue
                                                                 </button>
                                                             </div>
@@ -126,31 +126,19 @@
 
                                                     <ul class="list-group">
                                                         <li class="list-group-item list-group-item-info colored">
-                                                          Amici Facebook
+                                                          Amici
                                                         </li>
+                                                        
                                                         <c:forEach items="${profilo.following}" var="utente">
                                                             <li class="list-group-item ">
                                                                 <form action="RedirectServlet" role="form" method="get">    
                                                                     <input type="hidden" name="action" value="goUserProfile">
                                                                     <input type="hidden" name="idprofile" value="${utente.id}">
                                                                         <button class="borderless-btn btn-link pull-xs-right" style="color:graytext"><span class="pull-xs-right"><img src="${utente.foto_profilo}" class="avatar img-circle" style="box-shadow: 0px 0px 2px orangered; " height='40px' width='40px'/></span>
-                                                                        ${utente.nome} ${utente.cognome} </button><span  class="addClass pull-right glyphicon glyphicon-comment" onclick="register_popup('${utente.id}', '${utente.nome}','${utente.foto_profilo}');"></span>
+                                                                        ${utente.nome} ${utente.cognome} </button><span id="chat${utente.id}"  class="addClass pull-right glyphicon glyphicon-comment" onclick="register_popup('${utente.id}', '${utente.nome}','${utente.foto_profilo}');"></span>
                                                                 </form>
                                                             </li>
                                                         </c:forEach>
-                                                        <li class="list-group-item">
-                                                          <span class="pull-xs-right"><img src="http://lorempixel.com/200/200/people/9/" class="avatar img-circle" alt="avatar" height='40px' width='40px'></span>
-                                                          Cras justo odio<span class="addClass pull-right glyphicon glyphicon-comment" onclick="register_popup('qidea', 'QIdea');"></span>
-       
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                          <span class="label label-default label-pill pull-xs-right">2</span>
-                                                          Dapibus ac facilisis in
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                          <span class="label label-default label-pill pull-xs-right">1</span>
-                                                          Morbi leo risus
-                                                        </li>
                                                     </ul>
                                           </div>
                                           <div  class="col-md-9 col-sm-6 col-xs-8" style="position: relative; left: 8px">

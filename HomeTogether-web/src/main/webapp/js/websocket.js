@@ -31,12 +31,31 @@ websocket.onmessage= function processMessage(message){
                 (month<10 ? '0' : '') + month + '/' +
                 (day<10 ? '0' : '') + day;
                 var jsonData= JSON.parse(message.data);
-                $('#qnimate').addClass('popup-box-on');
+                
             
-                console.log(jsonData.message);
+                
                 if(jsonData!==null){ //messageTextArea.value += jsonData.message+'\n';
                     var txt=jsonData.message.split(":")[1];
                     var name=jsonData.message.split(":")[0];
+                    var idReceiver= jsonData.message.split(":")[2];
+                    console.log(identifier);
+                    if(identifier==null){
+                        $('#chat'+idReceiver).trigger('click');
+                        $('#messageArea'+idReceiver).append('<div id="newelement'+i+'"class="chat-box-single-line">'+
+                          '<abbr class="timestamp">'+data+'</abbr>'+
+                        '</div><div class="direct-chat-info clearfix">'+
+                                '<span class="direct-chat-name pull-left"><a>'+name+'</a></span>'+
+                            '</div>'+
+                            '<img alt="" src="" class="direct-chat-img">'+
+                            '<div class="direct-chat-text">'+
+                                '<p>'+txt+'</p>'+
+                            '</div>'+
+                            '<div class="direct-chat-info clearfix">'+
+                                '<span class="direct-chat-timestamp pull-right">'+time+'</span>'+
+                            '</div>');
+                    }
+                    
+                    console.log(idReceiver);
                     $('#messageArea'+identifier).append('<div id="newelement'+i+'"class="chat-box-single-line">'+
                       '<abbr class="timestamp">'+data+'</abbr>'+
                     '</div><div class="direct-chat-info clearfix">'+
@@ -55,7 +74,7 @@ websocket.onmessage= function processMessage(message){
             };
             function sendMessage(id){
                 identifier=id;
-                websocket.send($('#status_message'+id).val()+""+id);
+                websocket.send($('#status_message'+id).val()+":"+id);
                 console.log($('#status_message'+id).val());
                 //websocket.send(messageText.value);messageText.value="";
                 $('#status_message'+id).val("");
