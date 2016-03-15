@@ -23,7 +23,7 @@
         
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="js/following.js"></script>
-        <script src="js/popUpChat.js"></script>
+        <script src="js/popUpViewChat.js"></script>
         
         
 
@@ -134,13 +134,13 @@
                                                                     <input type="hidden" name="action" value="goUserProfile">
                                                                     <input type="hidden" name="idprofile" value="${utente.id}">
                                                                         <button class="borderless-btn btn-link pull-xs-right" style="color:graytext"><span class="pull-xs-right"><img src="${utente.foto_profilo}" class="avatar img-circle" style="box-shadow: 0px 0px 2px orangered; " height='40px' width='40px'/></span>
-                                                                        ${utente.nome} ${utente.cognome} </button><span  class="addClass pull-right glyphicon glyphicon-comment"></span>
+                                                                        ${utente.nome} ${utente.cognome} </button><span  class="addClass pull-right glyphicon glyphicon-comment" onclick="register_popup('${utente.id}', '${utente.nome}');"></span>
                                                                 </form>
                                                             </li>
                                                         </c:forEach>
                                                         <li class="list-group-item">
                                                           <span class="pull-xs-right"><img src="http://lorempixel.com/200/200/people/9/" class="avatar img-circle" alt="avatar" height='40px' width='40px'></span>
-                                                          Cras justo odio<span class="addClass pull-right glyphicon glyphicon-comment"></span>
+                                                          Cras justo odio<span class="addClass pull-right glyphicon glyphicon-comment" onclick="register_popup('qidea', 'QIdea');"></span>
        
                                                         </li>
                                                         <li class="list-group-item">
