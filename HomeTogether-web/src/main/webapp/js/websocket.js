@@ -55,7 +55,7 @@ websocket.onmessage= function processMessage(message){
             };
             function sendMessage(id){
                 identifier=id;
-                websocket.send($('#status_message'+id).val());
+                websocket.send($('#status_message'+id).val()+""+id);
                 console.log($('#status_message'+id).val());
                 //websocket.send(messageText.value);messageText.value="";
                 $('#status_message'+id).val("");
