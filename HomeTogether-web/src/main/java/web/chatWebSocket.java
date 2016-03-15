@@ -36,14 +36,16 @@ public class chatWebSocket {
     public void onMessage(String message,Session peer) throws IOException{
         //mandando il primo messaggio si prende l'username dalla sessione altrimenti inseriso in sessione il primo messaggio come username
         peer.getUserProperties().put("username", httpSession.getAttribute("nome"));
+        peer.getUserProperties().put("id", httpSession.getAttribute("id"));
         String username=(String) peer.getUserProperties().get("username");
+        Long id= (Long) peer.getUserProperties().get("id");
         if(username==null){
             peer.getUserProperties().put("username", httpSession.getAttribute("nome"));
-            peer.getBasicRemote().sendText(buildJsonData("System","you connected as "+ peer.getUserProperties()));
+           // peer.getBasicRemote().sendText(buildJsonData("System","you connected as "+ peer.getUserProperties()));
         }else{
             Iterator<Session> iterator= peers.iterator();
             while (iterator.hasNext()) {
-                iterator.next().getBasicRemote().sendText(buildJsonData(username,message));
+                iterator.next().getBasicRemote().sendText(buildJsonData(username,message,id));
             }
         }
     }
@@ -60,8 +62,8 @@ public class chatWebSocket {
     public void onClose(Session peer) {
         peers.remove(peer);
     }
-    private String buildJsonData(String username,String message){
-        JsonObject jsonObject= Json.createObjectBuilder().add("message",username+":"+message).build();
+    private String buildJsonData(String username,String message,Long id){
+        JsonObject jsonObject= Json.createObjectBuilder().add("message",username+":"+message+":"+id).build();
         StringWriter stringWriter = new StringWriter();
         try(JsonWriter jsonWriter= Json.createWriter(stringWriter)){jsonWriter.write(jsonObject);}
        return stringWriter.toString(); 

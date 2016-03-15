@@ -61,7 +61,7 @@
             }
             
             //creates markup for a new popup. Adds the id to popups array.
-            function register_popup(id, name)
+            function register_popup(id, name, foto)
             {
                 
                 for(var iii = 0; iii < popups.length; iii++)
@@ -84,7 +84,7 @@
                 var element= '<div class="popup-box chat-popup qnimate" id="'+ id +'">'+
             '<div class="popup-head">'+
                 '<div class="popup-head-left pull-left">'+
-                    '<img src="${profilo.foto_profilo}" alt="profile_img">'+
+                    '<img src="'+ foto +'" alt="profile_img">'+
                         '<a>'+ name +'</a>'+
                 '</div>'+
                     '<div class="popup-head-right pull-right">'+
@@ -108,19 +108,19 @@
                 '<div class="direct-chat-messages">'+
                     '<div id="output"></div>'+
                     '<!-- Message. Default to the left -->'+
-                    '<div id="messageArea" class="direct-chat-msg doted-border">'+
+                    '<div id="messageArea'+id+'" class="direct-chat-msg doted-border">'+
                         
                    ' </div>'+
               '<!-- /.direct-chat-msg -->'+
                 '</div>'+
             '</div>'+
             '<div class="popup-messages-footer">'+
-                '<textarea id="status_message" placeholder="Type a message..." name="message"></textarea>'+
+                '<textarea id="status_message'+id+'" placeholder="Type a message..." name="message"></textarea>'+
                 '<div class="btn-footer">'+
                     '<button class="bg_none"><i class="glyphicon glyphicon-film"></i> </button>'+
                     '<button class="bg_none"><i class="glyphicon glyphicon-camera"></i> </button>'+
                     '<button class="bg_none"><i class="glyphicon glyphicon-paperclip"></i> </button>'+
-                   ' <button class="bg_none pull-right" onclick="sendMessage();"><i class="glyphicon glyphicon-thumbs-up"></i> </button>'+
+                   ' <button class="bg_none pull-right" onclick="sendMessage('+id+');"><i class="glyphicon glyphicon-thumbs-up"></i> </button>'+
                 '</div>'+
             '</div>'+
 	  '</div>';
