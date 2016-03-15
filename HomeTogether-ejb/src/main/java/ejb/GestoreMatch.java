@@ -54,11 +54,12 @@ public class GestoreMatch {
         List<Interesse> intersezioneInteressi = intersectionInteressi(user.getInteressi(),profilo.getInteressi());
         
         match.setInteressi(intersezioneInteressi);
-        float match_interessi = 0f;
+        double match_interessi = 0;
         if (Math.min(sizeuserlistainteressi, sizeprofilolistainteressi)!=0){
-            match_interessi = (intersezioneInteressi.size())/(float)(Math.min(sizeuserlistainteressi, sizeprofilolistainteressi));
+            match_interessi = (intersezioneInteressi.size())/(double)(Math.min(sizeuserlistainteressi, sizeprofilolistainteressi));
         }
-        match.setMatch_interessi((float) (Math.round(match_interessi * 100.0) / 100.0));
+        System.out.println("round:"+(Math.round(match_interessi * 100.0) / 100.0));
+        match.setMatch_interessi((Math.round(match_interessi * 100.0) / 100.0));
         
         int sizeuserlistalingue = user.getLingue().size();
         int sizeprofilolistalingue = profilo.getLingue().size();
@@ -67,14 +68,15 @@ public class GestoreMatch {
         List<Lingua> intersezioneLingue = intersectionLingue(user.getLingue(),profilo.getLingue());
 
         match.setLingue(intersezioneLingue);
-        float match_lingue= 0;
+        double match_lingue= 0;
         if (Math.min(sizeuserlistalingue, sizeprofilolistalingue)!=0){
-            match_lingue = (intersezioneLingue.size())/(float)(Math.min(sizeuserlistalingue, sizeprofilolistalingue));
+            match_lingue = (intersezioneLingue.size())/(double)(Math.min(sizeuserlistalingue, sizeprofilolistalingue));
         }
         match.setProfilo(profilo);
-        match.setMatch_lingue((float) (Math.round(match_lingue * 100.0) / 100.0));
-        float totale = (match_interessi+match_lingue)/2;
-        match.setMatch_totale((float) (Math.round(totale * 100.0) / 100.0));
+       
+        match.setMatch_lingue((Math.round(match_lingue * 100.0) / 100.0));
+        double totale = (match_interessi+match_lingue)/2;
+        match.setMatch_totale((Math.round(totale * 100.0) / 100.0));
         
         return match;
         
@@ -112,11 +114,5 @@ public class GestoreMatch {
     }
     
     
-    public static float round(float d, int decimalPlace) {
-        BigDecimal bd = new BigDecimal(Float.toString(d));
-        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
-        return bd.floatValue();
-    }
-       
 
 }
