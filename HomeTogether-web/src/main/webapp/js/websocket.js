@@ -7,6 +7,7 @@
 var wsUri="ws://" + document.location.host +"/HomeTogether-web/chatendpoint";
 var websocket = new WebSocket(wsUri);
 var i=0;
+var identifier;
 
 var output = document.getElementById("output");
 websocket.onopen = function(evt) { onOpen(evt); };
@@ -21,7 +22,6 @@ function onOpen() {
 }
 websocket.onmessage= function processMessage(message){
                 var d = new Date();
-                
                 var month = d.getMonth()+1;
                 var day = d.getDate();
                 var hours=d.getHours();
@@ -33,11 +33,11 @@ websocket.onmessage= function processMessage(message){
                 var jsonData= JSON.parse(message.data);
                 $('#qnimate').addClass('popup-box-on');
             
-                console.log(jsonData.message.split(":")[0]);
+                console.log(jsonData.message);
                 if(jsonData!==null){ //messageTextArea.value += jsonData.message+'\n';
                     var txt=jsonData.message.split(":")[1];
                     var name=jsonData.message.split(":")[0];
-                    $('#messageArea').append('<div id="newelement'+i+'"class="chat-box-single-line">'+
+                    $('#messageArea'+identifier).append('<div id="newelement'+i+'"class="chat-box-single-line">'+
                       '<abbr class="timestamp">'+data+'</abbr>'+
                     '</div><div class="direct-chat-info clearfix">'+
                             '<span class="direct-chat-name pull-left"><a>'+name+'</a></span>'+
@@ -53,10 +53,12 @@ websocket.onmessage= function processMessage(message){
                 //$(".popup-messages").animate({ scrollTop: $('#newelement'+i).offset().top });
                 ++i;}
             };
-            function sendMessage(){
-                websocket.send(status_message.value);
+            function sendMessage(id){
+                identifier=id;
+                websocket.send($('#status_message'+id).val());
+                console.log($('#status_message'+id).val());
                 //websocket.send(messageText.value);messageText.value="";
-                status_message.value="";
+                $('#status_message'+id).val("");
             }
             function close(){
                 websocket.close();
