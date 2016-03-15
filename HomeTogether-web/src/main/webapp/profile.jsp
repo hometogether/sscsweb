@@ -110,13 +110,22 @@
                                                                 <button class="col-md-3 btn btn-secodary borderless-btn" style="color: black;" data-toggle="modal" data-target="#following-modal">
                                                                     <i class="  glyphicon glyphicon-user"></i>Following
                                                                 </button>
-                                                                </c:if>
                                                                 <button class="col-md-3 btn btn-secodary borderless-btn" style="color: black;" data-toggle="modal" data-target="#mod-interessi">
                                                                     <i class="glyphicon glyphicon-music"></i>Interessi
                                                                 </button>
                                                                 <button class="col-md-3 btn btn-secodary borderless-btn" style="color: black;" data-toggle="modal" data-target="#mod-lingue">
                                                                     <i class="glyphicon glyphicon-globe"></i>Lingue
                                                                 </button>
+                                                                </c:if>
+                                                                <c:if test="${profilo.id != id}">
+                                                                   <button class="col-md-6 btn btn-secodary borderless-btn" style="color: black;" data-toggle="modal" data-target="#mod-interessi">
+                                                                        <i class="glyphicon glyphicon-music"></i>Interessi
+                                                                    </button>
+                                                                    <button class="col-md-6 btn btn-secodary borderless-btn" style="color: black;" data-toggle="modal" data-target="#mod-lingue">
+                                                                        <i class="glyphicon glyphicon-globe"></i>Lingue
+                                                                    </button> 
+                                                                </c:if>
+                                                                
                                                             </div>
                                                             
                                                         </div>
