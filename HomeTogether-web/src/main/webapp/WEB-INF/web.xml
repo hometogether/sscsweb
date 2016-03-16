@@ -40,6 +40,10 @@
         <filter-name>SessionFilter</filter-name>
         <url-pattern>/RedirectServlet</url-pattern>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionFilter</filter-name>
+        <url-pattern>/NotifyServlet</url-pattern>
+    </filter-mapping>
     
     
     <filter>

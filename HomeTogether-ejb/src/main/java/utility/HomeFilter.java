@@ -36,7 +36,9 @@ public class HomeFilter implements Filter {
         System.out.println("context:"+request.getContextPath());
 
         if (session != null && session.getAttribute("id") != null && request.getRequestURI().equals(request.getContextPath()+"/")){
+            System.out.println("homefilter");
             response.sendRedirect(request.getContextPath()+"/RedirectServlet");
+            
         } else {
             chain.doFilter(req, res);
         }

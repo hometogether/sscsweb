@@ -150,11 +150,11 @@ public class RegistrationServlet extends HttpServlet {
                     }
                 }
 
-            }else if (action.equals("autocompileRegione")) {
+            }else if (action.equals("autocompileComune")) {
                 ServletContext context = getServletContext();
-                List<Regione> list = (List<Regione>) context.getAttribute("listRe");
+                List<Comune> list = (List<Comune>) context.getAttribute("list");
                 
-                String nomeDigitato = request.getParameter("regione").toLowerCase(); 
+                String nomeDigitato = request.getParameter("comune").toLowerCase(); 
                 String res = "";
                 int cont = 0;
                 if (nomeDigitato != null && list != null) {
@@ -166,48 +166,6 @@ public class RegistrationServlet extends HttpServlet {
 
                     }
                     out.println(res);
-                } else {
-                    out.println("-1");
-                }
-
-            } else if (action.equals("autocompileProvincia")) {
-                ServletContext context = getServletContext();
-                List<Provincia> list = (List<Provincia>) context.getAttribute("listPro");
-                
-                String nomeDigitato = request.getParameter("provincia").toLowerCase(); 
-                List<Provincia> res = new ArrayList<Provincia>();
-                int cont = 0;
-                if (nomeDigitato != null && list != null) {
-                    for (int i = 0; i < list.size() && cont < 5; i++) {
-                        if ((list.get(i).getNome().toLowerCase()).startsWith(nomeDigitato)) {
-                            res.add(list.get(i));
-                            cont++;
-                        }
-
-                    }
-                    out.println(buildGsonP(res));
-                } else {
-                    out.println("-1");
-                }
-
-            } else if (action.equals("autocompileComune")) {
-                ServletContext context = getServletContext();
-                List<Comune> list = (List<Comune>) context.getAttribute("list");
-                
-                String nomeDigitato = request.getParameter("comune").toLowerCase(); 
-                List<Comune> res = new ArrayList<Comune>();
-                int cont = 0;
-                if (nomeDigitato != null && list != null) {
-                    for (int i = 0; i < list.size(); i++) {
-                        if (cont!=5 && (list.get(i).getNome().toLowerCase()).startsWith(nomeDigitato)) {
-                            res.add(list.get(i));
-                            cont++;
-                        }else if ((list.get(i).getNome().toLowerCase()).equals(nomeDigitato)) {
-                            res.add(list.get(i));
-                        }
-
-                    }
-                    out.println(buildGson(res));
                 } else {
                     out.println("-1");
                 }
@@ -240,30 +198,7 @@ public class RegistrationServlet extends HttpServlet {
 
         }
     }
-    private String buildGson(List<Comune> c) {
-
-        Gson gson = new Gson();
-        String json = gson.toJson(c);
-
-        if (json == null) {
-            System.out.println("servlet buildGson: NULL");
-        } else {
-            System.out.println("servlet buildGson: NOT NULL  " + json);
-        }
-        return json;
-    }
-    private String buildGsonP(List<Provincia> c) {
-
-        Gson gson = new Gson();
-        String json = gson.toJson(c);
-
-        if (json == null) {
-            System.out.println("servlet buildGson: NULL");
-        } else {
-            System.out.println("servlet buildGson: NOT NULL  " + json);
-        }
-        return json;
-    }
+    
     
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

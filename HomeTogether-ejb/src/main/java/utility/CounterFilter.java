@@ -35,6 +35,7 @@ public class CounterFilter implements Filter {
         if (session == null || session.getAttribute("id") == null){
             chain.doFilter(req, res);
         } else {
+            System.out.println("counterfilter");
             response.sendRedirect(request.getContextPath()+"/RedirectServlet");
         }
     }

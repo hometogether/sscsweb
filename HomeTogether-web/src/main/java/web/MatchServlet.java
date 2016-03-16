@@ -11,6 +11,8 @@ import ejb.Comune;
 import ejb.GestoreMatch;
 import ejb.Profilo;
 import ejb.ProfiloFacade;
+import ejb.Provincia;
+import ejb.Regione;
 import ejb.UtenteGoogle;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -148,6 +150,68 @@ public class MatchServlet extends HttpServlet {
                     }
                     
                 }
+            } else if (action.equals("autocompileRegione")) {
+                ServletContext context = getServletContext();
+                List<Regione> list = (List<Regione>) context.getAttribute("listRe");
+                
+                String nomeDigitato = request.getParameter("regione").toLowerCase(); 
+                String res = "";
+                int cont = 0;
+                if (nomeDigitato != null && list != null) {
+                    for (int i = 0; i < list.size() && cont < 5; i++) {
+                        if ((list.get(i).getNome().toLowerCase()).startsWith(nomeDigitato)) {
+                            res += list.get(i).getNome() + "_";
+                            cont++;
+                        }
+
+                    }
+                    out.println(res);
+                } else {
+                    out.println("-1");
+                }
+
+            } else if (action.equals("autocompileProvincia")) {
+                ServletContext context = getServletContext();
+                List<Provincia> list = (List<Provincia>) context.getAttribute("listPro");
+                
+                String nomeDigitato = request.getParameter("provincia").toLowerCase(); 
+                List<Provincia> res = new ArrayList<Provincia>();
+                int cont = 0;
+                if (nomeDigitato != null && list != null) {
+                    for (int i = 0; i < list.size() && cont < 5; i++) {
+                        if ((list.get(i).getNome().toLowerCase()).startsWith(nomeDigitato)) {
+                            res.add(list.get(i));
+                            cont++;
+                        }
+
+                    }
+                    out.println(buildGsonP(res));
+                } else {
+                    out.println("-1");
+                }
+
+            } else if (action.equals("autocompileComune")) {
+                ServletContext context = getServletContext();
+                List<Comune> list = (List<Comune>) context.getAttribute("list");
+                
+                String nomeDigitato = request.getParameter("comune").toLowerCase(); 
+                List<Comune> res = new ArrayList<Comune>();
+                int cont = 0;
+                if (nomeDigitato != null && list != null) {
+                    for (int i = 0; i < list.size(); i++) {
+                        if (cont!=5 && (list.get(i).getNome().toLowerCase()).startsWith(nomeDigitato)) {
+                            res.add(list.get(i));
+                            cont++;
+                        }else if ((list.get(i).getNome().toLowerCase()).equals(nomeDigitato)) {
+                            res.add(list.get(i));
+                        }
+
+                    }
+                    out.println(buildGsonC(res));
+                } else {
+                    out.println("-1");
+                }
+
             } else if (action.equals("searchAjax")) {
                 String nomeDigitato = (String) request.getParameter("ric_utente");
                 int offset = Integer.parseInt(request.getParameter("offset"));
@@ -161,6 +225,31 @@ public class MatchServlet extends HttpServlet {
 
         Gson gson = new Gson();
         String json = gson.toJson(u);
+
+        if (json == null) {
+            System.out.println("servlet buildGson: NULL");
+        } else {
+            System.out.println("servlet buildGson: NOT NULL  " + json);
+        }
+        return json;
+    }
+    
+    private String buildGsonC(List<Comune> c) {
+
+        Gson gson = new Gson();
+        String json = gson.toJson(c);
+
+        if (json == null) {
+            System.out.println("servlet buildGson: NULL");
+        } else {
+            System.out.println("servlet buildGson: NOT NULL  " + json);
+        }
+        return json;
+    }
+    private String buildGsonP(List<Provincia> c) {
+
+        Gson gson = new Gson();
+        String json = gson.toJson(c);
 
         if (json == null) {
             System.out.println("servlet buildGson: NULL");
