@@ -98,7 +98,7 @@
                                                     
                                                     <input type="hidden" name='action' value="goToInterest">
                                                     <input type="hidden" name='nome' value="${interesse.nome}">
-                                                    <button class="btn borderless-btn btn-link" title="${interesse.nome}" style="text-align: center;color: black;"> ${interesse.nome}</button>
+                                                    <button class="btn borderless-btn btn-link" title="${interesse.nome}" style="text-align: center;color: black;overflow: hidden;text-overflow: ellipsis;max-width: 100%"> ${interesse.nome}</button>
                                                     
                                                 </div>
                                             </form>
