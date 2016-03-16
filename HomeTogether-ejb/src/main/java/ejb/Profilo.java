@@ -328,5 +328,28 @@ public class Profilo implements Serializable {
     }
 
     
+    
+    @OneToMany(mappedBy = "profilo")
+    private List<Richiesta> richieste;
+
+    /**
+     * Get the value of richieste
+     *
+     * @return the value of richieste
+     */
+    public List<Richiesta> getRichieste() {
+        return richieste;
+    }
+
+    /**
+     * Set the value of richieste
+     *
+     * @param richieste new value of richieste
+     */
+    public void setRichieste(List<Richiesta> richieste) {
+        this.richieste = richieste;
+    }
+
+    
 
 }

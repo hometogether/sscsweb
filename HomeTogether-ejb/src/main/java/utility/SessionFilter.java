@@ -31,31 +31,8 @@ public class SessionFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         HttpSession session = request.getSession(false);
-        /*String path = ((HttpServletRequest) request).getRequestURI();
-        String homeURL = "/HomeTogether-web/";
-        String homeURL2 = "/HomeTogether-web";
-        String facebookURL = "/HomeTogether-web/FacebookServlet";
-        String googleURL = "/HomeTogether-web/GoogleServlet";
-        String loginURL = "/HomeTogether-web/LoginServlet";
-        String css = "/HomeTogether-web/css";
-        String js = "/HomeTogether-web/js";
-        String  img = "/HomeTogether-web/images";
-        String registrationURL = "/HomeTogether-web/RegistrationServlet";*/
-        /*System.out.println("url:"+loginURL);
-        System.out.println("req:"+request.getRequestURI());*/
-        /*if (request.getRequestURI().equals(loginURL) || request.getRequestURI().equals(googleURL)
-                ||request.getRequestURI().equals(facebookURL) || request.getRequestURI().equals(homeURL)
-                || request.getRequestURI().equals(homeURL2) || request.getRequestURI().startsWith(css)
-                || request.getRequestURI().startsWith(js) || request.getRequestURI().startsWith(img) ){
-            System.out.println("devo loggarmi!");
-            chain.doFilter(req, res);
-            
-            //chain.doFilter(req, res);
-            //response.sendRedirect(request.getContextPath() + "/index.jsp"); // No logged-in user found, so redirect to login page.
-        } else if (request.getRequestURI().equals(registrationURL) ){
-            System.out.println("non sono loggato, ma sto effettuando un'operazione di registrazione!");
-            chain.doFilter(req, res);
-        } else */if (session == null || session.getAttribute("id") == null){
+        
+        if (session == null || session.getAttribute("id") == null){
             response.sendRedirect(request.getContextPath()); 
         }else {
             chain.doFilter(req, res); // Logged-in user found, so just continue request.
