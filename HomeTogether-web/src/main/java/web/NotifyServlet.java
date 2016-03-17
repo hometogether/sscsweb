@@ -90,7 +90,22 @@ public class NotifyServlet extends HttpServlet {
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
                 rd.forward(request, response);
 
-            }{
+            } else if (action.equals("rifiutarichiesta")) {
+                Long id = (Long) (session.getAttribute("id"));
+                Profilo personalProfile = profiloFacade.getProfilo(id);
+                
+                Long idRichiesta = (Long) (session.getAttribute("idRichiesta"));
+                Richiesta richiesta = richiestaFacade.getRichiesta(idRichiesta);
+                
+                
+                gestoreRichieste.rifiutaRichiesta(personalProfile, richiesta);
+                
+                request.setAttribute("profilo", personalProfile);
+
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                rd.forward(request, response);
+
+            } else {
                 //GESTIRE ERRORE
             }
 

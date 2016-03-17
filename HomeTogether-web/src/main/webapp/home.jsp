@@ -41,28 +41,69 @@
                 <p>${profilo.comune.nome}<span>, </span>${profilo.comune.provincia.regione.nome}</p>
             </div>
         </div>
-            <div class="col-md-8 white-element" style="margin-left: 3%;">
-            <h1>
-                <strong>
-                    <span style="color:#f1c40f;">#Find</span>
-                </strong>
-                <span style="color : lightgrey">Together</span> 
-            </h1>
-            <form action="MatchServlet" method="post" id="formatchservlet" >
-            <div class="input-group triple-input">
-               
-                    <input type="hidden" name="action" value="searchUtente" /> 
+            <div class="col-md-8" style="margin-left: 3%;">
+               <div class="white-element">
+                    <h1>
+                        <strong>
+                            <span style="color:#f1c40f;">#Find</span>
+                        </strong>
+                        <span style="color : lightgrey">Together</span> 
+                    </h1>
+                    <form action="MatchServlet" method="post" id="formatchservlet" >
+                        <div class="input-group triple-input">
 
-                    <input type="text" id="regione" name="regione" placeholder="Regione" class="form-control" onkeyup="autocompileRe()"  /> 
-                    <input type="text" id="provincia" name="provincia" placeholder="Provincia" class="form-control" onkeyup="autocompilePro()" /> 
-                    <input type="text" id="localita" name="localita" placeholder="Comune" class="form-control" onkeyup="autocompile()"/> 
-                    <span class="input-group-btn">
-                        <button class="btn btn-default " type="submit"><i class="glyphicon glyphicon-search"></i>Vai!</button>
-                    </span>
-              
+                                <input type="hidden" name="action" value="searchUtente" /> 
+
+                                <input type="text" id="regione" name="regione" placeholder="Regione" class="form-control" onkeyup="autocompileRe()"  /> 
+                                <input type="text" id="provincia" name="provincia" placeholder="Provincia" class="form-control" onkeyup="autocompilePro()" /> 
+                                <input type="text" id="localita" name="localita" placeholder="Comune" class="form-control" onkeyup="autocompile()"/> 
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default " type="submit"><i class="glyphicon glyphicon-search"></i>Vai!</button>
+                                </span>
+                        </div>
+                    </form>
+                  </div>
+                <br>
+                <div class="panel-group">
+                                <c:forEach var="following" items="${profilo.following}">
+                                    <c:forEach var="diario" items="${following.diari}">
+                                        <div class="panel panel-info">
+                                          <div class="panel-heading colored">
+                                              ${diario.nome}
+                                          </div>
+
+                                          <div class="panel-body">
+
+                                              Creato il ${diario.data_inizio}
+
+                                          </div>
+                                          <div class="panel-body">
+
+                                              Partecipanti al diario:
+                                              <c:forEach var="partecipante" items="${diario.partecipanti}">
+                                                  <a href="/HomeTogether-web/RedirectServlet?action=goUserProfile&idprofile=${partecipante.id}">${partecipante.nome} ${partecipante.cognome}</a>
+
+
+                                              </c:forEach>
+
+                                          </div>        
+                                          <div class="panel-footer">
+                                              <form action="DiaryServlet" method="get">
+                                                  <input type="hidden" name="action" value="goToDiary">
+                                                  <input type="hidden" name="idDiario" value="${diario.id}">   
+                                                  <button type="submit" class="btn btn-warning form-group" >Entra</button>
+                                              </form>
+                                          </div>
+
+                                      </div>
+                                      <br>
+                                    </c:forEach>
+                                </c:forEach>
+
+
+                            </div>
             </div>
-                 </form>
-          </div>
+            
         <div class="col-md-2" ></div>
     </body>
 </html>

@@ -39,11 +39,9 @@ public class GestoreRichieste {
             richiesta.setMittente(profilo);
             richiesta.setProfilo(destinatario);
             richiestaFacade.create(richiesta);
-            System.out.println("dopo il create");
 
             destinatario.getRichieste().add(richiesta);
             profiloFacade.edit(destinatario);
-            System.out.println("dopo l'edit");
             return 0;
 
         }
@@ -77,7 +75,30 @@ public class GestoreRichieste {
             
             return 0;
         } else {
-            System.out.println("Errore sconosciuto: si vuole eliminare una richiesta che l'utente non ha associato");
+            System.out.println("Errore sconosciuto: si vuole accettare una richiesta che l'utente non ha associato");
+            return -1;
+        }
+
+    }
+    
+    public int rifiutaRichiesta(Profilo profilo, Richiesta richiesta) {
+        //il tipo di ritorno è una Stringa, perché in alcuni casi dovremo tornare un Long (tipo non primitivo) e in altri un int.
+        /*interessi.remove(interesse);
+         p.setInteressi(interessi);
+         profiloFacade.edit(p);*/
+
+        List<Richiesta> richieste = profilo.getRichieste();
+
+        //dobbiamo controllare che l'interesse non sia già associato all'user
+        boolean contain = richieste.contains(richiesta);
+        if (contain) {
+            richieste.remove(richiesta);
+            profilo.setRichieste(richieste);
+            profiloFacade.edit(profilo);
+            
+            return 0;
+        } else {
+            System.out.println("Errore sconosciuto: si vuole rifiutare una richiesta che l'utente non ha associato");
             return -1;
         }
 
