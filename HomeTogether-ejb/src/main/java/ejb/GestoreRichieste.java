@@ -37,10 +37,13 @@ public class GestoreRichieste {
 
             Richiesta richiesta = new Richiesta();
             richiesta.setMittente(profilo);
+            richiesta.setProfilo(destinatario);
             richiestaFacade.create(richiesta);
+            System.out.println("dopo il create");
 
             destinatario.getRichieste().add(richiesta);
             profiloFacade.edit(destinatario);
+            System.out.println("dopo l'edit");
             return 0;
 
         }

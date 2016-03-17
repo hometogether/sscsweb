@@ -32,4 +32,6 @@ public interface RichiestaFacadeLocal {
 
     EntityManager getEntityManager();
     
+    Richiesta getRichiesta(Long idRichiesta);
+    
 }

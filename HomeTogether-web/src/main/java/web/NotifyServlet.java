@@ -9,6 +9,8 @@ import ejb.GestoreRichieste;
 import ejb.GestoreUtenti;
 import ejb.Profilo;
 import ejb.ProfiloFacade;
+import ejb.Richiesta;
+import ejb.RichiestaFacade;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -43,12 +45,13 @@ public class NotifyServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
     @EJB
-    private GestoreUtenti gestoreUtenti;
-    @EJB
-    private GestoreRichieste gestoreRchieste;
+    private GestoreRichieste gestoreRichieste;
     @EJB
     private ProfiloFacade profiloFacade;
+    @EJB
+    private RichiestaFacade richiestaFacade;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -60,63 +63,34 @@ public class NotifyServlet extends HttpServlet {
         HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
-            if (action.equals("add_profile_image")) {
-                String email = (String) session.getAttribute("email");
-                Part filePart = request.getPart("nomeFile");
-                InputStream filecontent = filePart.getInputStream();
-                FileOutputStream prova = new FileOutputStream("C:/Users/Antonio/Documents/NetBeansProjects/HomeTogether/HomeTogether-web/src/main/webapp/profile_img/" + filePart.getSubmittedFileName());
-                int read = 0;
-                final byte[] bytes = new byte[1024];
-
-                while ((read = filecontent.read(bytes)) != -1) {
-                    prova.write(bytes, 0, read);
-                }
-                String foto = "profile_img/" + filePart.getSubmittedFileName();
-                gestoreUtenti.modificaFotoProfilo(email, foto);
-                session.setAttribute("foto", "profile_img/" + filePart.getSubmittedFileName());
-                filecontent.close();
-                prova.close();
-                Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
-                request.setAttribute("profilo", p);
-                RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile.jsp");
-                rd.forward(request, response);
-            } else if (action.equals("mod_info")) {
-                String location = request.getParameter("localita");
-                String data = request.getParameter("data_nascita");
-                String email = (String) (session.getAttribute("email"));
-                String formazione = request.getParameter("formazione");
-                String occupazione = request.getParameter("occupazione");
-                String telefono = request.getParameter("telefono");
-                Profilo p = gestoreUtenti.modificaInfo(email, data, formazione, occupazione, telefono);
-                request.setAttribute("profilo", p);
-                RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile.jsp");
-                rd.forward(request, response);
-            } else if (action.equals("follow")) {
-                Long idfollow = new Long(request.getParameter("id"));
-                Long id = (Long) (session.getAttribute("id"));
-                System.out.println("id request:" + request.getParameter("id"));
-                System.out.println("id sessione:" + session.getAttribute("id"));
-                Profilo personalProfile = profiloFacade.getProfilo(id);
-                Profilo followProfile = profiloFacade.getProfilo(idfollow);
-                int res = gestoreUtenti.aggiungiFollowing(personalProfile, followProfile);
-                if (res == 0) {
-                    out.println("0");
-                } else {
-                    out.println("-1");
-                }
-
-            } else if (action.equals("aggiungirichiesta")) {
+            if (action.equals("aggiungirichiesta")) {
                 Long idDest = new Long(request.getParameter("idDest"));
                 Long id = (Long) (session.getAttribute("id"));
-               // gestoreRchieste
-                /*int res = gestoreUtenti.eliminaFollowing(personalProfile, followProfile);
-                if (res == 0) {
-                    out.println("0");
-                } else {
-                    out.println("-1");
-                }*/
+                Profilo personalProfile = profiloFacade.getProfilo(id);
+                Profilo destProfile = profiloFacade.getProfilo(idDest);
+                gestoreRichieste.aggiungiRichiesta(personalProfile, destProfile);
+                
+                request.setAttribute("profilo", personalProfile);
 
-            } else {
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                rd.forward(request, response);
+
+            } else if (action.equals("accettarichiesta")) {
+                Long id = (Long) (session.getAttribute("id"));
+                Profilo personalProfile = profiloFacade.getProfilo(id);
+                
+                Long idRichiesta = (Long) (session.getAttribute("idRichiesta"));
+                Richiesta richiesta = richiestaFacade.getRichiesta(idRichiesta);
+                
+                
+                gestoreRichieste.accettaRichiesta(personalProfile, richiesta);
+                
+                request.setAttribute("profilo", personalProfile);
+
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                rd.forward(request, response);
+
+            }{
                 //GESTIRE ERRORE
             }
 

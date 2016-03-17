@@ -69,7 +69,13 @@
                                           ${match.match_totale*100} % generale
                                     </div>
                                 </div>
-                                    <button class="btn btn-warning pull-right">Invia richiesta</button>
+                                    <form action="NotifyServlet" method="get" id="formrequest" >
+
+                                        <input type="hidden" name="action" value="aggiungirichiesta" /> 
+                                         <input type="hidden" name="idDest" value="${match.profilo.id}" /> 
+                                        <button class="btn btn-warning pull-right">Invia richiesta</button>
+                                    
+                                    </form>
                             </div> 
                         </div>
                         
