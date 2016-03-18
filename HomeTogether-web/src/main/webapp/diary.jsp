@@ -12,6 +12,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script src="js/jquery-1.11.0.min.js"></script>
         <script src="js/post.js"></script>
+        <script src="js/popUpViewChat.js"></script>
+        <script type="text/javascript" src="js/websocket.js"></script>
 
         <script src="js/wow.min.js"></script>
         <link href="css/bootstrap_1.css" rel='stylesheet' type='text/css' />
@@ -19,6 +21,7 @@
         <link href="css/bootstrap-theme_1.css" rel='stylesheet' type='text/css' />
         <link href="css/ProfileStyle.css" rel='stylesheet' type='text/css' />
         
+        <link href="css/popUpChat.css" rel='stylesheet' type='text/css' />
         <link href="css/style_1.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap-dialog.css" rel='stylesheet' type='text/css' />
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix ="c" %>
@@ -432,77 +435,22 @@
                                           <!-- left column -->
                                           <br><br><br><br>
                                           <div class="col-md-3 col-sm-4 col-xs-4" style="background: #fff">
-                                            <br>
-                                            <div class="text-center img_container">
-                                                <c:if test="${profilo.id == id}">
-                                                <div class="the-buttons col-md-3 col-sm-4 col-xs-4">
-                                                    <form action="ProfileServlet" method="post" id="upload" enctype="multipart/form-data">
-                                                        <i class="glyphicon glyphicon-camera" id="white-camera"></i>
-                                                        <span class="btn-file">
-                                                            <input type="file" name="nomeFile" onchange="upload.submit();"/>
-                                                            <button class="borderless-btn">Cambia immagine profilo</button>
-                                                        </span>
-                                                        <input id="action" type="hidden" value="add_profile_image" name="action" class="form-control"/>
-                                                    </form>
-                                                </div>
-                                                </c:if>
-                                                
-                                                <a href="#" data-toggle="modal" data-target="#avatar-modal"><img src="${profilo.foto_profilo}" class="avatar profile-image-avatar" alt="avatar"/></a>
-                                            </div>
-   
-                                              <br>
-                                              <div class="panel panel-info">
-                                                <div class="panel-heading colored">
-                                                             Su di te
-                                                        </div>
+                                                <ul class="list-group">
+                                                    <li class="list-group-item list-group-item-info colored">
+                                                      Amici
+                                                    </li>
 
-                                                        <div class="panel-body">
-                                                            Vive a <span>${profilo.comune.nome}</span>
-                                                        </div>
-
-                                                        <div class="panel-body">
-                                                            Lavora presso <span>${profilo.occupazione}</span>
-                                                        </div>
-
-                                                        <div class="panel-body">
-                                                            Nato il <span>${profilo.data_nascita}</span>
-                                                        </div>
-
-                                                        <div class="panel-footer" style="padding:3% 0 3% 0; ">
-                                                            <div class="btn-group" role="group"> 
-                                                                <c:if test="${profilo.id == id}">
-                                                                <button class="col-md-4 btn btn-secodary borderless-btn" style="color: black;padding-left: 2px;" data-toggle="modal" data-target="#mod-info-modal">
-                                                                    <i class="glyphicon glyphicon-info-sign"></i> Informazioni
-                                                                </button>
-                                                                
-                                                                </c:if>
-                                                                <button class="col-md-4 btn btn-secodary borderless-btn" style="color: black;" data-toggle="modal" data-target="#mod-interessi">
-                                                                    <i class="glyphicon glyphicon-music"></i>Interessi
-                                                                </button>
-                                                            </div>
-                                                            
-                                                        </div>
-                                                        
-                                                        
-                                                    </div>
-
-                                                    <ul class="list-group">
-                                                        <li class="list-group-item list-group-item-info colored">
-                                                          Amici Facebook
+                                                    <c:forEach items="${profilo.following}" var="utente">
+                                                        <li class="list-group-item ">
+                                                            <form action="RedirectServlet" role="form" method="get">    
+                                                                <input type="hidden" name="action" value="goUserProfile">
+                                                                <input type="hidden" name="idprofile" value="${utente.id}">
+                                                                    <button class="borderless-btn btn-link pull-xs-right" style="color:graytext"><span class="pull-xs-right"><img src="${utente.foto_profilo}" class="avatar img-circle" style="box-shadow: 0px 0px 2px orangered; " height='40px' width='40px'/></span>
+                                                                    ${utente.nome} ${utente.cognome} </button><span id="chat${utente.id}"  class="addClass pull-right glyphicon glyphicon-comment" onclick="register_popup('${utente.id}', '${utente.nome}','${utente.foto_profilo}');"></span>
+                                                            </form>
                                                         </li>
-                                                        <li class="list-group-item">
-                                                          <span class="pull-xs-right"><img src="http://lorempixel.com/200/200/people/9/" class="avatar img-circle" alt="avatar" height='40px' width='40px'></span>
-                                                          Cras justo odio
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                          <span class="label label-default label-pill pull-xs-right">2</span>
-                                                          Dapibus ac facilisis in
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                          <span class="label label-default label-pill pull-xs-right">1</span>
-                                                          Morbi leo risus
-                                                        </li>
-                                                    </ul>
+                                                    </c:forEach>
+                                                </ul>                                          
                                           </div>
                                           
                                           <!-- edit form column -->
@@ -675,6 +623,12 @@
                                                            </div></div>
                                                         <div class="col-md-1"></div>
                                                             </c:forEach>
+
+                                                        </div>
+                                                         </div>
+                                                            </div>
+                                               
+                                            </c:forEach>
                                                         <script>
                                                                         $('.popover-markup>.trigger').popover({
                                                                             html: true,
@@ -691,12 +645,8 @@
                                                                                 }
                                                                             });
                                                                         });
-                                                                    </script>
-                                                        </div>
-                                                         </div>
-                                                            </div>
-                                               
-                                            </c:forEach></div>
+                                                                    </script>                                            
+                                            </div>
                                               <div class="col-md-2 col-sm-2 col-lg-2"></div>
                                               
                                           </div>
