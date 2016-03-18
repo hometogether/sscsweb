@@ -12,7 +12,7 @@
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-       
+        
         <link href="css/bootstrap_1.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap.min_1.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap-theme_1.css" rel='stylesheet' type='text/css' />
@@ -31,9 +31,11 @@
         
         <title>HOME Page</title>
     </head>
+    
     <body>
         <%@include file="navbar.jsp" %>
-        <br/><br/><br/><br/>
+        <%@include file="error.jsp" %>
+        
         
         <div class="col-md-2">
             <div class="white-element">
@@ -49,7 +51,7 @@
                         </strong>
                         <span style="color : lightgrey">Together</span> 
                     </h1>
-                    <form action="MatchServlet" method="post" id="formatchservlet" >
+                    <form action="MatchServlet" method="get" id="formatchservlet" >
                         <div class="input-group triple-input">
 
                                 <input type="hidden" name="action" value="searchUtente" /> 

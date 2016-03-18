@@ -75,7 +75,7 @@
                                 <c:if test="${profilo.id == id}">
                                     <li class="col-md-3"id="${interesse.id}">
                                         <div class="btn-group">
-                                            <form action="InterestServlet" role="form" method="post">
+                                            <form action="InterestServlet" role="form" method="get">
                                                 <div class="btn-interest">
                                                     
                                                     <input type="hidden" name='action' value="goToInterest">
@@ -93,7 +93,7 @@
                                 <c:if test="${profilo.id != id}">
                                     <li class="col-md-3"id="${interesse.id}">
                                         <div class="btn-group">
-                                            <form action="InterestServlet" role="form" method="post">
+                                            <form action="InterestServlet" role="form" method="get">
                                                 <div class="btn-interest">
                                                     
                                                     <input type="hidden" name='action' value="goToInterest">
@@ -105,11 +105,7 @@
                                         </div>
                                     </li> 
                                 </c:if>
-                                <!--<div id="${interesse.id}">
-                                    <form action="InterestServlet" role="form" method="post">
-                                        <button type="button" class="btn btn-default" onClick="rimuoviInteresse(${interesse.id})">${interesse.nome}</button>
-                                    </form>
-                                </div>-->
+                                
                             </c:forEach>
                             </ul>
                         </div>

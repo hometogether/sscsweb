@@ -166,7 +166,31 @@ public class DiaryServlet extends HttpServlet {
                 
                 out.println("0");
             } else {
-                //GESTIRE ERRORE
+                
+                
+                //if (request.getParameter("idDiario")==null || request.getParameter("idDiario").equals("")){
+                    Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                    request.setAttribute("profilo", personalProfile);
+                    
+                    request.setAttribute("danger", "azione sconosciuta!");
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                    rd.forward(request, response);
+                /*} else {
+                    Long idDiario = new Long(request.getParameter("idDiario"));
+                    Diario d = gestoreDiari.getDiario(idDiario);
+                    Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
+                    //List<Post> posts = gestoreDiari.getPosts(idDiario);
+
+                    d.setPost(Lists.reverse(d.getPost()));
+
+                    request.setAttribute("profilo", p);
+
+                    request.setAttribute("diario", d);
+                    request.setAttribute("danger", "azione sconosciuta!");
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
+                    rd.forward(request, response);
+                }*/
+                
             }
 
         }

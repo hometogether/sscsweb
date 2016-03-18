@@ -423,6 +423,7 @@
     </head>
     <body>
         <%@include file="navbar.jsp" %>
+        <%@include file="error.jsp" %>
         <div class="content col-md-12">
             <div class="banner-orange">
                 <div class="container">

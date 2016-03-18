@@ -90,6 +90,7 @@
         </script>
         <!--MODAL LOGIN E REGISTRAZIONE-->
         <%@include file="modal-login.jsp"%>
+        
     <div class="header col-md-12">
       <div class="row">  
     
@@ -125,10 +126,13 @@
                                 </ul>
                             </li>
                         </ul>
-                        
+                                
+
                     </div>
+                    <%@include file="error.jsp" %>
                 </div>
             </nav>
+    
         </div>
     </div>
     <!-- Page Content -->

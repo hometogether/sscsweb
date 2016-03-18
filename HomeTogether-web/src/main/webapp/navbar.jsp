@@ -26,7 +26,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                     </button>
-                    <form role="form" method="POST" action="RedirectServlet">
+                    <form role="form" method="post" action="RedirectServlet">
                         <input type="hidden" name="action" value="goHome">
                         <button type="submit" class="navbar-brand borderless-btn logo-sx" style="position: relative;left: 15%;"><img alt="Brand" src="images/logoRettangolare.png"></button>
                     </form>
