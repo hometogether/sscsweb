@@ -26,7 +26,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                     </button>
-                    <form role="form" method="post" action="RedirectServlet">
+                    <form role="form" method="get" action="RedirectServlet">
                         <input type="hidden" name="action" value="goHome">
                         <button type="submit" class="navbar-brand borderless-btn logo-sx" style="position: relative;left: 15%;"><img alt="Brand" src="images/logoRettangolare.png"></button>
                     </form>
@@ -50,7 +50,7 @@
                             </li>
                         </ul>-->
                         <!--BARRA DI RICERCA-->
-                        <form class="navbar-form navbar-left nav-top-list search-bar-form" role="form" method="POST" action="NavBarServlet">
+                        <form class="navbar-form navbar-left nav-top-list search-bar-form" role="form" method="get" action="NavBarServlet">
                             <div class="input-group col-md-12" style="text-align: center;">
                                 <input type="hidden" name="action" value="searchUtente">
                                 <input type="text" class="form-control" placeholder="Cerca persone" id="ric_utente" name="ric_utente" required="yes">

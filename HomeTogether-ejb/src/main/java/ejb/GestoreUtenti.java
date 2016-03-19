@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -29,23 +30,23 @@ public class GestoreUtenti {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    public int aggiungiUser(String nome, String cognome, String password, String r_password, String email, String r_email, String data_nascita, String sesso, Comune comune) {
+    public Profilo aggiungiUser(String nome, String cognome, String password, String r_password, String email, String r_email, String data_nascita, String sesso, Comune comune) {
         System.out.println("entro in aggiungi user, con la persistance spettacolari!!!wowowow");
         if (nome == null || cognome == null || password == null || r_password == null || email == null
                 || r_email == null || data_nascita == null || sesso == null) {
             System.out.println("Non sono stati compilati tutti i campi!");
-            return -1;
+            return null;
         } else if (!password.equals(r_password)) {
             System.out.println("Le password non corrispondono!");
-            return -2;
+            return null;
         } else if (!email.equals(r_email)) {
             System.out.println("Le email non corrispondono!");
-            return -3;
+            return null;
         } else {
             int emailesistente = profiloFacade.checkEmailEsistente(email);
             if (emailesistente != 0) {
                 System.out.println("Email già presente nel DB!");
-                return -4;
+                return null;
             }
         }
         Profilo p = new Profilo();
@@ -57,12 +58,15 @@ public class GestoreUtenti {
         p.setTipo(0);
         p.setComune(comune);
         //p.setFoto_profilo("");
+        EntityManager em = profiloFacade.getEntityManager();
+
         profiloFacade.create(p);
-        Profilo profilo = profiloFacade.getProfilo(email);
+        em.persist(p);
+        em.flush();
         // Long idProfilo = profilo.getId();
         UtenteApp u = new UtenteApp();
         u.setPassword(password);
-        u.setProfilo(profilo);
+        u.setProfilo(p);
         u.setEmail(email);
 
        // UtenteApp u = new UtenteApp();
@@ -74,23 +78,23 @@ public class GestoreUtenti {
         // String[] data = data_nascita.split("/");
         utenteAppFacade.create(u);
 
-        return 0;
+        return p;
     }
 
-    public int aggiungiUserGoogle(String nome, String cognome, String idGoogle, String email, String r_email, String data_nascita, String sesso, String foto, Comune comune) {
+    public Profilo aggiungiUserGoogle(String nome, String cognome, String idGoogle, String email, String r_email, String data_nascita, String sesso, String foto, Comune comune) {
         System.out.println("entro in aggiungi user, con la persistance spettacolari!!!wowowow");
         if (nome == null || cognome == null || idGoogle == null || email == null
                 || r_email == null || data_nascita == null || sesso == null) {
             System.out.println("Non sono stati compilati tutti i campi!");
-            return -1;
+            return null;
         } else if (!email.equals(r_email)) {
             System.out.println("Le email non corrispondono!");
-            return -3;
+            return null;
         } else {
             int emailesistente = profiloFacade.checkEmailEsistente(email);
             if (emailesistente != 0) {
                 System.out.println("Email già presente nel DB!");
-                return -4;
+                return null;
             }
         }
         Profilo p = new Profilo();
@@ -102,7 +106,11 @@ public class GestoreUtenti {
         p.setTipo(0);
         p.setComune(comune);
         p.setFoto_profilo(foto);
+        EntityManager em = profiloFacade.getEntityManager();
+
         profiloFacade.create(p);
+        em.persist(p);
+        em.flush();
         Profilo profilo = profiloFacade.getProfilo(email);
         //Long idProfilo = profilo.getId();
         UtenteGoogle u = new UtenteGoogle();
@@ -110,32 +118,25 @@ public class GestoreUtenti {
         u.setProfilo(profilo);
         u.setEmail(email);
 
-       // UtenteApp u = new UtenteApp();
-        /*u.setNome(nome);
-         u.setCognome(cognome);*/
-        //u.setIdUtente("0");
-        // utenteAppFacade.create(u);
-        //System.out.println("la data è:"+data_nascita);
-        // String[] data = data_nascita.split("/");
         utenteGoogleFacade.create(u);
 
-        return 0;
+        return p;
     }
 
-    public int aggiungiUserFacebook(String nome, String cognome, String idFacebook, String email, String r_email, String data_nascita, String sesso, String foto, Comune comune) {
+    public Profilo aggiungiUserFacebook(String nome, String cognome, String idFacebook, String email, String r_email, String data_nascita, String sesso, String foto, Comune comune) {
 
         if (nome == null || cognome == null || idFacebook == null || email == null
                 || r_email == null || data_nascita == null || sesso == null || foto == null) {
             System.out.println("Non sono stati compilati tutti i campi!");
-            return -1;
+            return null;
         } else if (!email.equals(r_email)) {
             System.out.println("Le email non corrispondono!");
-            return -3;
+            return null;
         } else {
             int emailesistente = profiloFacade.checkEmailEsistente(email);
             if (emailesistente != 0) {
                 System.out.println("Email già presente nel DB!");
-                return -4;
+                return null;
             }
         }
         Profilo p = new Profilo();
@@ -147,7 +148,11 @@ public class GestoreUtenti {
         p.setTipo(0);
         p.setComune(comune);
         p.setFoto_profilo(foto);
+        EntityManager em = profiloFacade.getEntityManager();
+
         profiloFacade.create(p);
+        em.persist(p);
+        em.flush();
         Profilo profilo = profiloFacade.getProfilo(email);
         //Long idProfilo = profilo.getId();
         UtenteFacebook u = new UtenteFacebook();
@@ -164,7 +169,7 @@ public class GestoreUtenti {
         // String[] data = data_nascita.split("/");
         utenteFacebookFacade.create(u);
 
-        return 0;
+        return p;
     }
 
     public List<UtenteApp> getUsers() {

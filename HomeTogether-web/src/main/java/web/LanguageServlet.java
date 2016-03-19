@@ -8,6 +8,8 @@ package web;
 import com.google.gson.Gson;
 import ejb.GestoreLingue;
 import ejb.Lingua;
+import ejb.Profilo;
+import ejb.ProfiloFacadeLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,7 +46,8 @@ public class LanguageServlet extends HttpServlet {
      */
     @EJB
     private GestoreLingue gestoreLingue;
-
+@EJB
+    private ProfiloFacadeLocal profiloFacade;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SAXException {
         response.setContentType("text/html;charset=UTF-8");
@@ -51,13 +55,18 @@ public class LanguageServlet extends HttpServlet {
         response.setHeader("Cache-Control", "no-cache, must-revalidate");
         response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
         response.setDateHeader("Expires", 0); // Proxies.
+        HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
 
             String action = request.getParameter("action");
 
             System.out.println("action is:" + action);
-            if (action.equals("add")) {
-                HttpSession session = request.getSession();
+            if (action == null) {
+                Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                request.setAttribute("profilo", personalProfile);
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                rd.forward(request, response);
+            } else if (action.equals("add")) {
                 System.out.println("entro in action add");
                 Long idProfilo = (Long) session.getAttribute("id");
 
@@ -75,7 +84,6 @@ public class LanguageServlet extends HttpServlet {
                 }
 
             } else if (action.equals("remove")) {
-                HttpSession session = request.getSession();
                 Long idProfilo = (Long) session.getAttribute("id");
                 System.out.println("entro in action remove");
                 Long idlingua = Long.parseLong(request.getParameter("idlingua"));
@@ -112,8 +120,12 @@ public class LanguageServlet extends HttpServlet {
                 }
 
             } else {
-                out.println("-1");
-                System.out.println("Action OTHER");
+                Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                request.setAttribute("profilo", personalProfile);
+                request.setAttribute("danger", "azione sconosciuta!");
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                rd.forward(request, response);
+
             }
         }
     }

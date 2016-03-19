@@ -57,7 +57,12 @@ public class ProfileServlet extends HttpServlet {
         HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
-            if (action.equals("add_profile_image")) {
+            if (action == null) {
+                Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                request.setAttribute("profilo", personalProfile);
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile.jsp");
+                rd.forward(request, response);
+            } else if (action.equals("add_profile_image")) {
                 String email = (String) session.getAttribute("email");
                 Part filePart = request.getPart("nomeFile");
                 InputStream filecontent = filePart.getInputStream();
@@ -115,7 +120,12 @@ public class ProfileServlet extends HttpServlet {
                 }
 
             } else {
-                //GESTIRE ERRORE
+                Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                request.setAttribute("profilo", personalProfile);
+                request.setAttribute("danger", "azione sconosciuta!");
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile.jsp");
+                rd.forward(request, response);
+
             }
 
         }

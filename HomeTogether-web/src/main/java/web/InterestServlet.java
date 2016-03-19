@@ -8,6 +8,8 @@ package web;
 import com.google.gson.Gson;
 import ejb.GestoreInteressi;
 import ejb.GestoreUtenti;
+import ejb.Profilo;
+import ejb.ProfiloFacadeLocal;
 import ejb.UtenteApp;
 import ejb.UtenteGoogle;
 import java.io.IOException;
@@ -54,6 +56,8 @@ public class InterestServlet extends HttpServlet {
      */
     @EJB
     private GestoreInteressi gestoreInteressi;
+    @EJB
+    private ProfiloFacadeLocal profiloFacade;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParserConfigurationException, SAXException, TransformerException {
@@ -62,13 +66,18 @@ public class InterestServlet extends HttpServlet {
         response.setHeader("Cache-Control", "no-cache, must-revalidate");
         response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
         response.setDateHeader("Expires", 0); // Proxies.
+        HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
 
             String action = request.getParameter("action");
 
             System.out.println("action is:" + action);
-            if (action.equals("add")) {
-                HttpSession session = request.getSession();
+            if (action == null) {
+                Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                request.setAttribute("profilo", personalProfile);
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                rd.forward(request, response);
+            } else if (action.equals("add")) {
                 System.out.println("entro in action add");
                 Long idProfilo = (Long) session.getAttribute("id");
 
@@ -85,7 +94,6 @@ public class InterestServlet extends HttpServlet {
                 }
 
             } else if (action.equals("remove")) {
-                HttpSession session = request.getSession();
                 Long idProfilo = (Long) session.getAttribute("id");
                 System.out.println("entro in action remove");
                 Long idInteresse = Long.parseLong(request.getParameter("idinteresse"));
@@ -102,32 +110,44 @@ public class InterestServlet extends HttpServlet {
                 }
 
             } else if (action.equals("goToInterest")) {
+                if (request.getParameter("nome") != null && !request.getParameter("nome").equals("")) {
+                    String nome = request.getParameter("nome");
+                    String nomereplace = nome.replaceAll(" ", "%20");
 
-                String nome = request.getParameter("nome");
-                String nomereplace = nome.replaceAll(" ", "%20");
+                    URL url = new URL("https://it.wikipedia.org/w/api.php?format=xml&action=query&prop=langlinks&prop=extracts&titles=" + nomereplace + "&redirects=true");
+                    URLConnection conn = url.openConnection();
 
-                URL url = new URL("https://it.wikipedia.org/w/api.php?format=xml&action=query&prop=langlinks&prop=extracts&titles=" + nomereplace + "&redirects=true");
-                URLConnection conn = url.openConnection();
+                    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder builder = factory.newDocumentBuilder();
+                    org.w3c.dom.Document doc = builder.parse(conn.getInputStream());
 
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder builder = factory.newDocumentBuilder();
-                org.w3c.dom.Document doc = builder.parse(conn.getInputStream());
+                    TransformerFactory factory2 = TransformerFactory.newInstance();
+                    Transformer xform = factory2.newTransformer();
 
-                TransformerFactory factory2 = TransformerFactory.newInstance();
-                Transformer xform = factory2.newTransformer();
+                    StringWriter writer = new StringWriter();
+                    StreamResult result = new StreamResult(writer);
+                    xform.transform(new DOMSource(doc), result);
 
-                StringWriter writer = new StringWriter();
-                StreamResult result = new StreamResult(writer);
-                xform.transform(new DOMSource(doc), result);
+                    request.setAttribute("xml", writer.toString());
+                    request.setAttribute("nome", nome);
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/interesse.jsp");
+                    rd.forward(request, response);
+                } else {
+                    Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                    request.setAttribute("profilo", personalProfile);
+                    request.setAttribute("danger", "azione sconosciuta!");
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                    rd.forward(request, response);
 
-                request.setAttribute("xml", writer.toString());
-                request.setAttribute("nome", nome);
-                RequestDispatcher rd = getServletContext().getRequestDispatcher("/interesse.jsp");
-                rd.forward(request, response);
+                }
 
             } else {
-                out.println("-1");
-                System.out.println("Action OTHER");
+                Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                request.setAttribute("profilo", personalProfile);
+                request.setAttribute("danger", "azione sconosciuta!");
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                rd.forward(request, response);
+
             }
         }
     }

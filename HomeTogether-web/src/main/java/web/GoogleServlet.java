@@ -89,21 +89,7 @@ public class GoogleServlet extends HttpServlet {
                         UtenteGoogle u = gestoreUtenti.loginGoogle(email, idgoogle);
                         //Profilo p = profiloFacade.getProfilo(email);
                         if (u != null) {
-                            System.out.println("son loggato!");
-
-                            HttpSession s = request.getSession();
-
-                            s.setAttribute("id", u.getProfilo().getId());
-                            s.setAttribute("idgoogle", u.getIdGoogle());
-                            s.setAttribute("nome", "" + u.getProfilo().getNome());
-                            s.setAttribute("cognome", "" + u.getProfilo().getCognome());
-                            s.setAttribute("email", "" + u.getProfilo().getEmail());
-                            s.setAttribute("data", "" + u.getProfilo().getData_nascita());
-                            s.setAttribute("sesso", "" + u.getProfilo().getSesso());
-                            //s.setAttribute("location", "" + p.getLocation());
-                            s.setAttribute("foto", "" + u.getProfilo().getFoto_profilo());
-                            //session.setAttribute("location",""+p.get);
-
+                            
                             out.println("1");
 
                         } else {

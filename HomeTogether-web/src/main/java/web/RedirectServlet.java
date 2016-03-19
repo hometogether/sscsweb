@@ -75,64 +75,70 @@ public class RedirectServlet extends HttpServlet {
             rd.forward(request, response);
 
         } else if (action.equals("goUserProfile")) {
+            if (request.getParameter("idprofile") != null && !request.getParameter("idprofile").equals("")) {
 
-            Long idprofile = new Long(request.getParameter("idprofile"));
-            Profilo p = profiloFacade.getProfilo(idprofile);
-            if (p != null) {
-                if (!(p.getId() == idprofile)) {
-                    Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
-                    List<Profilo> listafollowing = personalProfile.getFollowing();
-                    boolean trovato = false;
-                    System.out.println("id dell'amico:" + idprofile);
-                    for (int i = 0; i < listafollowing.size() && trovato == false; i++) {
-                        System.out.println("id:" + i + ": " + listafollowing.get(i).getId());
-                        if (listafollowing.get(i).getId().equals(idprofile)) {
-                            System.out.println("trovato!");
-                            trovato = true;
+                Long idprofile = new Long(request.getParameter("idprofile"));
+                Profilo p = profiloFacade.getProfilo(idprofile);
+                if (p != null) {
+                    if (!(p.getId() == idprofile)) {
+                        Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                        List<Profilo> listafollowing = personalProfile.getFollowing();
+                        boolean trovato = false;
+                        System.out.println("id dell'amico:" + idprofile);
+                        for (int i = 0; i < listafollowing.size() && trovato == false; i++) {
+                            System.out.println("id:" + i + ": " + listafollowing.get(i).getId());
+                            if (listafollowing.get(i).getId().equals(idprofile)) {
+                                trovato = true;
+                            }
                         }
-                    }
-                    if (trovato) {
-                        System.out.println("trovato! è un amico");
-                        request.setAttribute("amici", 1);
-
+                        if (trovato) {
+                            request.setAttribute("amici", 1);
+                        } else {
+                            request.setAttribute("amici", 0);
+                        }
                     } else {
-                        System.out.println("non è un amico...");
-
                         request.setAttribute("amici", 0);
-
                     }
-                } else {
-                    request.setAttribute("amici", 0);
-                }
-                request.setAttribute("profilo", p);
+                    request.setAttribute("profilo", p);
 
-                RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile.jsp");
-                rd.forward(request, response);
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile.jsp");
+                    rd.forward(request, response);
+                } else {
+                    Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                    request.setAttribute("profilo", personalProfile);
+                    request.setAttribute("danger", "Profilo non esistente!");
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                    rd.forward(request, response);
+                }
             } else {
-                //GESTIRE ERRORE
+                Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                request.setAttribute("profilo", personalProfile);
+                request.setAttribute("warning", "Profilo non presente nell'URL!");
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                rd.forward(request, response);
             }
         } else if (action.equals("loginSocial")) {
 
-            if (session != null) {
-                Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
-                request.setAttribute("profilo", p);
-                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
-                rd.forward(request, response);
+            Profilo p = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+            request.setAttribute("profilo", p);
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+            rd.forward(request, response);
 
-            } else {
-                //errore
-            }
         } else if (action.equals("logOut")) {
             session.invalidate();
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
             rd.forward(request, response);
         } else if (action.equals("goHome")) {
-            Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
+            Profilo p = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
             request.setAttribute("profilo", p);
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
             rd.forward(request, response);
         } else {
-                //gestione erroi
+            Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+            request.setAttribute("profilo", personalProfile);
+            request.setAttribute("danger", "azione sconosciuta!");
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+            rd.forward(request, response);
 
         }
         /* TODO output your page here. You may use following sample code. */

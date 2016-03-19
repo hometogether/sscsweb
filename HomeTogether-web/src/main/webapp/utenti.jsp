@@ -129,6 +129,7 @@
     <body>
         
         <%@include file="navbar.jsp" %>
+         <%@include file="error.jsp" %>
         <div class="content col-md-12 ">
             <br><br><br>
             <div class="container col-md-2" >

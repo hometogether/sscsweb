@@ -8,7 +8,6 @@ package web;
 import com.google.gson.Gson;
 import ejb.Profilo;
 import ejb.ProfiloFacade;
-import ejb.UtenteGoogle;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -50,29 +49,46 @@ public class NavBarServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String action = request.getParameter("action");
         try (PrintWriter out = response.getWriter()) {
-            if (action.equals("searchUtente")) {
-                String nomeDigitato = (String) request.getParameter("ric_utente");
-                if (nomeDigitato != null) {
+            if (action == null) {
+                Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                request.setAttribute("profilo", personalProfile);
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                rd.forward(request, response);
+            } else if (action.equals("searchUtente")) {
+                
+                if (request.getParameter("ric_utente") != null && !request.getParameter("ric_utente").equals("")) {
+                    String nomeDigitato = (String) request.getParameter("ric_utente");
                     List<Profilo> res = profiloFacade.getProfiloUtente(nomeDigitato.toLowerCase(), (Long) (session.getAttribute("id")), 0);
+                    if (res == null) {
+                        request.setAttribute("warning", "Nessun Risultato Trovato!");
+                    }
                     request.setAttribute("utente", res);
                     request.setAttribute("ric_utente", nomeDigitato);
-                    Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
+                    Profilo p = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
                     request.setAttribute("profilo", p);
-
-                    /*String name="";
-                     for(int i=0;i<res.size();i++){
-                     name=res.get(i).getNome()+" "+ res.get(i).getCognome();
-                        
-                     }*/
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/utenti.jsp");
+                    rd.forward(request, response);
+                } else {
+                    request.setAttribute("utente", null);
+                    request.setAttribute("warning", "Nessun Risultato Trovato!");
+                    Profilo p = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                    request.setAttribute("profilo", p);
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/utenti.jsp");
+                    rd.forward(request, response);
                 }
 
-                RequestDispatcher rd = getServletContext().getRequestDispatcher("/utenti.jsp");
-                rd.forward(request, response);
             } else if (action.equals("searchAjax")) {
                 String nomeDigitato = (String) request.getParameter("ric_utente");
                 int offset = Integer.parseInt(request.getParameter("offset"));
                 List<Profilo> res = profiloFacade.getProfiloUtente(nomeDigitato.toLowerCase(), (Long) (session.getAttribute("id")), offset);
                 out.println(buildGson(res));
+            } else {
+                Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                request.setAttribute("profilo", personalProfile);
+                request.setAttribute("danger", "azione sconosciuta!");
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                rd.forward(request, response);
+
             }
         }
     }

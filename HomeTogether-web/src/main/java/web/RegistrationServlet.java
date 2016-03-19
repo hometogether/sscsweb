@@ -61,100 +61,154 @@ public class RegistrationServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
             System.out.println("action is:" + action);
-            if (action.equals("registration")) {
-                String nome = request.getParameter("nome");
-                String cognome = request.getParameter("cognome");
-                String email = request.getParameter("email");
-                String r_email = request.getParameter("r_email");
-                String data_nascita = request.getParameter("data_nascita");
-                String sesso = request.getParameter("sesso");
-                String foto = request.getParameter("foto_profilo");
-                String tipo_registrazione = request.getParameter("tipo_registrazione");
+            if (action == null) {
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+                rd.forward(request, response);
+            } else if (action.equals("registration")) {
+                if (request.getParameter("nome") != null && !request.getParameter("nome").equals("")
+                        && request.getParameter("cognome") != null && !request.getParameter("nocognomeme").equals("")
+                        && request.getParameter("email") != null && !request.getParameter("email").equals("")
+                        && request.getParameter("r_email") != null && !request.getParameter("r_email").equals("")
+                        && request.getParameter("data_nascita") != null && !request.getParameter("data_nascita").equals("")
+                        && request.getParameter("sesso") != null && !request.getParameter("sesso").equals("")
+                        && request.getParameter("foto_profilo") != null && !request.getParameter("foto_profilo").equals("")
+                        && request.getParameter("tipo_registrazione") != null && !request.getParameter("tipo_registrazione").equals("")
+                        && request.getParameter("localita") != null && !request.getParameter("localita").equals("")) {
 
-                String localita = request.getParameter("localita").toLowerCase();
-                System.out.println("localita:" + localita);
-                Comune comune = null;
-                ServletContext context = getServletContext();
-                List<Comune> list = (List<Comune>) context.getAttribute("list");
-                boolean trovato = false;
-                for (int i = 0; i < list.size() && trovato == false; i++) {
-                    if ((list.get(i).getNome().toLowerCase()).equals(localita)) {
+                    String nome = request.getParameter("nome");
+                    String cognome = request.getParameter("cognome");
+                    String email = request.getParameter("email");
+                    String r_email = request.getParameter("r_email");
+                    String data_nascita = request.getParameter("data_nascita");
+                    String sesso = request.getParameter("sesso");
+                    String foto = request.getParameter("foto_profilo");
+                    String tipo_registrazione = request.getParameter("tipo_registrazione");
 
-                        System.out.println("comune trovato!");
-                        comune = list.get(i);
-                        trovato = true;
+                    String localita = request.getParameter("localita").toLowerCase();
+                    System.out.println("localita:" + localita);
+                    Comune comune = null;
+                    ServletContext context = getServletContext();
+                    List<Comune> list = (List<Comune>) context.getAttribute("list");
+                    boolean trovato = false;
+                    for (int i = 0; i < list.size() && trovato == false; i++) {
+                        if ((list.get(i).getNome().toLowerCase()).equals(localita)) {
+
+                            System.out.println("comune trovato!");
+                            comune = list.get(i);
+                            trovato = true;
+                        }
+
                     }
 
+                    if (tipo_registrazione.equals("0")) {
+                        if (request.getParameter("password") != null && !request.getParameter("password").equals("")
+                                && request.getParameter("r_password") != null && !request.getParameter("r_password").equals("")) {
+                            String password = request.getParameter("password");
+                            String r_password = request.getParameter("r_password");
+                            Profilo p = gestoreUtenti.aggiungiUser(nome, cognome, password, r_password, email, r_email, data_nascita, sesso, comune);
+                            if (p != null) {
+                                session.setAttribute("id", p.getId());
+                                session.setAttribute("nome", "" + p.getNome());
+                                session.setAttribute("cognome", "" + p.getCognome());
+                                session.setAttribute("email", "" + p.getEmail());
+                                session.setAttribute("data", "" + p.getData_nascita());
+                                session.setAttribute("sesso", "" + p.getSesso());
+                                session.setAttribute("formazione", p.getFormazione());
+                                session.setAttribute("occupazione", p.getOccupazione());
+                                session.setAttribute("telefono", p.getTelefono());
+                                session.setAttribute("foto", "" + p.getFoto_profilo());
+                                request.setAttribute("profilo", p);
+
+                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                                rd.forward(request, response);
+                            } else {
+                                request.setAttribute("warning", "Errore nella Registrazione, campi compilati non correttamente o email non disponibile!");
+                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+                                rd.forward(request, response);
+                            }
+                        } else {
+                            request.setAttribute("warning", "Errore nella Registrazione, password non inserita!");
+                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+                            rd.forward(request, response);
+                        }
+
+                    } else if (tipo_registrazione.equals("1")) {
+                        if (request.getParameter("idSocial") != null && !request.getParameter("idSocial").equals("")) {
+                            String idSocial = request.getParameter("idSocial");
+
+                            Profilo p = gestoreUtenti.aggiungiUserFacebook(nome, cognome, idSocial, email, r_email, data_nascita, sesso, foto, comune);
+                            if (p != null) {
+                                session.setAttribute("id", p.getId());
+                                session.setAttribute("nome", "" + p.getNome());
+                                session.setAttribute("cognome", "" + p.getCognome());
+                                session.setAttribute("email", "" + p.getEmail());
+                                session.setAttribute("data", "" + p.getData_nascita());
+                                session.setAttribute("sesso", "" + p.getSesso());
+                                session.setAttribute("formazione", p.getFormazione());
+                                session.setAttribute("occupazione", p.getOccupazione());
+                                session.setAttribute("telefono", p.getTelefono());
+                                //  s.setAttribute("location",""+location);
+                                session.setAttribute("foto", "" + p.getFoto_profilo());
+                                request.setAttribute("profilo", p);
+                                request.setAttribute("profilo", p);
+                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                                rd.forward(request, response);
+                            } else {
+                                request.setAttribute("warning", "Errore nella Registrazione, email non disponibile!");
+                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+                                rd.forward(request, response);
+                            }
+                        } else {
+                            request.setAttribute("warning", "Errore nella Registrazione, id di Facebook non reperibile!");
+                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+                            rd.forward(request, response);
+                        }
+
+                    } else if (tipo_registrazione.equals("2")) {
+                        if (request.getParameter("idSocial") != null && !request.getParameter("idSocial").equals("")) {
+                            String idSocial = request.getParameter("idSocial");
+                            Profilo p = gestoreUtenti.aggiungiUserGoogle(nome, cognome, idSocial, email, r_email, data_nascita, sesso, foto, comune);
+                            if (p != null) {
+                                session.setAttribute("id", p.getId());
+
+                                session.setAttribute("nome", "" + p.getNome());
+                                session.setAttribute("cognome", "" + p.getCognome());
+                                session.setAttribute("email", "" + p.getEmail());
+                                session.setAttribute("data", "" + p.getData_nascita());
+                                session.setAttribute("sesso", "" + p.getSesso());
+                                session.setAttribute("formazione", p.getFormazione());
+                                session.setAttribute("occupazione", p.getOccupazione());
+                                session.setAttribute("telefono", p.getTelefono());
+                                //  s.setAttribute("location",""+location);
+                                session.setAttribute("foto", "" + p.getFoto_profilo());
+                                request.setAttribute("profilo", p);
+                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                                rd.forward(request, response);
+                            } else {
+                                request.setAttribute("warning", "Errore nella Registrazione, email non disponibile!");
+                                RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+                                rd.forward(request, response);
+                            }
+
+                        } else {
+                            request.setAttribute("warning", "Errore nella Registrazione, id di Google non reperibile!");
+                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+                            rd.forward(request, response);
+                        }
+
+                    }
+
+                } else {
+                    request.setAttribute("warning", "Compilare tutti i campi!");
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+                    rd.forward(request, response);
                 }
 
-                if (tipo_registrazione.equals("0")) {
-                    String password = request.getParameter("password");
-                    String r_password = request.getParameter("r_password");
-                    System.out.println(data_nascita);
-                    System.out.println(sesso);
-                    int res = gestoreUtenti.aggiungiUser(nome, cognome, password, r_password, email, r_email, data_nascita, sesso, comune);
-                    if (res == 0) {
-                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
-                        rd.forward(request, response);
-                    } else {
-                        out.println("<!DOCTYPE html>");
-                        out.println("<html>");
-                        out.println("<head>");
-                        out.println("<title>Servlet RegistrationServlet</title>");
-                        out.println("</head>");
-                        out.println("<body>");
-                        out.println("<h1>Errore!</h1>");
-                        out.println("</body>");
-                        out.println("</html>");
-                    }
-                } else if (tipo_registrazione.equals("1")) {
-                    String idSocial = request.getParameter("idSocial");
-
-                    int res = gestoreUtenti.aggiungiUserFacebook(nome, cognome, idSocial, email, r_email, data_nascita, sesso, foto, comune);
-                    if (res == 0) {
-                        List<UtenteFacebook> lista = gestoreUtenti.getUserFacebook();
-
-                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
-                        rd.forward(request, response);
-                    } else {
-                        out.println("<!DOCTYPE html>");
-                        out.println("<html>");
-                        out.println("<head>");
-                        out.println("<title>Servlet RegistrationServlet</title>");
-                        out.println("</head>");
-                        out.println("<body>");
-                        out.println("<h1>Errore!</h1>");
-                        out.println("</body>");
-                        out.println("</html>");
-                    }
-                } else if (tipo_registrazione.equals("2")) {
-                    String idSocial = request.getParameter("idSocial");
-                    System.out.println("idgoogle:" + idSocial);
-                    int res = gestoreUtenti.aggiungiUserGoogle(nome, cognome, idSocial, email, r_email, data_nascita, sesso, foto, comune);
-                    if (res == 0) {
-                        //List<UtenteGoogle> lista = gestoreUtenti.getUserGoogle();
-                        //String gsonList = buildGson(lista);
-
-                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
-                        rd.forward(request, response);
-                    } else {
-                        out.println("<!DOCTYPE html>");
-                        out.println("<html>");
-                        out.println("<head>");
-                        out.println("<title>Servlet RegistrationServlet</title>");
-                        out.println("</head>");
-                        out.println("<body>");
-                        out.println("<h1>Errore!</h1>");
-                        out.println("</body>");
-                        out.println("</html>");
-                    }
-                }
-
-            }else if (action.equals("autocompileComune")) {
+            } else if (action.equals("autocompileComune")) {
                 ServletContext context = getServletContext();
                 List<Comune> list = (List<Comune>) context.getAttribute("list");
-                
-                String nomeDigitato = request.getParameter("comune").toLowerCase(); 
+
+                String nomeDigitato = request.getParameter("comune").toLowerCase();
                 String res = "";
                 int cont = 0;
                 if (nomeDigitato != null && list != null) {
@@ -193,13 +247,13 @@ public class RegistrationServlet extends HttpServlet {
                 }
 
             } else {
-                System.out.println("Action OTHER");
+                request.setAttribute("danger", "azione sconosciuta!");
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+                rd.forward(request, response);
             }
 
         }
     }
-    
-    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

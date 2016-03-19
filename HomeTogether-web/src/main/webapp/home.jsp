@@ -35,7 +35,7 @@
     <body>
         <%@include file="navbar.jsp" %>
         <%@include file="error.jsp" %>
-        
+        <br/><br/><br/><br/>
         
         <div class="col-md-2">
             <div class="white-element">

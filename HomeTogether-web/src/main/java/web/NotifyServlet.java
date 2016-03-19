@@ -45,7 +45,6 @@ public class NotifyServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     @EJB
     private GestoreRichieste gestoreRichieste;
     @EJB
@@ -61,55 +60,69 @@ public class NotifyServlet extends HttpServlet {
         response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
         response.setDateHeader("Expires", 0); // Proxies.
         HttpSession session = request.getSession();
-        try (PrintWriter out = response.getWriter()) {
-            String action = request.getParameter("action");
-            if (action.equals("aggiungirichiesta")) {
+        String action = request.getParameter("action");
+        if (action == null) {
+            Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+            request.setAttribute("profilo", personalProfile);
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+            rd.forward(request, response);
+        } else if (action.equals("aggiungirichiesta")) {
+            if (request.getParameter("idDest") != null && !request.getParameter("idDest").equals("")) {
                 Long idDest = new Long(request.getParameter("idDest"));
                 Long id = (Long) (session.getAttribute("id"));
                 Profilo personalProfile = profiloFacade.getProfilo(id);
                 Profilo destProfile = profiloFacade.getProfilo(idDest);
                 gestoreRichieste.aggiungiRichiesta(personalProfile, destProfile);
-                
+
                 request.setAttribute("profilo", personalProfile);
 
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
                 rd.forward(request, response);
-
-            } else if (action.equals("accettarichiesta")) {
-                Long id = (Long) (session.getAttribute("id"));
-                Profilo personalProfile = profiloFacade.getProfilo(id);
-                
-                Long idRichiesta = (Long) (session.getAttribute("idRichiesta"));
-                Richiesta richiesta = richiestaFacade.getRichiesta(idRichiesta);
-                
-                
-                gestoreRichieste.accettaRichiesta(personalProfile, richiesta);
-                
-                request.setAttribute("profilo", personalProfile);
-
-                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
-                rd.forward(request, response);
-
-            } else if (action.equals("rifiutarichiesta")) {
-                Long id = (Long) (session.getAttribute("id"));
-                Profilo personalProfile = profiloFacade.getProfilo(id);
-                
-                Long idRichiesta = (Long) (session.getAttribute("idRichiesta"));
-                Richiesta richiesta = richiestaFacade.getRichiesta(idRichiesta);
-                
-                
-                gestoreRichieste.rifiutaRichiesta(personalProfile, richiesta);
-                
-                request.setAttribute("profilo", personalProfile);
-
-                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
-                rd.forward(request, response);
-
             } else {
-                //GESTIRE ERRORE
+                Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                request.setAttribute("profilo", personalProfile);
+                request.setAttribute("danger", "Informazione destinatario mancante!");
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                rd.forward(request, response);
             }
 
+        } else if (action.equals("accettarichiesta")) {
+            Long id = (Long) (session.getAttribute("id"));
+            Profilo personalProfile = profiloFacade.getProfilo(id);
+
+            Long idRichiesta = (Long) (session.getAttribute("idRichiesta"));
+            Richiesta richiesta = richiestaFacade.getRichiesta(idRichiesta);
+
+            gestoreRichieste.accettaRichiesta(personalProfile, richiesta);
+
+            request.setAttribute("profilo", personalProfile);
+
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+            rd.forward(request, response);
+
+        } else if (action.equals("rifiutarichiesta")) {
+            Long id = (Long) (session.getAttribute("id"));
+            Profilo personalProfile = profiloFacade.getProfilo(id);
+
+            Long idRichiesta = (Long) (session.getAttribute("idRichiesta"));
+            Richiesta richiesta = richiestaFacade.getRichiesta(idRichiesta);
+
+            gestoreRichieste.rifiutaRichiesta(personalProfile, richiesta);
+
+            request.setAttribute("profilo", personalProfile);
+
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+            rd.forward(request, response);
+
+        } else {
+            Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+            request.setAttribute("profilo", personalProfile);
+            request.setAttribute("danger", "azione sconosciuta!");
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+            rd.forward(request, response);
+
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

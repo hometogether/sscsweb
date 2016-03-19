@@ -28,6 +28,7 @@
     </head>
     <body>
         <%@include file="navbar.jsp" %>
+         <%@include file="error.jsp" %>
         <br/><br/><br/><br/>
         <div class="container col-md-2" >
                 

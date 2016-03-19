@@ -56,11 +56,12 @@ public class LoginServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
             System.out.println("action is:" + action);
-            if (action.equals("login")) {
-                //String username = request.getParameter("username");
+            if (action == null) {
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+                rd.forward(request, response);
+            } else if (action.equals("login")) {
                 String email = request.getParameter("email");
                 String password = request.getParameter("password");
-                System.out.println("prima della query loginutente");
                 UtenteApp u = gestoreUtenti.loginUtente(email, password);
                 if (u != null) {
                     HttpSession session = request.getSession();
@@ -84,19 +85,15 @@ public class LoginServlet extends HttpServlet {
                     rd.forward(request, response);
 
                 } else {
-                    //GESTIRE ERRORE
-                    out.println("<!DOCTYPE html>");
-                    out.println("<html>");
-                    out.println("<head>");
-                    out.println("<title>Servlet RegistrationServlet</title>");
-                    out.println("</head>");
-                    out.println("<body>");
-                    out.println("<h1>Errore!</h1>");
-                    out.println("</body>");
-                    out.println("</html>");
+                    request.setAttribute("warning", "Login non valido!");
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+                    rd.forward(request, response);
                 }
 
             } else {
+                request.setAttribute("danger", "azione sconosciuta!");
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+                rd.forward(request, response);
 
             }
 

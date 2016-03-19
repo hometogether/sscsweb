@@ -63,20 +63,43 @@ public class DiaryServlet extends HttpServlet {
         HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
-            if (action.equals("goToDiary")) {
-                Long idDiario = new Long(request.getParameter("idDiario"));
-                Diario d = gestoreDiari.getDiario(idDiario);
-                Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
-                //List<Post> posts = gestoreDiari.getPosts(idDiario);
-                
-                d.setPost(Lists.reverse(d.getPost()));
-
-                request.setAttribute("profilo", p);
-
-                request.setAttribute("diario", d);
-
-                RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
+            if (action == null) {
+                Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                request.setAttribute("profilo", personalProfile);
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile.jsp");
                 rd.forward(request, response);
+            } else if (action.equals("goToDiary")) {
+                if (request.getParameter("idDiario")!= null && !request.getParameter("idDiario").equals("")) {
+                    Long idDiario = new Long(request.getParameter("idDiario"));
+                    Diario d = gestoreDiari.getDiario(idDiario);
+                    Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
+                    //List<Post> posts = gestoreDiari.getPosts(idDiario);
+
+                    if (d != null) {
+                        d.setPost(Lists.reverse(d.getPost()));
+                        request.setAttribute("profilo", p);
+                        request.setAttribute("diario", d);
+
+                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
+                        rd.forward(request, response);
+                    } else {
+                        Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                        request.setAttribute("profilo", personalProfile);
+
+                        request.setAttribute("danger", "diario non esistente!");
+                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile.jsp");
+                        rd.forward(request, response);
+                    }
+
+                } else {
+                    Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                    request.setAttribute("profilo", personalProfile);
+
+                    request.setAttribute("danger", "diario non esistente!");
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile.jsp");
+                    rd.forward(request, response);
+
+                }
             } else if (action.equals("submitPost")) {
                 Long idDiario = new Long(request.getParameter("idDiario"));
                 String text = request.getParameter("text");
@@ -84,113 +107,68 @@ public class DiaryServlet extends HttpServlet {
                 Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
                 Long idPost = gestoreDiari.aggiungiPost(d, p, text);
                 out.println(idPost);
-                //List<Post> posts = gestoreDiari.getPosts(idDiario);
 
-                //d.setPost(posts);
-
-                //request.setAttribute("profilo", p);
-
-                //request.setAttribute("diario", d);
-                //RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
-                //rd.forward(request, response);
             } else if (action.equals("editPost")) {
                 Long idPost = new Long(request.getParameter("idPost"));
                 String testo = request.getParameter("testo");
-                
+
                 Post post = gestoreDiari.getPost(idPost);
                 gestoreDiari.modificaPost(post, testo);
-                
+
                 out.println("0");
             } else if (action.equals("removePost")) {
                 Long idPost = new Long(request.getParameter("idPost"));
-                
+
                 Post post = gestoreDiari.getPost(idPost);
-                
+
                 gestoreDiari.eliminaPost(post);
-                
+
                 out.println("0");
             } else if (action.equals("addLike")) {
                 Long idPost = new Long(request.getParameter("idPost"));
                 Post post = gestoreDiari.getPost(idPost);
                 Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
                 gestoreDiari.aggiungiLike(post, p);
-                
+
                 out.println("0");
-                //List<Post> posts = gestoreDiari.getPosts(idDiario);
 
-                //d.setPost(posts);
-
-                //request.setAttribute("profilo", p);
-
-                //request.setAttribute("diario", d);
-                //RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
-                //rd.forward(request, response);
             } else if (action.equals("removeLike")) {
                 Long idPost = new Long(request.getParameter("idPost"));
                 Post post = gestoreDiari.getPost(idPost);
                 Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
                 int res = gestoreDiari.rimuoviLike(post, p);
-                
+
                 out.println(res);
-                //List<Post> posts = gestoreDiari.getPosts(idDiario);
 
-                //d.setPost(posts);
-
-                //request.setAttribute("profilo", p);
-
-                //request.setAttribute("diario", d);
-                //RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
-                //rd.forward(request, response);
             } else if (action.equals("addComment")) {
                 Long idPost = new Long(request.getParameter("idPost"));
                 String testo = request.getParameter("testo");
-                
                 Post post = gestoreDiari.getPost(idPost);
                 Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
                 Long idCommento = gestoreDiari.aggiungiCommento(post, p, testo);
-                
                 out.println(idCommento);
+                
             } else if (action.equals("editComment")) {
                 Long idCommento = new Long(request.getParameter("idCommento"));
                 String testo = request.getParameter("testo");
-                
                 Commento commento = gestoreDiari.getCommento(idCommento);
                 gestoreDiari.modificaCommento(commento, testo);
-                
                 out.println("0");
+                
             } else if (action.equals("removeComment")) {
                 Long idCommento = new Long(request.getParameter("idCommento"));
-                
                 Commento commento = gestoreDiari.getCommento(idCommento);
                 gestoreDiari.eliminaCommento(commento);
-                
                 out.println("0");
+                
             } else {
+                Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                request.setAttribute("profilo", personalProfile);
+                request.setAttribute("danger", "azione sconosciuta!");
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile.jsp");
+                rd.forward(request, response);
                 
-                
-                //if (request.getParameter("idDiario")==null || request.getParameter("idDiario").equals("")){
-                    Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
-                    request.setAttribute("profilo", personalProfile);
-                    
-                    request.setAttribute("danger", "azione sconosciuta!");
-                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
-                    rd.forward(request, response);
-                /*} else {
-                    Long idDiario = new Long(request.getParameter("idDiario"));
-                    Diario d = gestoreDiari.getDiario(idDiario);
-                    Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
-                    //List<Post> posts = gestoreDiari.getPosts(idDiario);
 
-                    d.setPost(Lists.reverse(d.getPost()));
-
-                    request.setAttribute("profilo", p);
-
-                    request.setAttribute("diario", d);
-                    request.setAttribute("danger", "azione sconosciuta!");
-                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/diary.jsp");
-                    rd.forward(request, response);
-                }*/
-                
             }
 
         }

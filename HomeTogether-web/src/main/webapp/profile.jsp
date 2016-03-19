@@ -48,6 +48,7 @@
     
     <body>
         <%@include file="navbar.jsp" %>
+        <%@include file="error.jsp" %>
         <script type="text/javascript" src="js/websocket.js"></script>
         
         <!--HEADER-->

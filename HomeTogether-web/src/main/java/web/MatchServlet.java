@@ -62,10 +62,12 @@ public class MatchServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String action = request.getParameter("action");
         try (PrintWriter out = response.getWriter()) {
-            if (action.equals("searchUtente")) {
-                String comune = (String) request.getParameter("localita").toLowerCase();;
-                String provincia = (String) request.getParameter("provincia").toLowerCase();;
-                String regione = (String) request.getParameter("regione").toLowerCase();;
+            if (action == null) {
+                Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                request.setAttribute("profilo", personalProfile);
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                rd.forward(request, response);
+            } else if (action.equals("searchUtente")) {
                 ServletContext context = getServletContext();
                 List<Comune> list = (List<Comune>) context.getAttribute("list");
                 boolean trovato = false;
@@ -75,9 +77,11 @@ public class MatchServlet extends HttpServlet {
                 Long idComune = null;
                 Long idProvincia = null;
                 Long idRegione = null;
-                if (comune != null && !comune.equals("") && list != null) {
+                if (request.getParameter("localita") != null && !request.getParameter("localita").equals("") && list != null) {
+                    String comune = (String) request.getParameter("localita").toLowerCase();
+
                     for (int i = 0; i < list.size() && comune_trovato == false; i++) {
-                        
+
                         if ((list.get(i).getNome().toLowerCase()).equals(comune)) {
                             trovato = true;
                             comune_trovato = true;
@@ -85,9 +89,10 @@ public class MatchServlet extends HttpServlet {
                         }
 
                     }
-                } else if (provincia != null && !provincia.equals("") && list != null) {
+                } else if (request.getParameter("provincia") != null && !request.getParameter("provincia").equals("") && list != null) {
+                    String provincia = (String) request.getParameter("provincia").toLowerCase();
                     for (int i = 0; i < list.size() && provincia_trovato == false; i++) {
-                        
+
                         if ((list.get(i).getProvincia().getNome().toLowerCase()).equals(provincia)) {
                             trovato = true;
                             provincia_trovato = true;
@@ -95,66 +100,73 @@ public class MatchServlet extends HttpServlet {
                         }
 
                     }
-                } else if (regione != null && !regione.equals("") && list != null) {
+                } else if (request.getParameter("regione") != null && !request.getParameter("regione").equals("") && list != null) {
+                    String regione = (String) request.getParameter("regione").toLowerCase();
                     for (int i = 0; i < list.size() && regione_trovato == false; i++) {
-                        
+
                         if ((list.get(i).getProvincia().getRegione().getNome().toLowerCase()).equals(regione)) {
                             trovato = true;
                             regione_trovato = true;
                             idRegione = list.get(i).getProvincia().getRegione().getId();
-
                         }
-
                     }
-                } 
-                
-                if (trovato == false){
-                    //non c'è un comune, provincia o regione che matcha con i comuni nel DB
-                    //GESTIRE ERRORE
+                } else {
+                    Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                    request.setAttribute("profilo", personalProfile);
+                    request.setAttribute("warning", "Specificare il comune, la provincia o la regione!");
+                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                    rd.forward(request, response);
+                }
+
+                if (trovato == false) {
+                    Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                    request.setAttribute("profilo", personalProfile);
+                    request.setAttribute("warning", "Località non esistente!");
                     RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
                     rd.forward(request, response);
                 } else {
                     Long idprofilo = (Long) session.getAttribute("id");
                     List<Profilo> profili = null;
-                    if (comune_trovato){
-                        profili = gestoreMatch.getMatchComune(idComune,idprofilo);
-                    } else if (provincia_trovato){
-                        profili = gestoreMatch.getMatchProvincia(idProvincia,idprofilo);
-                    } else if (regione_trovato){
-                        profili = gestoreMatch.getMatchRegione(idRegione,idprofilo);
+                    if (comune_trovato) {
+                        profili = gestoreMatch.getMatchComune(idComune, idprofilo);
+                    } else if (provincia_trovato) {
+                        profili = gestoreMatch.getMatchProvincia(idProvincia, idprofilo);
+                    } else if (regione_trovato) {
+                        profili = gestoreMatch.getMatchRegione(idRegione, idprofilo);
                     }
-                    
+
                     if (profili != null) {
                         Profilo profilo = profiloFacade.getProfilo(idprofilo);
                         List<Match> res = new ArrayList<Match>();
-                        for (int i = 0; i < profili.size(); i++){
+                        for (int i = 0; i < profili.size(); i++) {
                             res.add(gestoreMatch.getMatch(profilo, profili.get(i)));
                         }
                         // Sorting
                         Collections.sort(res, new Comparator<Match>() {
-                                @Override
-                                public int compare(Match item2, Match item1)
-                                {   
-                                    return  Double.compare(item1.getMatch_totale(), item2.getMatch_totale());
-                                }
-                            });
+                            @Override
+                            public int compare(Match item2, Match item1) {
+                                return Double.compare(item1.getMatch_totale(), item2.getMatch_totale());
+                            }
+                        });
                         request.setAttribute("match", res);
                         RequestDispatcher rd = getServletContext().getRequestDispatcher("/match.jsp");
                         rd.forward(request, response);
 
-                        /*String name="";
-                         for(int i=0;i<res.size();i++){
-                         name=res.get(i).getNome()+" "+ res.get(i).getCognome();
-
-                         }*/
+                    } else {
+                        request.setAttribute("warning", "Nessun Risultato Trovato!");
+                        Profilo p = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                        request.setAttribute("profilo", p);
+                        request.setAttribute("match", null);
+                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/match.jsp");
+                        rd.forward(request, response);
                     }
-                    
+
                 }
             } else if (action.equals("autocompileRegione")) {
                 ServletContext context = getServletContext();
                 List<Regione> list = (List<Regione>) context.getAttribute("listRe");
-                
-                String nomeDigitato = request.getParameter("regione").toLowerCase(); 
+
+                String nomeDigitato = request.getParameter("regione").toLowerCase();
                 String res = "";
                 int cont = 0;
                 if (nomeDigitato != null && list != null) {
@@ -173,8 +185,8 @@ public class MatchServlet extends HttpServlet {
             } else if (action.equals("autocompileProvincia")) {
                 ServletContext context = getServletContext();
                 List<Provincia> list = (List<Provincia>) context.getAttribute("listPro");
-                
-                String nomeDigitato = request.getParameter("provincia").toLowerCase(); 
+
+                String nomeDigitato = request.getParameter("provincia").toLowerCase();
                 List<Provincia> res = new ArrayList<Provincia>();
                 int cont = 0;
                 if (nomeDigitato != null && list != null) {
@@ -193,16 +205,16 @@ public class MatchServlet extends HttpServlet {
             } else if (action.equals("autocompileComune")) {
                 ServletContext context = getServletContext();
                 List<Comune> list = (List<Comune>) context.getAttribute("list");
-                
-                String nomeDigitato = request.getParameter("comune").toLowerCase(); 
+
+                String nomeDigitato = request.getParameter("comune").toLowerCase();
                 List<Comune> res = new ArrayList<Comune>();
                 int cont = 0;
                 if (nomeDigitato != null && list != null) {
                     for (int i = 0; i < list.size(); i++) {
-                        if (cont!=5 && (list.get(i).getNome().toLowerCase()).startsWith(nomeDigitato)) {
+                        if (cont != 5 && (list.get(i).getNome().toLowerCase()).startsWith(nomeDigitato)) {
                             res.add(list.get(i));
                             cont++;
-                        }else if ((list.get(i).getNome().toLowerCase()).equals(nomeDigitato)) {
+                        } else if ((list.get(i).getNome().toLowerCase()).equals(nomeDigitato)) {
                             res.add(list.get(i));
                         }
 
@@ -217,6 +229,13 @@ public class MatchServlet extends HttpServlet {
                 int offset = Integer.parseInt(request.getParameter("offset"));
                 List<Profilo> res = profiloFacade.getProfiloUtente(nomeDigitato.toLowerCase(), (Long) (session.getAttribute("id")), offset);
                 out.println(buildGson(res));
+            } else {
+                Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                request.setAttribute("profilo", personalProfile);
+                request.setAttribute("danger", "azione sconosciuta!");
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                rd.forward(request, response);
+
             }
         }
     }
@@ -233,7 +252,7 @@ public class MatchServlet extends HttpServlet {
         }
         return json;
     }
-    
+
     private String buildGsonC(List<Comune> c) {
 
         Gson gson = new Gson();
@@ -246,6 +265,7 @@ public class MatchServlet extends HttpServlet {
         }
         return json;
     }
+
     private String buildGsonP(List<Provincia> c) {
 
         Gson gson = new Gson();
