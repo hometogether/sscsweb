@@ -20,6 +20,7 @@
         <link href="css/the-big-picture.css" rel='stylesheet' type='text/css' />
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <script type="text/javascript" src="js/comuni.js"></script>
+        <script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -69,14 +70,26 @@
                                           ${match.match_totale*100} % generale
                                     </div>
                                 </div>
-                                    <form action="NotifyServlet" method="get" id="formrequest" >
-
+                            </div> 
+                        </div>
+                                        
+                        <div class="col-md-12">
+                            <div class="col-md-12">
+                                <span><i class="glyphicon glyphicon-arrow-down"></i>Arrivo</span>
+                                <span style="margin-left: 32%"><i class="glyphicon glyphicon-arrow-up"></i>Partenza</span>
+                            </div>
+                            <form action="NotifyServlet" method="get" id="formrequest" >
+                               <div class="col-md-12 input-group double-input">
+                                   <input type="date" class="form-control" required/>
+                                   <input type="date"class="form-control" required/>
+                                    <span class="input-group-btn">
                                         <input type="hidden" name="action" value="aggiungirichiesta" /> 
                                          <input type="hidden" name="idDest" value="${match.profilo.id}" /> 
                                         <button class="btn btn-warning pull-right">Invia richiesta</button>
-                                    
-                                    </form>
-                            </div> 
+                                    </span>
+                                </div> 
+                            </form>
+                            
                         </div>
                         
                     </div>
