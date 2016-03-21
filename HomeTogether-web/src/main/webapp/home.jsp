@@ -11,8 +11,10 @@
         
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="js/popUpViewChat.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         
+        <link href="css/popUpChat.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap_1.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap.min_1.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap-theme_1.css" rel='stylesheet' type='text/css' />
@@ -35,13 +37,31 @@
     <body>
         <%@include file="navbar.jsp" %>
         <%@include file="error.jsp" %>
+        <script type="text/javascript" src="js/websocket.js"></script>
         <br/><br/><br/><br/>
         
-        <div class="col-md-2">
+        <div class="col-md-3">
             <div class="white-element">
                 <h3>${profilo.nome}<span> </span>${profilo.cognome}</h3>
                 <p>${profilo.comune.nome}<span>, </span>${profilo.comune.provincia.regione.nome}</p>
             </div>
+            <br>
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-info colored">
+                  Amici
+                </li>
+
+                <c:forEach items="${profilo.following}" var="utente">
+                    <li class="list-group-item ">
+                        <form action="RedirectServlet" role="form" method="get">    
+                            <input type="hidden" name="action" value="goUserProfile">
+                            <input type="hidden" name="idprofile" value="${utente.id}">
+                                <button class="borderless-btn btn-link pull-xs-right" style="color:graytext"><span class="pull-xs-right"><img src="${utente.foto_profilo}" class="avatar img-circle" style="box-shadow: 0px 0px 2px orangered; " height='40px' width='40px'/></span>
+                                ${utente.nome} ${utente.cognome} </button><span id="chat${utente.id}"  class="addClass pull-right glyphicon glyphicon-comment" onclick="register_popup('${utente.id}', '${utente.nome}','${utente.foto_profilo}');"></span>
+                        </form>
+                    </li>
+                </c:forEach>
+            </ul>
         </div>
             <div class="col-md-8" style="margin-left: 3%;">
                <div class="white-element">
@@ -60,7 +80,7 @@
                                 <input type="text" id="provincia" name="provincia" placeholder="Provincia" class="form-control" onkeyup="autocompilePro()" /> 
                                 <input type="text" id="localita" name="localita" placeholder="Comune" class="form-control" onkeyup="autocompile()"/> 
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default " type="submit"><i class="glyphicon glyphicon-search"></i>Vai!</button>
+                                    <button class="btn btn-warning " type="submit"><i class="glyphicon glyphicon-search"></i>Vai!</button>
                                 </span>
                         </div>
                     </form>

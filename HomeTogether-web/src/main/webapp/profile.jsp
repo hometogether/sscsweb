@@ -145,7 +145,11 @@
                                                                     <input type="hidden" name="action" value="goUserProfile">
                                                                     <input type="hidden" name="idprofile" value="${utente.id}">
                                                                         <button class="borderless-btn btn-link pull-xs-right" style="color:graytext"><span class="pull-xs-right"><img src="${utente.foto_profilo}" class="avatar img-circle" style="box-shadow: 0px 0px 2px orangered; " height='40px' width='40px'/></span>
-                                                                        ${utente.nome} ${utente.cognome} </button><span id="chat${utente.id}"  class="addClass pull-right glyphicon glyphicon-comment" onclick="register_popup('${utente.id}', '${utente.nome}','${utente.foto_profilo}');"></span>
+                                                                        ${utente.nome} ${utente.cognome} </button>
+                                                                        <c:if test="${profilo.id == id}">
+                                                                            <span id="chat${utente.id}"  class="addClass pull-right glyphicon glyphicon-comment" onclick="register_popup('${utente.id}', '${utente.nome}','${utente.foto_profilo}');"></span>
+                                                                        </c:if>
+                                                                        
                                                                 </form>
                                                             </li>
                                                         </c:forEach>

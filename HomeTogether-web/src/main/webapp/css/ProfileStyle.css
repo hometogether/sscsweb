@@ -201,6 +201,15 @@ input[type="color"]:focus,
     height: 40px;
 }
 
+.notify{
+    border: 2px solid #ff6701;
+    border-radius: 20px;
+    color: red;
+    color: #ff6701;
+    font-size: 10px;
+    padding: 1px 8px 1px 8px;
+}
+
 .content{
    background: whitesmoke/*rgba(228, 131, 18, 0.6)*/;
 }
@@ -287,7 +296,7 @@ input[type="color"]:focus,
     }
     
  .menu-title {
-     color:#ff7788;
+     color:orangered;
      font-size:1.5rem;
       display:inline-block;
       }
@@ -313,16 +322,16 @@ input[type="color"]:focus,
     
 }
 
-.notifications a.content {
+.notifications div.content {
  text-decoration:none;
- background:#ccc;
+ background:#fff;
 
  }
     
 .notification-item {
  padding:10px;
  margin:5px;
- background:#ccc;
+ background:whitesmoke;
  border-radius:4px;
  }
 

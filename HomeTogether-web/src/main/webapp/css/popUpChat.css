@@ -15,6 +15,7 @@ and open the template in the editor.
     display: none;
     height: 415px;
     position: fixed;
+    z-index: 100;
     right: 70px;
     width: 300px;
 }

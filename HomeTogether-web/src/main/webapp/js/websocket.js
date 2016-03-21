@@ -38,8 +38,8 @@ websocket.onmessage= function processMessage(message){
                     var txt=jsonData.message.split(":")[1];
                     var name=jsonData.message.split(":")[0];
                     var idReceiver= jsonData.message.split(":")[2];
-                    console.log(identifier);
-                    if(identifier==null){
+                    console.log("manda:"+identifier);
+                    /*if(identifier==null){
                         $('#chat'+idReceiver).trigger('click');
                         $('#messageArea'+idReceiver).append('<div id="newelement'+i+'"class="chat-box-single-line">'+
                           '<abbr class="timestamp">'+data+'</abbr>'+
@@ -54,8 +54,8 @@ websocket.onmessage= function processMessage(message){
                                 '<span class="direct-chat-timestamp pull-right">'+time+'</span>'+
                             '</div>');
                     }
-                    
-                    console.log(idReceiver);
+                    */
+                    console.log("riceve:"+idReceiver);
                     $('#messageArea'+identifier).append('<div id="newelement'+i+'"class="chat-box-single-line">'+
                       '<abbr class="timestamp">'+data+'</abbr>'+
                     '</div><div class="direct-chat-info clearfix">'+

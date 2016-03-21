@@ -10,7 +10,20 @@
 <html>
 
     <script type="text/javascript" src="js/utenti.js"></script>    
-    
+    <script type="text/javascript">
+        $(document).ready(function() {
+            console.log("entro");
+            $('li.dropdown.mega-dropdown a').on('click', function (event) {
+                $(this).parent().toggleClass("open");
+            });
+
+            $('body').on('click', function (e) {
+                if (!$('li.dropdown.mega-dropdown').is(e.target) && $('li.dropdown.mega-dropdown').has(e.target).length === 0 && $('.open').has(e.target).length === 0) {
+                    $('li.dropdown.mega-dropdown').removeClass('open');
+                }
+            });
+        });
+    </script>
     <body>
         <% HttpSession s=request.getSession();%>
         <!--HEADER-->
@@ -60,25 +73,34 @@
                             </div>
                         </form>
                         <ul class="nav navbar-nav nav-top-list-rigth">
-                            <li class="dropdown">
-                                <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
+                            <li class="dropdown mega-dropdown">
+                                <a id="dLabel" style="background: transparent;">
+                                <span class="notify pull-right">100</span>
                                 <i class="glyphicon glyphicon-bell"></i>
                               </a>
 
                               <ul class="dropdown-menu dropdown-menu-notifications notifications dropdown-menu-right" role="menu" aria-labelledby="dLabel">
 
-                                <div class="notification-heading"><h4 class="menu-title">Notifications</h4><h4 class="menu-title pull-right">View all<i class="glyphicon glyphicon-circle-arrow-right"></i></h4>
+                                  <div class="notification-heading"><h4 class="menu-title">Notifiche</h4>
                                 </div>
                                 <li class="divider"></li>
                                <div class="notifications-wrapper">
-                                 <a class="content" href="#">
+                                 <div class="content">
 
                                    <div class="notification-item">
-                                    <h4 class="item-title">Evaluation Deadline 1 · day ago</h4>
-                                    <p class="item-info">Marketing 101, Video Assignment</p>
+                                       <h4 class="item-title">Richiesta da <a>Antonio Guarneri</a></h4>
+                                    <p class="item-info">Antonio vuole condividere la sua esperienza con te</p>
+                                    <button class="btn icon-btn btn-success" style="outline:none;">
+                                        <span class="glyphicon btn-glyphicon glyphicon-ok img-circle text-success"></span>
+                                        Accetta
+                                    </button>
+                                    <button class="btn icon-btn btn-danger" style="outline:none;">
+                                        <span class="glyphicon btn-glyphicon glyphicon-remove img-circle text-success"></span>
+                                        Rifiuta
+                                    </button>
                                   </div>
 
-                                </a>
+                                </div>
                                  <a class="content" href="#">
                                   <div class="notification-item">
                                     <h4 class="item-title">Evaluation Deadline 1 · day ago</h4>
@@ -112,8 +134,7 @@
                                 </a>
 
                                </div>
-                                <li class="divider"></li>
-                                <div class="notification-footer"><h4 class="menu-title">View all<i class="glyphicon glyphicon-circle-arrow-right"></i></h4></div>
+                                
                               </ul>
                             </li>
                             <li class="dropdown">
