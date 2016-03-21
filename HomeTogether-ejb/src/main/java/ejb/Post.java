@@ -163,5 +163,17 @@ public class Post implements Serializable {
     public void setLikes(List<Profilo> likes) {
         this.likes = likes;
     }
+    
+    
+    @ManyToMany
+     private List<Hashtag> hashtags;
+
+    public List<Hashtag> getHashtags() {
+        return hashtags;
+    }
+
+    public void setHashtags(List<Hashtag> hashtags) {
+        this.hashtags = hashtags;
+    }
 
 }

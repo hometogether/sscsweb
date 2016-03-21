@@ -60,18 +60,17 @@ public class RegistrationServlet extends HttpServlet {
         HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
-            System.out.println("action is:" + action);
             if (action == null) {
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
                 rd.forward(request, response);
             } else if (action.equals("registration")) {
                 if (request.getParameter("nome") != null && !request.getParameter("nome").equals("")
-                        && request.getParameter("cognome") != null && !request.getParameter("nocognomeme").equals("")
+                        && request.getParameter("cognome") != null && !request.getParameter("cognome").equals("")
                         && request.getParameter("email") != null && !request.getParameter("email").equals("")
                         && request.getParameter("r_email") != null && !request.getParameter("r_email").equals("")
                         && request.getParameter("data_nascita") != null && !request.getParameter("data_nascita").equals("")
                         && request.getParameter("sesso") != null && !request.getParameter("sesso").equals("")
-                        && request.getParameter("foto_profilo") != null && !request.getParameter("foto_profilo").equals("")
+                        //&& request.getParameter("foto_profilo") != null && !request.getParameter("foto_profilo").equals("")
                         && request.getParameter("tipo_registrazione") != null && !request.getParameter("tipo_registrazione").equals("")
                         && request.getParameter("localita") != null && !request.getParameter("localita").equals("")) {
 
