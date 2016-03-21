@@ -105,8 +105,27 @@ public class DiaryServlet extends HttpServlet {
                 String text = request.getParameter("text");
                 Diario d = gestoreDiari.getDiario(idDiario);
                 Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
-                Long idPost = gestoreDiari.aggiungiPost(d, p, text);
-                out.println(idPost);
+                Post post = gestoreDiari.aggiungiPost(d, p, text);
+                
+                //estrazione degli hashtag nel testo
+                
+                String[] hashtags = text.split("#");
+                String[] tmp;
+                for (int i=0; i<hashtags.length;i++){
+                    if (i==0 && text.charAt(0)=='#'){
+                        tmp = hashtags[i].split(" ");
+                        System.out.println("hashtag:"+tmp[0]);
+                        gestoreDiari.aggiungiHashtag(post, tmp[0]);
+                    } else if (i!=0){
+                        tmp = hashtags[i].split(" ");
+                        System.out.println("hashtag:"+tmp[0]);
+                        gestoreDiari.aggiungiHashtag(post, tmp[0]);
+                    }
+                    
+                }
+                
+                
+                out.println(post.getId());
 
             } else if (action.equals("editPost")) {
                 Long idPost = new Long(request.getParameter("idPost"));

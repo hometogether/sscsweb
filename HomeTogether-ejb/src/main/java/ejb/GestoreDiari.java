@@ -28,6 +28,10 @@ public class GestoreDiari {
     private PostFacadeLocal postFacade;
     @EJB
     private CommentoFacadeLocal commentoFacade;
+    @EJB
+    private HashtagFacadeLocal hashtagFacade;
+    @EJB
+    private ProfiloFacadeLocal profiloFacade;
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
@@ -46,7 +50,7 @@ public class GestoreDiari {
         return p;
     }
     
-    public Long aggiungiPost(Diario diario, Profilo profilo, String testo) {
+    public Post aggiungiPost(Diario diario, Profilo profilo, String testo) {
         Post post = new Post();
         post.setUser(profilo);
         post.setTesto(testo);
@@ -57,7 +61,7 @@ public class GestoreDiari {
         em.flush();
         diarioFacade.edit(diario);
         System.out.println("aggiunto il nuovo post. Id: "+post.getId());
-        return post.getId();
+        return post;
 
     }
     
@@ -142,6 +146,46 @@ public class GestoreDiari {
         
         System.out.println("Commento Eliminato");
         
+
+    }
+    
+    public int aggiungiHashtag(Post post, String nomehashtag) {
+        System.out.println("entro in agggiungiHashtag");
+        System.out.println("nome hashtag:" + nomehashtag);
+        if (post == null || nomehashtag == null) {
+            System.out.println("Errore: id Profilo = 0 o nome nomehashtag non valido");
+            return -1;
+        } else {
+            Hashtag hashtag = hashtagFacade.getHashtag(nomehashtag);
+            if (hashtag == null) {
+                //l'interesse non esiste nel DB. Dobbiamo crearlo.
+                hashtag = new Hashtag();
+                hashtag.setNome(nomehashtag);
+                hashtagFacade.create(hashtag);
+                System.out.println("creato nuovo Hashtag");
+
+            } else {
+                System.out.println("Hashtag esistente");
+            }
+            
+            List<Hashtag> hashtags = post.getHashtags();
+            //dobbiamo controllare che l'hashtag non sia già associato al post
+            boolean contain = post.getHashtags().contains(hashtag);
+
+            if (contain == false) {
+                hashtags.add(hashtag);
+                post.setHashtags(hashtags);
+                //EntityManager em = postFacade.getEntityManager();
+                //em.persist(post);
+                //em.flush();
+                postFacade.edit(post);
+
+                return 0;
+            } else {
+                System.out.println("non devo fare niente, l'hashtag è già associato!");
+                return -1; 
+            }
+        }
 
     }
 }
