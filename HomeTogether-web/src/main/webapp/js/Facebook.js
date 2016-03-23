@@ -82,12 +82,23 @@ window.fbAsyncInit = function() {
                           var nome= response.first_name;
                           var cognome= response.last_name;
                           var email= response.email;
-                          var data_nascita= response.birthday.toString();
-                          var giorno= data_nascita.substring(3,5);
-                          var mese= data_nascita.substring(1,2);
-                          var anno= data_nascita.substring(6,10);
+                          var data_nascita="";
+                          var giorno="";
+                          var mese="";
+                          var anno="";
+                          if(response.birthday!== undefined){
+                              console.log("entro in data_nascita: "+ response.birthday);
+                              data_nascita= response.birthday.toString();
+                              giorno= data_nascita.substring(3,5);
+                              mese= data_nascita.substring(1,2);
+                              anno= data_nascita.substring(6,10);
+                          }
+                        
                           var sesso= response.gender;
-                          var localita= response.location.name;
+                          var localita="" 
+                          if(response.location!== undefined){
+                              localita=response.location.name;
+                          }
                           var photo="";
 
                           function sendData(foto) {

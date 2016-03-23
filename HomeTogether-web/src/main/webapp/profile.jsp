@@ -70,7 +70,7 @@
                                             <div class="text-center img_container">
                                                 <c:if test="${profilo.id == id}">
                                                 <div class="the-buttons col-md-3 col-sm-4 col-xs-4">
-                                                    <form action="ProfileServlet" method="get" id="upload" enctype="multipart/form-data">
+                                                    <form action="ProfileServlet" method="post" id="upload" enctype="multipart/form-data">
                                                         <i class="glyphicon glyphicon-camera" id="white-camera"></i>
                                                         <span class="btn-file">
                                                             <input type="file" name="nomeFile" onchange="upload.submit();"/>
