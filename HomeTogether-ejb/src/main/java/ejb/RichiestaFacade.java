@@ -38,6 +38,7 @@ public class RichiestaFacade extends AbstractFacade<Richiesta> implements Richie
     @Override
     public Richiesta getRichiesta(Long idRichiesta) {
         //Query q = em.createNativeQuery(query);
+        System.out.println(idRichiesta);
         Query q = em.createQuery("SELECT r FROM Richiesta r WHERE r.id =:custRichiesta");
         
         q.setParameter("custRichiesta", idRichiesta);

@@ -89,8 +89,7 @@ public class NotifyServlet extends HttpServlet {
         } else if (action.equals("accettarichiesta")) {
             Long id = (Long) (session.getAttribute("id"));
             Profilo personalProfile = profiloFacade.getProfilo(id);
-
-            Long idRichiesta = (Long) (session.getAttribute("idRichiesta"));
+            Long idRichiesta = new Long(request.getParameter("idRichiesta"));
             Richiesta richiesta = richiestaFacade.getRichiesta(idRichiesta);
 
             gestoreRichieste.accettaRichiesta(personalProfile, richiesta);
@@ -103,8 +102,7 @@ public class NotifyServlet extends HttpServlet {
         } else if (action.equals("rifiutarichiesta")) {
             Long id = (Long) (session.getAttribute("id"));
             Profilo personalProfile = profiloFacade.getProfilo(id);
-
-            Long idRichiesta = (Long) (session.getAttribute("idRichiesta"));
+            Long idRichiesta = new Long(request.getParameter("idRichiesta"));
             Richiesta richiesta = richiestaFacade.getRichiesta(idRichiesta);
 
             gestoreRichieste.rifiutaRichiesta(personalProfile, richiesta);

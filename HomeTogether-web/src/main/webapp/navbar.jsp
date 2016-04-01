@@ -24,6 +24,7 @@
             });
         });
     </script>
+    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
     <body>
         <% HttpSession s=request.getSession();%>
         <!--HEADER-->
@@ -75,7 +76,7 @@
                         <ul class="nav navbar-nav nav-top-list-rigth">
                             <li class="dropdown mega-dropdown">
                                 <a id="dLabel" style="background: transparent;">
-                                <span class="notify pull-right">100</span>
+                                <span class="notify pull-right">${fn:length(profilo.richieste)}</span>
                                 <i class="glyphicon glyphicon-bell"></i>
                               </a>
 
@@ -84,56 +85,46 @@
                                   <div class="notification-heading"><h4 class="menu-title">Notifiche</h4>
                                 </div>
                                 <li class="divider"></li>
-                               <div class="notifications-wrapper">
+                               
+                                <c:forEach items="${profilo.richieste}" var="richiesta">
+                                <div class="notifications-wrapper">
                                  <div class="content">
 
                                    <div class="notification-item">
-                                       <h4 class="item-title">Richiesta da <a>Antonio Guarneri</a></h4>
-                                    <p class="item-info">Antonio vuole condividere la sua esperienza con te</p>
-                                    <button class="btn icon-btn btn-success" style="outline:none;">
-                                        <span class="glyphicon btn-glyphicon glyphicon-ok img-circle text-success"></span>
-                                        Accetta
-                                    </button>
-                                    <button class="btn icon-btn btn-danger" style="outline:none;">
-                                        <span class="glyphicon btn-glyphicon glyphicon-remove img-circle text-success"></span>
-                                        Rifiuta
-                                    </button>
+                                       <h4 class="item-title">Richiesta da <a>${richiesta.mittente.nome} ${richiesta.mittente.cognome}</a></h4>
+                                    <p class="item-info">${richiesta.mittente.nome} vuole condividere la sua esperienza con te</p>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <form action="NotifyServlet" method="get" role="form">
+                                                <input type="hidden" name="action" value="accettarichiesta" />
+                                                <input type="hidden" name="idRichiesta" value="${richiesta.id}" />
+                                                <button class="btn icon-btn btn-success" style="outline:none;">
+                                                    <span class="glyphicon btn-glyphicon glyphicon-ok img-circle text-success"></span>
+                                                    Accetta
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <form action="NotifyServlet" method="get" role="form">
+                                                <input type="hidden" name="action" value="rifiutarichiesta" />
+                                                <input type="hidden" name="idRichiesta" value="${richiesta.id}" />
+                                                <button class="btn icon-btn btn-danger" style="outline:none;">
+                                                    <span class="glyphicon btn-glyphicon glyphicon-remove img-circle text-success"></span>
+                                                    Rifiuta
+                                                </button>
+                                            </form>
+                                        </div>
+                                        
+                                    </div>
+                                    
                                   </div>
 
                                 </div>
-                                 <a class="content" href="#">
-                                  <div class="notification-item">
-                                    <h4 class="item-title">Evaluation Deadline 1 · day ago</h4>
-                                    <p class="item-info">Marketing 101, Video Assignment</p>
-                                  </div>
-                                </a>
-                                 <a class="content" href="#">
-                                  <div class="notification-item">
-                                    <h4 class="item-title">Evaluation Deadline 1 • day ago</h4>
-                                    <p class="item-info">Marketing 101, Video Assignment</p>
-                                  </div>
-                                </a>
-                                 <a class="content" href="#">
-                                  <div class="notification-item">
-                                    <h4 class="item-title">Evaluation Deadline 1 • day ago</h4>
-                                    <p class="item-info">Marketing 101, Video Assignment</p>
-                                  </div>
+                                    </div>
+                                </c:forEach>
+                                 
 
-                                </a>
-                                 <a class="content" href="#">
-                                  <div class="notification-item">
-                                    <h4 class="item-title">Evaluation Deadline 1 • day ago</h4>
-                                    <p class="item-info">Marketing 101, Video Assignment</p>
-                                  </div>
-                                </a>
-                                 <a class="content" href="#">
-                                  <div class="notification-item">
-                                    <h4 class="item-title">Evaluation Deadline 1 • day ago</h4>
-                                    <p class="item-info">Marketing 101, Video Assignment</p>
-                                  </div>
-                                </a>
-
-                               </div>
+                               
                                 
                               </ul>
                             </li>

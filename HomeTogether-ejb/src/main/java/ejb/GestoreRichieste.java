@@ -5,7 +5,9 @@
  */
 package ejb;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -56,19 +58,34 @@ public class GestoreRichieste {
 
         List<Richiesta> richieste = profilo.getRichieste();
 
-        //dobbiamo controllare che l'interesse non sia già associato all'user
-        boolean contain = richieste.contains(richiesta);
+
+        boolean contain = false;
+        int pos = -1;
+        for (int i=0; i<richieste.size() && contain == false;i++){
+            if (richieste.get(i).getId() == richiesta.getId()){
+                contain = true;
+                pos = i;
+            }
+        }
+        
         if (contain) {
-            richieste.remove(richiesta);
+            String nome = richiesta.getMittente().getNome();
+            Profilo mittente =  richiesta.getMittente();
+            
+            richiestaFacade.remove(richiesta);
+            richieste.remove(pos);
             profilo.setRichieste(richieste);
             profiloFacade.edit(profilo);
-            
+
             //creazione diario
             
             Diario diario = new Diario();
-            diario.getPartecipanti().add(profilo);
-            diario.getPartecipanti().add(richiesta.getMittente());
-            diario.setNome("Diario di"+profilo.getNome()+" e "+richiesta.getMittente().getNome());
+            List<Profilo> partecipanti = new ArrayList<Profilo>();
+            partecipanti.add(profilo);
+            partecipanti.add(mittente);
+            diario.setPartecipanti(partecipanti);
+            diario.setNome("Diario di "+profilo.getNome()+" e "+ nome);
+            //diario.setData_inizio(richiesta.get);
             diarioFacade.create(diario);
             
            
@@ -90,9 +107,18 @@ public class GestoreRichieste {
         List<Richiesta> richieste = profilo.getRichieste();
 
         //dobbiamo controllare che l'interesse non sia già associato all'user
-        boolean contain = richieste.contains(richiesta);
-        if (contain) {
-            richieste.remove(richiesta);
+        boolean contain = false;
+        int pos = -1;
+        for (int i=0; i<richieste.size() && contain == false;i++){
+            if (richieste.get(i).getId() == richiesta.getId()){
+                contain = true;
+                pos = i;
+            }
+        }
+        
+        if (contain) {            
+            richiestaFacade.remove(richiesta);
+            richieste.remove(pos);
             profilo.setRichieste(richieste);
             profiloFacade.edit(profilo);
             
