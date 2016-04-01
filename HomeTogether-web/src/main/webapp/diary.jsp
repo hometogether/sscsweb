@@ -61,6 +61,29 @@
                         var nome='${profilo.nome}';
                         var cognome='${profilo.cognome}';
                         console.log('foto:'+foto);
+                        
+                        var tmp="";
+                        for (var j = 0; j < testo.length; j++) {
+                            if (testo.charAt(j) === '#') {
+                                tmp+="<a href='#' style='color:rgba(228, 131, 18, 0.6)'><B>#";
+                                j++;
+                                while (j < testo.length && testo.charAt(j) !== ' '){
+                                    tmp+=testo.charAt(j);
+                                    j++;
+                                }
+                                tmp+="</B></a>";
+                                if (j < testo.length){
+                                    tmp+=testo.charAt(j);
+                                }
+                            } else {
+                                tmp+=testo.charAt(j);
+                            }
+                        }
+                        testo = tmp;
+                        
+                        
+                        
+                        
                         $('#postContainer').prepend('<div id="post'+idPost+'" class="col-md-12" style="margin-bottom: 0%;border: 1px solid whitesmoke;border-radius: 2px;">'+
                                                     '<div class="col-md-1"></div>'+
                                                     '<div class="col-md-10" style="background: white;  border-radius: 2px;box-shadow: 0px 0px 5px orange;margin-bottom:7%;">'+

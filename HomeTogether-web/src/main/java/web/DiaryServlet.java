@@ -69,7 +69,7 @@ public class DiaryServlet extends HttpServlet {
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile.jsp");
                 rd.forward(request, response);
             } else if (action.equals("goToDiary")) {
-                if (request.getParameter("idDiario")!= null && !request.getParameter("idDiario").equals("")) {
+                if (request.getParameter("idDiario") != null && !request.getParameter("idDiario").equals("")) {
                     Long idDiario = new Long(request.getParameter("idDiario"));
                     Diario d = gestoreDiari.getDiario(idDiario);
                     Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
@@ -77,6 +77,32 @@ public class DiaryServlet extends HttpServlet {
 
                     if (d != null) {
                         d.setPost(Lists.reverse(d.getPost()));
+                        String post;
+                        String tmp="";
+                        for (int i = 0; i < d.getPost().size(); i++) {
+                            if (!d.getPost().get(i).getHashtags().isEmpty()) {
+                                post = d.getPost().get(i).getTesto();
+                                for (int j = 0; j < post.length(); j++) {
+                                    if (post.charAt(j) == '#') {
+                                        tmp+="<a href='#' style='color:rgba(228, 131, 18, 0.6)'><B>#";
+                                        j++;
+                                        while (j < post.length() && post.charAt(j) != ' '){
+                                            tmp+=post.charAt(j);
+                                            j++;
+                                        }
+                                        tmp+="</B></a>";
+                                        if (j < post.length()){
+                                            tmp+=post.charAt(j);
+                                        }
+                                    } else {
+                                        tmp+=post.charAt(j);
+                                    }
+                                }
+                                d.getPost().get(i).setTesto(tmp);
+                                tmp="";
+                            }
+                        }
+
                         request.setAttribute("profilo", p);
                         request.setAttribute("diario", d);
 
@@ -106,25 +132,23 @@ public class DiaryServlet extends HttpServlet {
                 Diario d = gestoreDiari.getDiario(idDiario);
                 Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
                 Post post = gestoreDiari.aggiungiPost(d, p, text);
-                
+
                 //estrazione degli hashtag nel testo
-                
                 String[] hashtags = text.split("#");
                 String[] tmp;
-                for (int i=0; i<hashtags.length;i++){
-                    if (i==0 && text.charAt(0)=='#'){
+                for (int i = 0; i < hashtags.length; i++) {
+                    if (i == 0 && text.charAt(0) == '#') {
                         tmp = hashtags[i].split(" ");
-                        System.out.println("hashtag:"+tmp[0]);
+                        System.out.println("hashtag:" + tmp[0]);
                         gestoreDiari.aggiungiHashtag(post, tmp[0]);
-                    } else if (i!=0){
+                    } else if (i != 0) {
                         tmp = hashtags[i].split(" ");
-                        System.out.println("hashtag:"+tmp[0]);
+                        System.out.println("hashtag:" + tmp[0]);
                         gestoreDiari.aggiungiHashtag(post, tmp[0]);
                     }
-                    
+
                 }
-                
-                
+
                 out.println(post.getId());
 
             } else if (action.equals("editPost")) {
@@ -166,27 +190,26 @@ public class DiaryServlet extends HttpServlet {
                 Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
                 Long idCommento = gestoreDiari.aggiungiCommento(post, p, testo);
                 out.println(idCommento);
-                
+
             } else if (action.equals("editComment")) {
                 Long idCommento = new Long(request.getParameter("idCommento"));
                 String testo = request.getParameter("testo");
                 Commento commento = gestoreDiari.getCommento(idCommento);
                 gestoreDiari.modificaCommento(commento, testo);
                 out.println("0");
-                
+
             } else if (action.equals("removeComment")) {
                 Long idCommento = new Long(request.getParameter("idCommento"));
                 Commento commento = gestoreDiari.getCommento(idCommento);
                 gestoreDiari.eliminaCommento(commento);
                 out.println("0");
-                
+
             } else {
                 Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
                 request.setAttribute("profilo", personalProfile);
                 request.setAttribute("danger", "azione sconosciuta!");
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile.jsp");
                 rd.forward(request, response);
-                
 
             }
 
