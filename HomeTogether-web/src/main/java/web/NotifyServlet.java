@@ -93,7 +93,7 @@ public class NotifyServlet extends HttpServlet {
             Richiesta richiesta = richiestaFacade.getRichiesta(idRichiesta);
 
             gestoreRichieste.accettaRichiesta(personalProfile, richiesta);
-
+            personalProfile = profiloFacade.getProfilo(id);
             request.setAttribute("profilo", personalProfile);
 
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");

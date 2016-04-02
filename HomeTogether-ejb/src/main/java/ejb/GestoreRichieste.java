@@ -11,6 +11,7 @@ import java.util.Objects;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -50,7 +51,7 @@ public class GestoreRichieste {
 
     }
 
-    public int accettaRichiesta(Profilo profilo, Richiesta richiesta) {
+    public Profilo accettaRichiesta(Profilo profilo, Richiesta richiesta) {
         //il tipo di ritorno è una Stringa, perché in alcuni casi dovremo tornare un Long (tipo non primitivo) e in altri un int.
         /*interessi.remove(interesse);
          p.setInteressi(interessi);
@@ -88,12 +89,25 @@ public class GestoreRichieste {
             //diario.setData_inizio(richiesta.get);
             diarioFacade.create(diario);
             
-           
+            EntityManager em = diarioFacade.getEntityManager();
+            em.persist(diario);
+            em.flush();
             
-            return 0;
+            List<Diario> diari_profilo = profilo.getDiari();
+            List<Diario> diari_mittente = mittente.getDiari();
+            diari_profilo.add(diario);
+            diari_mittente.add(diario);
+            profilo.setDiari(diari_profilo);
+            mittente.setDiari(diari_mittente);
+            
+            
+            profiloFacade.edit(mittente);
+            profiloFacade.edit(profilo);
+            
+            return profilo;
         } else {
             System.out.println("Errore sconosciuto: si vuole accettare una richiesta che l'utente non ha associato");
-            return -1;
+            return null;
         }
 
     }

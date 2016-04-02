@@ -6,8 +6,10 @@
 package web;
 
 import com.google.gson.Gson;
+import ejb.Diario;
 import ejb.GestoreUtenti;
 import ejb.Interesse;
+import ejb.Post;
 import ejb.Profilo;
 import ejb.ProfiloFacade;
 import ejb.UtenteApp;
@@ -15,8 +17,10 @@ import ejb.UtenteGoogle;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.json.Json;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,6 +28,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -90,6 +96,26 @@ public class LoginServlet extends HttpServlet {
                     rd.forward(request, response);
                 }
 
+            }else if (action.equals("android-login")) {
+                String email = request.getParameter("email");
+                String password = request.getParameter("password");
+                UtenteApp u = gestoreUtenti.loginUtente(email, password);
+                if (u != null) {
+                    Profilo p= u.getProfilo();
+                    /*Profilo p2= new Profilo();
+                    p2.setId(p.getId());
+                    p2.setNome(p.getNome());
+                    p2.setCognome(p.getCognome());
+                    p2.setComune(p.getComune());
+                    p2.setFoto_profilo(p.getFoto_profilo());*/
+                    System.out.println(buildGson(p));
+                    out.print(buildGson(p));
+                    
+
+                } else {
+                    out.print(0);
+                }
+
             } else {
                 request.setAttribute("danger", "azione sconosciuta!");
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
@@ -100,17 +126,80 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-    private String buildGson(List<UtenteGoogle> u) {
+    private String buildGson(Profilo p) {
 
-        Gson gson = new Gson();
-        String json = gson.toJson(u);
+        //JSONObject jo = new JSONObject();
+        //Collection<JSONObject> items = new ArrayList<JSONObject>();
 
-        if (json == null) {
-            System.out.println("servlet buildGson: NULL");
-        } else {
-            System.out.println("servlet buildGson: NOT NULL  " + json);
+        JSONObject item = new JSONObject();
+        item.put("nome", p.getNome());
+        item.put("cognome", p.getCognome());
+        item.put("email", p.getEmail());
+        item.put("comune", p.getComune().getNome());
+        item.put("foto_profilo", p.getFoto_profilo());
+        item.put("id", p.getId());
+        
+        JSONObject json_follower = new JSONObject();
+        JSONArray json_follower_array = new JSONArray();
+        
+        JSONObject json_diario = new JSONObject();
+        JSONArray json_diario_array = new JSONArray();
+        
+        JSONObject json_post = new JSONObject();
+        JSONArray json_post_array = new JSONArray();
+        
+        JSONObject json_partecipante = new JSONObject();
+        JSONArray json_partecipante_array = new JSONArray();
+        
+        //JSONObject diario;
+        Profilo following;
+        Profilo partecipante;
+        Diario diario;
+        Post post;
+        for (int i = 0; i < p.getFollowing().size(); i++){
+            following = p.getFollowing().get(i);
+            
+            for (int j = 0; j < following.getDiari().size(); j++){
+                
+                diario = following.getDiari().get(j);
+                json_diario.put("nome", diario.getNome());
+                json_diario.put("data_inizio", diario.getData_inizio());
+                json_diario.put("data_fine", diario.getData_fine());
+                for (int k = 0; k < diario.getPartecipanti().size(); k++){
+                    partecipante = diario.getPartecipanti().get(k);
+                    json_partecipante.put("nome", partecipante.getNome()+" "+partecipante.getCognome());
+                    json_partecipante_array.add(json_partecipante);
+                    json_partecipante = new JSONObject();
+                }
+                json_diario.put("partecipanti", json_partecipante_array);
+                json_partecipante_array = new JSONArray();
+                for (int k = 0; k < diario.getPost().size(); k++){
+                    post = diario.getPost().get(k);
+                    json_post.put("mittente", post.getUser().getNome()+" "+post.getUser().getCognome());
+                    json_post.put("testo", post.getTesto());
+                    json_post_array.add(json_post);
+                    json_post = new JSONObject();
+                }
+                json_diario.put("post", json_post_array);
+                
+                json_diario_array.add(json_diario);
+                json_diario = new JSONObject();
+                json_post_array = new JSONArray();
+                
+            }
+            json_follower.put("nome", following.getNome());
+            
+            json_follower.put("diari", json_diario_array);
+            json_follower_array.add(json_follower);
+            json_follower = new JSONObject();
+            json_diario_array = new JSONArray();
+            
         }
-        return json;
+        
+        item.put("follower", json_follower_array);
+        System.out.println(item.toJSONString());
+        return item.toJSONString();
+        //System.out.println(jo.toString());
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
