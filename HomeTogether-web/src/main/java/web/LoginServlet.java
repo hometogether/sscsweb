@@ -121,19 +121,35 @@ public class LoginServlet extends HttpServlet {
             } else if (action.equals("android-login")) {
                 String email = request.getParameter("email");
                 String password = request.getParameter("password");
-                UtenteApp u = gestoreUtenti.loginUtente(email, password);
-                if (u != null) {
-                    Profilo p = u.getProfilo();
-                    /*Profilo p2= new Profilo();
-                     p2.setId(p.getId());
-                     p2.setNome(p.getNome());
-                     p2.setCognome(p.getCognome());
-                     p2.setComune(p.getComune());
-                     p2.setFoto_profilo(p.getFoto_profilo());*/
-                    System.out.println(buildGson(p));
-                    out.print(buildGson(p));
 
-                } else {
+                MessageDigest md;
+                try {
+                    md = MessageDigest.getInstance("MD5");
+                    md.update(password.getBytes());
+                    byte[] digest = md.digest();
+                    StringBuffer sb = new StringBuffer();
+                    for (byte b : digest) {
+                        sb.append(String.format("%02x", b & 0xff));
+                    }
+                    password = sb.toString();
+
+                    UtenteApp u = gestoreUtenti.loginUtente(email, password);
+                    if (u != null) {
+                        Profilo p = u.getProfilo();
+                        /*Profilo p2= new Profilo();
+                         p2.setId(p.getId());
+                         p2.setNome(p.getNome());
+                         p2.setCognome(p.getCognome());
+                         p2.setComune(p.getComune());
+                         p2.setFoto_profilo(p.getFoto_profilo());*/
+                        System.out.println(buildGson(p));
+                        out.print(buildGson(p));
+
+                    } else {
+                        out.print(0);
+                    }
+                } catch (NoSuchAlgorithmException ex) {
+                    Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
                     out.print(0);
                 }
 
