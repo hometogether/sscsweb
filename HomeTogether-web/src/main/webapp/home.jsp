@@ -96,7 +96,7 @@
 
                                           <div class="panel-body">
 
-                                              Creato il ${diario.data_inizio}
+                                              Periodo permanenza dal ${diario.data_inizio} al ${diario.data_fine}
 
                                           </div>
                                           <div class="panel-body">

@@ -188,4 +188,25 @@ public class GestoreDiari {
         }
 
     }
+    
+    public List<Post> cercaHashtag(String nomehashtag) {
+        System.out.println("entro in agggiungiHashtag");
+        System.out.println("nome hashtag:" + nomehashtag);
+        if (nomehashtag == null) {
+            System.out.println("Nome nomehashtag non valido");
+            return null;
+        } else {
+            Hashtag hashtag = hashtagFacade.getHashtag(nomehashtag);
+            if (hashtag == null) {
+                System.out.println("Nessun post ha questo hashtag associato");
+                return null;
+
+            } 
+            
+            List<Post> hashtags = hashtagFacade.getPost(hashtag);
+            
+            return hashtags;
+        }
+
+    }
 }

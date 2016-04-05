@@ -136,7 +136,7 @@
                                 <li><form role="form" action="RedirectServlet" method="get"><input type="hidden" name="action" value="goProfile"><button type="submit" class=" btn-link borderless-btn" style="color: black; padding-left: 7%"><i class="glyphicon glyphicon-user"></i><span> </span>Profilo</button></form></li>
                                 <li><button type="submit" class="btn-link borderless-btn" style="color: black; padding-left: 7%;"><i class="glyphicon glyphicon-cog"></i><span> </span>Impostazioni</button></li>
                                 <li role="separator" class="divider"></li>
-                                <li><form role="form" action="RedirectServlet" method="post"><input type="hidden" name="action" value="logOut"><button type="submit" class="btn-link borderless-btn" style="color: black; padding-left: 7%"><i class="glyphicon glyphicon-log-out"></i><span> </span>Log out</button></form></li>
+                                <li><form role="form" action="RedirectServlet" method="get"><input type="hidden" name="action" value="logOut"><button type="submit" class="btn-link borderless-btn" style="color: black; padding-left: 7%"><i class="glyphicon glyphicon-log-out"></i><span> </span>Log out</button></form></li>
                               </ul>
                             </li>
                         </ul>

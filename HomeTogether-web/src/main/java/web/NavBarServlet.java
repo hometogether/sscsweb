@@ -6,6 +6,8 @@
 package web;
 
 import com.google.gson.Gson;
+import ejb.GestoreDiari;
+import ejb.Post;
 import ejb.Profilo;
 import ejb.ProfiloFacade;
 import java.io.IOException;
@@ -38,6 +40,8 @@ public class NavBarServlet extends HttpServlet {
      */
     @EJB
     ProfiloFacade profiloFacade;
+    @EJB
+    GestoreDiari gestoreDiari;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -55,19 +59,73 @@ public class NavBarServlet extends HttpServlet {
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
                 rd.forward(request, response);
             } else if (action.equals("searchUtente")) {
-                
+
                 if (request.getParameter("ric_utente") != null && !request.getParameter("ric_utente").equals("")) {
                     String nomeDigitato = (String) request.getParameter("ric_utente");
-                    List<Profilo> res = profiloFacade.getProfiloUtente(nomeDigitato.toLowerCase(), (Long) (session.getAttribute("id")), 0);
-                    if (res == null) {
-                        request.setAttribute("warning", "Nessun Risultato Trovato!");
+                    if (nomeDigitato.charAt(0) != '#') {
+                        List<Profilo> res = profiloFacade.getProfiloUtente(nomeDigitato.toLowerCase(), (Long) (session.getAttribute("id")), 0);
+                        if (res == null) {
+                            request.setAttribute("warning", "Nessun Risultato Trovato!");
+                        }
+                        request.setAttribute("utente", res);
+                        request.setAttribute("ric_utente", nomeDigitato);
+                        Profilo p = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                        request.setAttribute("profilo", p);
+                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/utenti.jsp");
+                        rd.forward(request, response);
+                    } else {
+                        if (nomeDigitato.length() != 1) {
+                            nomeDigitato = nomeDigitato.substring(1);
+                            List<Post> res = gestoreDiari.cercaHashtag(nomeDigitato);
+                            if (res == null) {
+                                request.setAttribute("warning", "Nessun Post Trovato!");
+                            } else {
+                                String post;
+                                String tmp = "";
+                                String tmphashtag = "";
+                                for (int i = 0; i < res.size(); i++) {
+                                    if (!res.get(i).getHashtags().isEmpty()) {
+                                        post = res.get(i).getTesto();
+                                        for (int j = 0; j < post.length(); j++) {
+                                            if (post.charAt(j) == '#') {
+                                                tmp += "<a href='/HomeTogether-web/NavBarServlet?action=searchUtente&ric_utente=%23";
+                                                j++;
+                                                while (j < post.length() && post.charAt(j) != ' ') {
+                                                    tmphashtag += post.charAt(j);
+                                                    j++;
+                                                }
+                                                tmp += tmphashtag + "' style='color:rgba(228, 131, 18, 0.6)'><B>#";
+                                                tmp += tmphashtag;
+                                                tmp += "</B></a>";
+                                                if (j < post.length()) {
+                                                    tmp += post.charAt(j);
+                                                }
+                                                tmphashtag = "";
+                                            } else {
+                                                tmp += post.charAt(j);
+                                            }
+                                        }
+                                        res.get(i).setTesto(tmp);
+                                        tmp = "";
+                                        
+                                    }
+                                }
+                            }
+                            request.setAttribute("post", res);
+                            Profilo p = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                            request.setAttribute("profilo", p);
+                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/hashtag.jsp");
+                            rd.forward(request, response);
+                        } else {
+                            request.setAttribute("danger", "Digitare un Hashtag!");
+                            request.setAttribute("post", null);
+                            Profilo p = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                            request.setAttribute("profilo", p);
+                            RequestDispatcher rd = getServletContext().getRequestDispatcher("/hashtag.jsp");
+                            rd.forward(request, response);
+                        }
                     }
-                    request.setAttribute("utente", res);
-                    request.setAttribute("ric_utente", nomeDigitato);
-                    Profilo p = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
-                    request.setAttribute("profilo", p);
-                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/utenti.jsp");
-                    rd.forward(request, response);
+
                 } else {
                     request.setAttribute("utente", null);
                     request.setAttribute("warning", "Nessun Risultato Trovato!");

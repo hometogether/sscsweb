@@ -117,9 +117,9 @@ public class MatchServlet extends HttpServlet {
                     RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
                     rd.forward(request, response);
                 }
-
+                Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
                 if (trovato == false) {
-                    Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
+                    
                     request.setAttribute("profilo", personalProfile);
                     request.setAttribute("warning", "Località non esistente!");
                     RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
@@ -148,6 +148,7 @@ public class MatchServlet extends HttpServlet {
                                 return Double.compare(item1.getMatch_totale(), item2.getMatch_totale());
                             }
                         });
+                        request.setAttribute("profilo", personalProfile);
                         request.setAttribute("match", res);
                         RequestDispatcher rd = getServletContext().getRequestDispatcher("/match.jsp");
                         rd.forward(request, response);

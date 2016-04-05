@@ -17,8 +17,12 @@ import ejb.UtenteFacebook;
 import ejb.UtenteGoogle;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -104,6 +108,8 @@ public class RegistrationServlet extends HttpServlet {
                                 && request.getParameter("r_password") != null && !request.getParameter("r_password").equals("")) {
                             String password = request.getParameter("password");
                             String r_password = request.getParameter("r_password");
+                            
+                            
                             Profilo p = gestoreUtenti.aggiungiUser(nome, cognome, password, r_password, email, r_email, data_nascita, sesso, comune);
                             if (p != null) {
                                 session.setAttribute("id", p.getId());

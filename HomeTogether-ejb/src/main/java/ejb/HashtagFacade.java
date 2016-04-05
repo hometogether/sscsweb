@@ -64,7 +64,13 @@ public class HashtagFacade extends AbstractFacade<Hashtag> implements HashtagFac
 
     @Override
     public List<Post> getPost(Hashtag hashtag) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //Query q = em.createNativeQuery(query);
+        System.out.println("entro in getPost");
+        Query q = em.createQuery("SELECT p FROM Post p JOIN p.hashtags h WHERE h.id=:custId");
+        q.setParameter("custId", hashtag.getId());
+        List<Post> post = q.getResultList();
+        System.out.println("post hashtag trovati:"+q.getResultList());
+        return post;
     }
     
     

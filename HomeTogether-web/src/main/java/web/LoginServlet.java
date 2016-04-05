@@ -16,9 +16,13 @@ import ejb.UtenteApp;
 import ejb.UtenteGoogle;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.servlet.RequestDispatcher;
@@ -68,49 +72,66 @@ public class LoginServlet extends HttpServlet {
             } else if (action.equals("login")) {
                 String email = request.getParameter("email");
                 String password = request.getParameter("password");
-                UtenteApp u = gestoreUtenti.loginUtente(email, password);
-                if (u != null) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("id", u.getProfilo().getId());
 
-                    //Profilo p = profiloFacade.getProfilo(email);
-                    session.setAttribute("nome", "" + u.getProfilo().getNome());
-                    session.setAttribute("cognome", "" + u.getProfilo().getCognome());
-                    session.setAttribute("email", "" + u.getProfilo().getEmail());
-                    session.setAttribute("data", "" + u.getProfilo().getData_nascita());
-                    session.setAttribute("sesso", "" + u.getProfilo().getSesso());
-                    session.setAttribute("formazione", u.getProfilo().getFormazione());
-                    session.setAttribute("occupazione", u.getProfilo().getOccupazione());
-                    session.setAttribute("telefono", u.getProfilo().getTelefono());
-                    //  s.setAttribute("location",""+location);
-                    session.setAttribute("foto", "" + u.getProfilo().getFoto_profilo());
-                    Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
-                    request.setAttribute("profilo", p);
+                MessageDigest md;
+                try {
+                    md = MessageDigest.getInstance("MD5");
+                    md.update(password.getBytes());
+                    byte[] digest = md.digest();
+                    StringBuffer sb = new StringBuffer();
+                    for (byte b : digest) {
+                        sb.append(String.format("%02x", b & 0xff));
+                    }
+                    password = sb.toString();
 
-                    RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
-                    rd.forward(request, response);
+                    UtenteApp u = gestoreUtenti.loginUtente(email, password);
+                    if (u != null) {
+                        HttpSession session = request.getSession();
+                        session.setAttribute("id", u.getProfilo().getId());
 
-                } else {
-                    request.setAttribute("warning", "Login non valido!");
+                        //Profilo p = profiloFacade.getProfilo(email);
+                        session.setAttribute("nome", "" + u.getProfilo().getNome());
+                        session.setAttribute("cognome", "" + u.getProfilo().getCognome());
+                        session.setAttribute("email", "" + u.getProfilo().getEmail());
+                        session.setAttribute("data", "" + u.getProfilo().getData_nascita());
+                        session.setAttribute("sesso", "" + u.getProfilo().getSesso());
+                        session.setAttribute("formazione", u.getProfilo().getFormazione());
+                        session.setAttribute("occupazione", u.getProfilo().getOccupazione());
+                        session.setAttribute("telefono", u.getProfilo().getTelefono());
+                        //  s.setAttribute("location",""+location);
+                        session.setAttribute("foto", "" + u.getProfilo().getFoto_profilo());
+                        Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
+                        request.setAttribute("profilo", p);
+
+                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
+                        rd.forward(request, response);
+
+                    } else {
+                        request.setAttribute("warning", "Login non valido!");
+                        RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
+                        rd.forward(request, response);
+                    }
+                } catch (NoSuchAlgorithmException ex) {
+                    Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    request.setAttribute("warning", "Password non valida!");
                     RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
                     rd.forward(request, response);
                 }
 
-            }else if (action.equals("android-login")) {
+            } else if (action.equals("android-login")) {
                 String email = request.getParameter("email");
                 String password = request.getParameter("password");
                 UtenteApp u = gestoreUtenti.loginUtente(email, password);
                 if (u != null) {
-                    Profilo p= u.getProfilo();
+                    Profilo p = u.getProfilo();
                     /*Profilo p2= new Profilo();
-                    p2.setId(p.getId());
-                    p2.setNome(p.getNome());
-                    p2.setCognome(p.getCognome());
-                    p2.setComune(p.getComune());
-                    p2.setFoto_profilo(p.getFoto_profilo());*/
+                     p2.setId(p.getId());
+                     p2.setNome(p.getNome());
+                     p2.setCognome(p.getCognome());
+                     p2.setComune(p.getComune());
+                     p2.setFoto_profilo(p.getFoto_profilo());*/
                     System.out.println(buildGson(p));
                     out.print(buildGson(p));
-                    
 
                 } else {
                     out.print(0);
@@ -130,7 +151,6 @@ public class LoginServlet extends HttpServlet {
 
         //JSONObject jo = new JSONObject();
         //Collection<JSONObject> items = new ArrayList<JSONObject>();
-
         JSONObject item = new JSONObject();
         item.put("nome", p.getNome());
         item.put("cognome", p.getCognome());
@@ -138,65 +158,65 @@ public class LoginServlet extends HttpServlet {
         item.put("comune", p.getComune().getNome());
         item.put("foto_profilo", p.getFoto_profilo());
         item.put("id", p.getId());
-        
+
         JSONObject json_follower = new JSONObject();
         JSONArray json_follower_array = new JSONArray();
-        
+
         JSONObject json_diario = new JSONObject();
         JSONArray json_diario_array = new JSONArray();
-        
+
         JSONObject json_post = new JSONObject();
         JSONArray json_post_array = new JSONArray();
-        
+
         JSONObject json_partecipante = new JSONObject();
         JSONArray json_partecipante_array = new JSONArray();
-        
+
         //JSONObject diario;
         Profilo following;
         Profilo partecipante;
         Diario diario;
         Post post;
-        for (int i = 0; i < p.getFollowing().size(); i++){
+        for (int i = 0; i < p.getFollowing().size(); i++) {
             following = p.getFollowing().get(i);
-            
-            for (int j = 0; j < following.getDiari().size(); j++){
-                
+
+            for (int j = 0; j < following.getDiari().size(); j++) {
+
                 diario = following.getDiari().get(j);
                 json_diario.put("nome", diario.getNome());
                 json_diario.put("data_inizio", diario.getData_inizio());
                 json_diario.put("data_fine", diario.getData_fine());
-                for (int k = 0; k < diario.getPartecipanti().size(); k++){
+                for (int k = 0; k < diario.getPartecipanti().size(); k++) {
                     partecipante = diario.getPartecipanti().get(k);
-                    json_partecipante.put("nome", partecipante.getNome()+" "+partecipante.getCognome());
+                    json_partecipante.put("nome", partecipante.getNome() + " " + partecipante.getCognome());
                     json_partecipante_array.add(json_partecipante);
                     json_partecipante = new JSONObject();
                 }
                 json_diario.put("partecipanti", json_partecipante_array);
                 json_partecipante_array = new JSONArray();
-                for (int k = 0; k < diario.getPost().size(); k++){
+                for (int k = 0; k < diario.getPost().size(); k++) {
                     post = diario.getPost().get(k);
-                    json_post.put("mittente", post.getUser().getNome()+" "+post.getUser().getCognome());
+                    json_post.put("mittente", post.getUser().getNome() + " " + post.getUser().getCognome());
                     json_post.put("testo", post.getTesto());
                     json_post_array.add(json_post);
                     json_post = new JSONObject();
                 }
                 json_diario.put("post", json_post_array);
-                
+
                 json_diario_array.add(json_diario);
                 json_diario = new JSONObject();
                 json_post_array = new JSONArray();
-                
+
             }
             json_follower.put("nome", following.getNome());
-            
+
             json_follower.put("diari", json_diario_array);
             json_follower_array.add(json_follower);
             json_follower = new JSONObject();
             json_diario_array = new JSONArray();
-            
+
         }
-        
-        item.put("follower", json_follower_array);
+
+        item.put("following", json_follower_array);
         System.out.println(item.toJSONString());
         return item.toJSONString();
         //System.out.println(jo.toString());

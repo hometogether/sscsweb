@@ -6,6 +6,7 @@
 package ejb;
 
 import java.io.Serializable;
+import java.sql.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -61,6 +62,46 @@ public class Richiesta implements Serializable {
      */
     public void setMittente(Profilo mittente) {
         this.mittente = mittente;
+    }
+    
+    private Date data_inizio;
+
+    /**
+     * Get the value of data_inizio
+     *
+     * @return the value of data_inizio
+     */
+    public Date getData_inizio() {
+        return data_inizio;
+    }
+
+    /**
+     * Set the value of data_inizio
+     *
+     * @param data_inizio new value of data_inizio
+     */
+    public void setData_inizio(Date data_inizio) {
+        this.data_inizio = data_inizio;
+    }
+
+    private Date data_fine;
+
+    /**
+     * Get the value of data_fine
+     *
+     * @return the value of data_fine
+     */
+    public Date getData_fine() {
+        return data_fine;
+    }
+
+    /**
+     * Set the value of data_fine
+     *
+     * @param data_fine new value of data_fine
+     */
+    public void setData_fine(Date data_fine) {
+        this.data_fine = data_fine;
     }
 
 }

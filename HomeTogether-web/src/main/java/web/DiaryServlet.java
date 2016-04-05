@@ -79,21 +79,25 @@ public class DiaryServlet extends HttpServlet {
                         d.setPost(Lists.reverse(d.getPost()));
                         String post;
                         String tmp="";
+                        String tmphashtag="";
                         for (int i = 0; i < d.getPost().size(); i++) {
                             if (!d.getPost().get(i).getHashtags().isEmpty()) {
                                 post = d.getPost().get(i).getTesto();
                                 for (int j = 0; j < post.length(); j++) {
                                     if (post.charAt(j) == '#') {
-                                        tmp+="<a href='#' style='color:rgba(228, 131, 18, 0.6)'><B>#";
+                                        tmp+="<a href='/HomeTogether-web/NavBarServlet?action=searchUtente&ric_utente=%23";
                                         j++;
                                         while (j < post.length() && post.charAt(j) != ' '){
-                                            tmp+=post.charAt(j);
+                                            tmphashtag+=post.charAt(j);
                                             j++;
                                         }
+                                        tmp+=tmphashtag+"' style='color:rgba(228, 131, 18, 0.6)'><B>#";
+                                        tmp+=tmphashtag;
                                         tmp+="</B></a>";
                                         if (j < post.length()){
                                             tmp+=post.charAt(j);
                                         }
+                                        tmphashtag = "";
                                     } else {
                                         tmp+=post.charAt(j);
                                     }

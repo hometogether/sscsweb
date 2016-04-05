@@ -5,13 +5,23 @@
  */
 package ejb;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 
 /**
  *
@@ -19,6 +29,9 @@ import javax.persistence.EntityManager;
  */
 @Stateless
 @LocalBean
+
+
+
 public class GestoreRichieste {
 
     @EJB
@@ -28,10 +41,11 @@ public class GestoreRichieste {
     @EJB
     private DiarioFacadeLocal diarioFacade;
 
+    
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    public int aggiungiRichiesta(Profilo profilo, Profilo destinatario) {
-        //il tipo di ritorno è una Stringa, perché in alcuni casi dovremo tornare un Long (tipo non primitivo) e in altri un int.
+    public int aggiungiRichiesta(Profilo profilo, Profilo destinatario, Date data_inizio, Date data_fine) {
+        //il tipo di ritorno Ã¨ una Stringa, perchÃ© in alcuni casi dovremo tornare un Long (tipo non primitivo) e in altri un int.
 
         if (profilo == null || destinatario == null) {
             System.out.println("Errore: profilo o destinatario non validi");
@@ -41,6 +55,8 @@ public class GestoreRichieste {
             Richiesta richiesta = new Richiesta();
             richiesta.setMittente(profilo);
             richiesta.setProfilo(destinatario);
+            richiesta.setData_inizio(data_inizio);
+            richiesta.setData_fine(data_fine);
             richiestaFacade.create(richiesta);
 
             destinatario.getRichieste().add(richiesta);
@@ -52,10 +68,7 @@ public class GestoreRichieste {
     }
 
     public Profilo accettaRichiesta(Profilo profilo, Richiesta richiesta) {
-        //il tipo di ritorno è una Stringa, perché in alcuni casi dovremo tornare un Long (tipo non primitivo) e in altri un int.
-        /*interessi.remove(interesse);
-         p.setInteressi(interessi);
-         profiloFacade.edit(p);*/
+        
 
         List<Richiesta> richieste = profilo.getRichieste();
 
@@ -76,22 +89,27 @@ public class GestoreRichieste {
             richiestaFacade.remove(richiesta);
             richieste.remove(pos);
             profilo.setRichieste(richieste);
-            profiloFacade.edit(profilo);
+            
+           
+               
+            
+            
+            
 
             //creazione diario
             
             Diario diario = new Diario();
             List<Profilo> partecipanti = new ArrayList<Profilo>();
+            
             partecipanti.add(profilo);
             partecipanti.add(mittente);
             diario.setPartecipanti(partecipanti);
+            diario.setData_inizio(richiesta.getData_inizio());
+            diario.setData_fine(richiesta.getData_fine());
             diario.setNome("Diario di "+profilo.getNome()+" e "+ nome);
-            //diario.setData_inizio(richiesta.get);
+
             diarioFacade.create(diario);
             
-            EntityManager em = diarioFacade.getEntityManager();
-            em.persist(diario);
-            em.flush();
             
             List<Diario> diari_profilo = profilo.getDiari();
             List<Diario> diari_mittente = mittente.getDiari();
@@ -99,10 +117,12 @@ public class GestoreRichieste {
             diari_mittente.add(diario);
             profilo.setDiari(diari_profilo);
             mittente.setDiari(diari_mittente);
-            
-            
             profiloFacade.edit(mittente);
             profiloFacade.edit(profilo);
+                
+            
+            
+            
             
             return profilo;
         } else {
@@ -113,14 +133,14 @@ public class GestoreRichieste {
     }
     
     public int rifiutaRichiesta(Profilo profilo, Richiesta richiesta) {
-        //il tipo di ritorno è una Stringa, perché in alcuni casi dovremo tornare un Long (tipo non primitivo) e in altri un int.
+        //il tipo di ritorno Ã¨ una Stringa, perchÃ© in alcuni casi dovremo tornare un Long (tipo non primitivo) e in altri un int.
         /*interessi.remove(interesse);
          p.setInteressi(interessi);
          profiloFacade.edit(p);*/
 
         List<Richiesta> richieste = profilo.getRichieste();
 
-        //dobbiamo controllare che l'interesse non sia già associato all'user
+        //dobbiamo controllare che l'interesse non sia giÃ  associato all'user
         boolean contain = false;
         int pos = -1;
         for (int i=0; i<richieste.size() && contain == false;i++){

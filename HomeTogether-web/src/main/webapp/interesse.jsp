@@ -74,11 +74,7 @@
         </div>
         <!--CONTENT-->
 
-        <!--FOOTER-->
-        <div class="footer col-md-12">
-            <h1>FOOTER</h1>
-        </div>
-        <!--FOOTER-->
+        
     </body>
     
 </html>

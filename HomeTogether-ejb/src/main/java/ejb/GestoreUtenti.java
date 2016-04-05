@@ -5,7 +5,11 @@
  */
 package ejb;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -31,54 +35,69 @@ public class GestoreUtenti {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     public Profilo aggiungiUser(String nome, String cognome, String password, String r_password, String email, String r_email, String data_nascita, String sesso, Comune comune) {
-        System.out.println("entro in aggiungi user, con la persistance spettacolari!!!wowowow");
-        if (nome == null || cognome == null || password == null || r_password == null || email == null
-                || r_email == null || data_nascita == null || sesso == null) {
-            System.out.println("Non sono stati compilati tutti i campi!");
-            return null;
-        } else if (!password.equals(r_password)) {
-            System.out.println("Le password non corrispondono!");
-            return null;
-        } else if (!email.equals(r_email)) {
-            System.out.println("Le email non corrispondono!");
-            return null;
-        } else {
-            int emailesistente = profiloFacade.checkEmailEsistente(email);
-            if (emailesistente != 0) {
-                System.out.println("Email già presente nel DB!");
+        try {
+            System.out.println("entro in aggiungi user, con la persistance spettacolari!!!wowowow");
+            if (nome == null || cognome == null || password == null || r_password == null || email == null
+                    || r_email == null || data_nascita == null || sesso == null) {
+                System.out.println("Non sono stati compilati tutti i campi!");
                 return null;
+            } else if (!password.equals(r_password)) {
+                System.out.println("Le password non corrispondono!");
+                return null;
+            } else if (!email.equals(r_email)) {
+                System.out.println("Le email non corrispondono!");
+                return null;
+            } else {
+                int emailesistente = profiloFacade.checkEmailEsistente(email);
+                if (emailesistente != 0) {
+                    System.out.println("Email già presente nel DB!");
+                    return null;
+                }
             }
+            Profilo p = new Profilo();
+            p.setNome(nome);
+            p.setCognome(cognome);
+            p.setEmail(email);
+            p.setData_nascita(data_nascita);
+            p.setSesso(sesso);
+            p.setTipo(0);
+            p.setComune(comune);
+            //p.setFoto_profilo("");
+            EntityManager em = profiloFacade.getEntityManager();
+            
+            profiloFacade.create(p);
+            em.persist(p);
+            em.flush();
+            // Long idProfilo = profilo.getId();
+            UtenteApp u = new UtenteApp();
+            
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(password.getBytes());
+            byte[] digest = md.digest();
+            StringBuffer sb = new StringBuffer();
+            for (byte b : digest){
+                sb.append(String.format("%02x",b & 0xff));
+            }
+            password = sb.toString();
+            
+            u.setPassword(password);
+            u.setProfilo(p);
+            u.setEmail(email);
+            
+            // UtenteApp u = new UtenteApp();
+            /*u.setNome(nome);
+            u.setCognome(cognome);*/
+            //u.setIdUtente("0");
+            // utenteAppFacade.create(u);
+            //System.out.println("la data è:"+data_nascita);
+            // String[] data = data_nascita.split("/");
+            utenteAppFacade.create(u);
+            
+            return p;
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(GestoreUtenti.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
-        Profilo p = new Profilo();
-        p.setNome(nome);
-        p.setCognome(cognome);
-        p.setEmail(email);
-        p.setData_nascita(data_nascita);
-        p.setSesso(sesso);
-        p.setTipo(0);
-        p.setComune(comune);
-        //p.setFoto_profilo("");
-        EntityManager em = profiloFacade.getEntityManager();
-
-        profiloFacade.create(p);
-        em.persist(p);
-        em.flush();
-        // Long idProfilo = profilo.getId();
-        UtenteApp u = new UtenteApp();
-        u.setPassword(password);
-        u.setProfilo(p);
-        u.setEmail(email);
-
-       // UtenteApp u = new UtenteApp();
-        /*u.setNome(nome);
-         u.setCognome(cognome);*/
-        //u.setIdUtente("0");
-        // utenteAppFacade.create(u);
-        //System.out.println("la data è:"+data_nascita);
-        // String[] data = data_nascita.split("/");
-        utenteAppFacade.create(u);
-
-        return p;
     }
 
     public Profilo aggiungiUserGoogle(String nome, String cognome, String idGoogle, String email, String r_email, String data_nascita, String sesso, String foto, Comune comune) {
@@ -225,22 +244,21 @@ public class GestoreUtenti {
 
     public Profilo modificaInfo(String email, String data_nascita, String formazione, String occupazione, String numero_tel) {
         Profilo p = profiloFacade.getProfilo(email);
-        if(!data_nascita.equals("")){
+        if (!data_nascita.equals("")) {
             p.setData_nascita(data_nascita);
-        }else if(!formazione.equals("")){
+        } else if (!formazione.equals("")) {
             p.setFormazione(formazione);
-        }else if(!occupazione.equals("")){
+        } else if (!occupazione.equals("")) {
             p.setOccupazione(occupazione);
-        }else if(!numero_tel.equals("")){
+        } else if (!numero_tel.equals("")) {
             p.setTelefono(numero_tel);
         }
-        
+
         /*
          p.setIdComune(localita);*/
-        
         profiloFacade.edit(p);
         return p;
-       
+
     }
 
     public int aggiungiFollowing(Profilo personalProfile, Profilo followProfile) {
@@ -249,9 +267,9 @@ public class GestoreUtenti {
         //il compare con la lista in questo caso non va, perché Profilo è un oggetto composto da ulteriori
         //oggetti, e il compare è semplicemente un .equals (più o meno).
         Long idfollow = followProfile.getId();
-       
+
         for (int i = 0; i < following.size(); i++) {
-             System.out.println("nome di un mio following:"+following.get(i).getNome());
+            System.out.println("nome di un mio following:" + following.get(i).getNome());
             if (following.get(i).getId() == idfollow) {
                 System.out.println("Il soggetto segue già l'utente.");
                 return -1;
@@ -272,9 +290,9 @@ public class GestoreUtenti {
         //il compare con la lista in questo caso non va, perché Profilo è un oggetto composto da ulteriori
         //oggetti, e il compare è semplicemente un .equals (più o meno).
         Long idfollow = followProfile.getId();
-       
+
         for (int i = 0; i < following.size(); i++) {
-             System.out.println("nome di un mio following:"+following.get(i).getNome());
+            System.out.println("nome di un mio following:" + following.get(i).getNome());
             if (following.get(i).getId() == idfollow) {
                 following.remove(i);
                 personalProfile.setFollowing(following);
@@ -284,7 +302,7 @@ public class GestoreUtenti {
             }
         }
         return -1;
-        
+
     }
 
 }

@@ -6,16 +6,17 @@
 package web;
 
 import ejb.GestoreRichieste;
-import ejb.GestoreUtenti;
 import ejb.Profilo;
 import ejb.ProfiloFacade;
 import ejb.Richiesta;
 import ejb.RichiestaFacade;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,7 +26,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 
 /**
  *
@@ -53,7 +53,7 @@ public class NotifyServlet extends HttpServlet {
     private RichiestaFacade richiestaFacade;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -72,8 +72,20 @@ public class NotifyServlet extends HttpServlet {
                 Long id = (Long) (session.getAttribute("id"));
                 Profilo personalProfile = profiloFacade.getProfilo(id);
                 Profilo destProfile = profiloFacade.getProfilo(idDest);
-                gestoreRichieste.aggiungiRichiesta(personalProfile, destProfile);
+                
+                SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd");
+                java.util.Date parsed1 = format.parse(request.getParameter("data_inizio"));
+                java.util.Date parsed2 = format.parse(request.getParameter("data_fine"));
+                Date data_inizio = new Date(parsed1.getTime());
+                Date data_fine = new Date(parsed2.getTime());
+                
+                
+                System.out.println("data inizio:"+request.getParameter("data_inizio"));
+                System.out.println("data fine:"+request.getParameter("data_fine"));
 
+                gestoreRichieste.aggiungiRichiesta(personalProfile, destProfile, data_inizio, data_fine);
+
+                
                 request.setAttribute("profilo", personalProfile);
 
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
@@ -135,7 +147,11 @@ public class NotifyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(NotifyServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -149,7 +165,11 @@ public class NotifyServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(NotifyServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

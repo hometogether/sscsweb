@@ -76,13 +76,13 @@
                                         
                         <div class="col-md-12">
                             <div class="col-md-12">
-                                <span><i class="glyphicon glyphicon-arrow-down"></i>Arrivo</span>
-                                <span style="margin-left: 32%"><i class="glyphicon glyphicon-arrow-up"></i>Partenza</span>
+                                <span><i class="glyphicon glyphicon-arrow-down"></i>Inizio</span>
+                                <span style="margin-left: 32%"><i class="glyphicon glyphicon-arrow-up"></i>Fine</span>
                             </div>
                             <form action="NotifyServlet" method="get" id="formrequest" >
                                <div class="col-md-12 input-group double-input">
-                                   <input type="date" class="form-control" required/>
-                                   <input type="date"class="form-control" required/>
+                                   <input type="date" name="data_inizio" class="form-control" required/>
+                                   <input type="date" name="data_fine" class="form-control" required/>
                                     <span class="input-group-btn">
                                         <input type="hidden" name="action" value="aggiungirichiesta" /> 
                                          <input type="hidden" name="idDest" value="${match.profilo.id}" /> 
