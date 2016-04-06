@@ -20,6 +20,7 @@
         <link href="css/bootstrap.min_1.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap-theme_1.css" rel='stylesheet' type='text/css' />
         <link href="css/ProfileStyle.css" rel='stylesheet' type='text/css' />
+        <link rel="shortcut icon" href="images/AppIcon.ico" />
         
         <link href="css/popUpChat.css" rel='stylesheet' type='text/css' />
         <link href="css/style_1.css" rel='stylesheet' type='text/css' />
@@ -152,11 +153,7 @@
                                                             '</div>'+
                                                             
                                                             
-                                                            '<div class="col-md-2 col-sm-2 col-lg-2">'+
-                                                                '<button class="btn borderless-btn col-md-2" style="color: black;">'+
-                                                                    '<i class=" glyphicon glyphicon-comment"></i> Commenti'+
-                                                                '</button>' +
-                                                            '</div>'+
+                                                            +
                                                             
                                                         '</div>'+
                                                         '</div>'+
@@ -605,18 +602,14 @@
                                                               </button>
                                                             </div>
                                                             
-                                                            <div class="col-md-8 col-sm-8 col-lg-8">
+                                                            <div class="col-md-10 col-sm-10 col-lg-10">
                                                                 <div style="text-align: center;">
                                                                     <textarea id="commento_utente${post.id}" placeholder="#TalkTogether" onkeydown="keyDownComment(${post.id})" onkeyup="keyUpComment(${post.id})" required="yes" class="postArea" style="width:100%;margin-top:0;border: 1px solid lightgray;"></textarea>
                                                                 </div>
                                                             </div>
                                                             
                                                             
-                                                            <div class="col-md-2 col-sm-2 col-lg-2">
-                                                                <button class="btn borderless-btn col-md-2" style="color: black;">
-                                                                    <i class=" glyphicon glyphicon-comment"></i> Commenti
-                                                                </button>   
-                                                            </div>
+                                                           
                                                             
                                                         </div>
                                                         </div>

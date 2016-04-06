@@ -30,7 +30,7 @@
         
         
         <!--CSS-->
-        
+        <link rel="shortcut icon" href="images/AppIcon.ico" />
         <title>HOME Page</title>
     </head>
     

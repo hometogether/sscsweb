@@ -66,7 +66,7 @@ public class ProfileServlet extends HttpServlet {
                 String email = (String) session.getAttribute("email");
                 Part filePart = request.getPart("nomeFile");
                 InputStream filecontent = filePart.getInputStream();
-                FileOutputStream prova = new FileOutputStream("C:\\Users\\Antonio\\Documents\\NetBeansProjects\\sscsweb\\HomeTogether-web\\src\\main\\webapp\\profile_img\\" + filePart.getSubmittedFileName());
+                FileOutputStream prova = new FileOutputStream("C:\\Users\\Antonio\\Documents\\NetBeansProjects\\sscsweb\\HomeTogether-web\\src\\main\\webapp\\profile_img\\" + filePart.getSubmittedFileName()+"_"+session.getAttribute("id"));
                 int read = 0;
                 final byte[] bytes = new byte[1024];
 

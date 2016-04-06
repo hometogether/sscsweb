@@ -12,6 +12,7 @@
         
         
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <link rel="shortcut icon" href="images/AppIcon.ico" />
         <!--CSS-->
         <link href="css/popUpChat.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap_1.css" rel='stylesheet' type='text/css' />
@@ -219,7 +220,7 @@
                                                             <form action="DiaryServlet" method="get">
                                                                 <input type="hidden" name="action" value="goToDiary">
                                                                 <input type="hidden" name="idDiario" value="${diario.id}">   
-                                                                <button type="submit" class="btn btn-primary form-group" >Entra</button>
+                                                                <button type="submit" class="btn btn-warning form-group" >Entra</button>
                                                             </form>
                                                         </div>
 

@@ -24,7 +24,42 @@
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <link rel="shortcut icon" href="images/AppIcon.ico" />
+        <title>Utenti compatibili</title>
+        
+        <style type="text/css">
+            .ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year{
+                color: orange;
+            }
+            .ui-datepicker .ui-datepicker-header {
+               background: linear-gradient(to bottom, orange 0%, orangered 70%, red 100%);
+               color: #EEE;
+             }
+        </style>
+        
+        <script>
+            $(function() {
+              $( "#from" ).datepicker({
+                dateFormat: "dd-mm-yy",
+                defaultDate: "+1w",
+                changeMonth: true,
+                numberOfMonths: 3,
+                onClose: function( selectedDate ) {
+                  $( "#to" ).datepicker( "option", "minDate", selectedDate );
+                }
+              });
+              $( "#to" ).datepicker({
+                dateFormat: "dd-mm-yy",
+                defaultDate: "+1w",
+                changeMonth: true,
+                numberOfMonths: 3,
+                onClose: function( selectedDate ) {
+                  $( "#from" ).datepicker( "option", "maxDate", selectedDate );
+                }
+              });
+            });
+            </script>
+        
     </head>
     <body>
         <%@include file="navbar.jsp" %>
@@ -81,8 +116,9 @@
                             </div>
                             <form action="NotifyServlet" method="get" id="formrequest" >
                                <div class="col-md-12 input-group double-input">
-                                   <input type="date" name="data_inizio" class="form-control" required/>
-                                   <input type="date" name="data_fine" class="form-control" required/>
+                                    <input type="text" id="from" name="data_inizio" class="form-control" required/>
+                                    <input type="text" id="to" name="data_fine" class="form-control" required/>
+                                    
                                     <span class="input-group-btn">
                                         <input type="hidden" name="action" value="aggiungirichiesta" /> 
                                          <input type="hidden" name="idDest" value="${match.profilo.id}" /> 

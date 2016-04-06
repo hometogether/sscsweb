@@ -9,6 +9,7 @@
     <head>
         
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="shortcut icon" href="images/AppIcon.ico" />
         <script src="js/jquery-1.11.0.min.js"></script>
         <script src="js/post.js"></script>
         <script src="js/popUpViewChat.js"></script>

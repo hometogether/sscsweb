@@ -12,6 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="shortcut icon" href="images/AppIcon.ico" />
         <link href="css/bootstrap_1.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap_1.min.css" rel='stylesheet' type='text/css' />
         <link href="css/bootstrap-theme_1.css" rel='stylesheet' type='text/css' />
