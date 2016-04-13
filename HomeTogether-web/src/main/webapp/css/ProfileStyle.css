@@ -41,9 +41,10 @@ html, body{
 
 div.img_container:hover div
   {
-  display: block; 
+  display: block;
+  z-index: 100;
   }
-  
+
 div.img_container:hover img
     {
     display: block;
@@ -53,7 +54,7 @@ div.img_container:hover img
 div.the-buttons
   {
   position:absolute;
-  top:28.6%;
+  top:204px;
   left:5.4%;
   width: 89.5%;
   height: 7%;

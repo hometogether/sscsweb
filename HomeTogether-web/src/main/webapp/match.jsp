@@ -39,17 +39,17 @@
         
         <script>
             $(function() {
-              $( "#from" ).datepicker({
-                dateFormat: "dd-mm-yy",
+              $( ".from" ).datepicker({
+                dateFormat: "yy-mm-dd",
                 defaultDate: "+1w",
                 changeMonth: true,
                 numberOfMonths: 3,
                 onClose: function( selectedDate ) {
-                  $( "#to" ).datepicker( "option", "minDate", selectedDate );
+                  $( ".to" ).datepicker( "option", "minDate", selectedDate );
                 }
               });
-              $( "#to" ).datepicker({
-                dateFormat: "dd-mm-yy",
+              $( ".to" ).datepicker({
+                dateFormat: "yy-mm-dd",
                 defaultDate: "+1w",
                 changeMonth: true,
                 numberOfMonths: 3,
@@ -116,8 +116,8 @@
                             </div>
                             <form action="NotifyServlet" method="get" id="formrequest" >
                                <div class="col-md-12 input-group double-input">
-                                    <input type="text" id="from" name="data_inizio" class="form-control" required/>
-                                    <input type="text" id="to" name="data_fine" class="form-control" required/>
+                                    <input type="text"  name="data_inizio" class="form-control from" required/>
+                                    <input type="text"  name="data_fine" class="form-control to" required/>
                                     
                                     <span class="input-group-btn">
                                         <input type="hidden" name="action" value="aggiungirichiesta" /> 

@@ -66,16 +66,16 @@ public class ProfileServlet extends HttpServlet {
                 String email = (String) session.getAttribute("email");
                 Part filePart = request.getPart("nomeFile");
                 InputStream filecontent = filePart.getInputStream();
-                FileOutputStream prova = new FileOutputStream("C:\\Users\\Antonio\\Documents\\NetBeansProjects\\sscsweb\\HomeTogether-web\\src\\main\\webapp\\profile_img\\" + filePart.getSubmittedFileName()+"_"+session.getAttribute("id"));
+                FileOutputStream prova = new FileOutputStream("C:\\Users\\Antonio\\Documents\\NetBeansProjects\\sscsweb\\sscsweb\\HomeTogether-web\\src\\main\\webapp\\profile_img\\" + session.getAttribute("id")+"_"+filePart.getSubmittedFileName());
                 int read = 0;
                 final byte[] bytes = new byte[1024];
 
                 while ((read = filecontent.read(bytes)) != -1) {
                     prova.write(bytes, 0, read);
                 }
-                String foto = "profile_img/" + filePart.getSubmittedFileName();
+                String foto = "profile_img/" + session.getAttribute("id")+"_"+filePart.getSubmittedFileName();
                 gestoreUtenti.modificaFotoProfilo(email, foto);
-                session.setAttribute("foto", "profile_img/" + filePart.getSubmittedFileName());
+                session.setAttribute("foto", "profile_img/" + session.getAttribute("id")+"_"+filePart.getSubmittedFileName());
                 filecontent.close();
                 prova.close();
                 Profilo p = profiloFacade.getProfilo((String) session.getAttribute("email"));
