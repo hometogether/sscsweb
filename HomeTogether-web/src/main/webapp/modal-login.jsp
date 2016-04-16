@@ -58,7 +58,7 @@
                     <div class="clearfix"></div>
 
                     <div class="form-group modal-register-btn">
-                        <button class="btn btn-primary col-md-4" style="background: red;"> Iscriviti</button>
+                        
                     </div>
                 </div>
                 <div class="clearfix"></div>
