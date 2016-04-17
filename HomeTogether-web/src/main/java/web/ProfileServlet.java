@@ -8,7 +8,6 @@ package web;
 import ejb.GestoreUtenti;
 import ejb.Profilo;
 import ejb.ProfiloFacade;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -96,8 +95,6 @@ public class ProfileServlet extends HttpServlet {
             } else if (action.equals("follow")) {
                 Long idfollow = new Long(request.getParameter("id"));
                 Long id = (Long) (session.getAttribute("id"));
-                System.out.println("id request:" + request.getParameter("id"));
-                System.out.println("id sessione:" + session.getAttribute("id"));
                 Profilo personalProfile = profiloFacade.getProfilo(id);
                 Profilo followProfile = profiloFacade.getProfilo(idfollow);
                 int res = gestoreUtenti.aggiungiFollowing(personalProfile, followProfile);

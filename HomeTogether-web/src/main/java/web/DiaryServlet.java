@@ -13,12 +13,8 @@ import ejb.GestoreUtenti;
 import ejb.Post;
 import ejb.Profilo;
 import ejb.ProfiloFacade;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -28,12 +24,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 
-/**
- *
- * @author Antonio
- */
 @WebServlet(name = "DiaryServlet", urlPatterns = {"/DiaryServlet"})
 @MultipartConfig
 
@@ -143,11 +134,9 @@ public class DiaryServlet extends HttpServlet {
                 for (int i = 0; i < hashtags.length; i++) {
                     if (i == 0 && text.charAt(0) == '#') {
                         tmp = hashtags[i].split(" ");
-                        System.out.println("hashtag:" + tmp[0]);
                         gestoreDiari.aggiungiHashtag(post, tmp[0]);
                     } else if (i != 0) {
                         tmp = hashtags[i].split(" ");
-                        System.out.println("hashtag:" + tmp[0]);
                         gestoreDiari.aggiungiHashtag(post, tmp[0]);
                     }
 

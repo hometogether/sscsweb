@@ -5,26 +5,19 @@
  */
 package web;
 
-import com.google.gson.Gson;
 import ejb.Diario;
 import ejb.GestoreUtenti;
-import ejb.Interesse;
 import ejb.Post;
 import ejb.Profilo;
 import ejb.ProfiloFacade;
 import ejb.UtenteApp;
-import ejb.UtenteGoogle;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.json.Json;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -136,13 +129,6 @@ public class LoginServlet extends HttpServlet {
                     UtenteApp u = gestoreUtenti.loginUtente(email, password);
                     if (u != null) {
                         Profilo p = u.getProfilo();
-                        /*Profilo p2= new Profilo();
-                         p2.setId(p.getId());
-                         p2.setNome(p.getNome());
-                         p2.setCognome(p.getCognome());
-                         p2.setComune(p.getComune());
-                         p2.setFoto_profilo(p.getFoto_profilo());*/
-                        System.out.println(buildGson(p));
                         out.print(buildGson(p));
 
                     } else {
@@ -233,9 +219,7 @@ public class LoginServlet extends HttpServlet {
         }
 
         item.put("following", json_follower_array);
-        System.out.println(item.toJSONString());
         return item.toJSONString();
-        //System.out.println(jo.toString());
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

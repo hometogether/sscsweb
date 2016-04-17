@@ -39,7 +39,6 @@ public class LinguaFacade extends AbstractFacade<Lingua> implements LinguaFacade
         Query q = em.createQuery("SELECT l FROM Lingua l WHERE l.nome =:custNome");
         q.setParameter("custNome", nomelingua);
         List l = q.getResultList();
-        System.out.println(l);
         if (l.isEmpty()){
             return null;
         } else {
@@ -53,7 +52,6 @@ public class LinguaFacade extends AbstractFacade<Lingua> implements LinguaFacade
          Query q = em.createQuery("SELECT l FROM Lingua l WHERE l.id =:custId");
         q.setParameter("custId", idlingua);
         List l = q.getResultList();
-        System.out.println(l);
         if (l.isEmpty()){
             return null;
         } else {

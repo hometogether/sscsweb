@@ -34,15 +34,10 @@ public class UtenteGoogleFacade extends AbstractFacade<UtenteGoogle> implements 
     
     @Override
     public UtenteGoogle getUtente(String email, String idGoogle){
-        //Query q = em.createNativeQuery(query);
-        System.out.println("entro in getutente Google");
-        System.out.println("email"+email);
-        System.out.println("idGoogle"+idGoogle);
         Query q = em.createQuery("SELECT u FROM UtenteGoogle u WHERE u.email =:custEmail AND u.idGoogle =:custIdGoogle");
         q.setParameter("custEmail", email);
         q.setParameter("custIdGoogle", idGoogle);
         List l = q.getResultList();
-        System.out.println(l);
         if (l.isEmpty()){
             return null;
         } else {

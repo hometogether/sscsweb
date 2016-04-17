@@ -5,14 +5,12 @@
  */
 package web;
 
-import com.google.gson.Gson;
 import ejb.GestoreLingue;
 import ejb.Lingua;
 import ejb.Profilo;
 import ejb.ProfiloFacadeLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +23,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 /**
@@ -75,8 +72,6 @@ public class LanguageServlet extends HttpServlet {
                 nomelingua = nomelingua.substring(0, 1).toUpperCase() + nomelingua.substring(1);
                 Long res = gestoreLingue.aggiungiLingua(idProfilo, nomelingua);
 
-                System.out.println("supero aggiungi lingua, res = " + res);
-
                 if (res != null) {
                     out.println(res);
                 } else {
@@ -90,10 +85,7 @@ public class LanguageServlet extends HttpServlet {
 
                 int res = gestoreLingue.rimuoviLingua(idProfilo, idlingua);
 
-                System.out.println("supero rimuovi lingua, res = " + res);
-
                 if (res == 0) {
-                    System.out.println("pronto a tornare nella jsp");
                     out.println("0");
                 } else {
                     out.println("-1");

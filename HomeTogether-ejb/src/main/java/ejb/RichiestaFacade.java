@@ -11,7 +11,6 @@ import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import utility.Constants;
 
 /**
  *
@@ -37,13 +36,10 @@ public class RichiestaFacade extends AbstractFacade<Richiesta> implements Richie
     
     @Override
     public Richiesta getRichiesta(Long idRichiesta) {
-        //Query q = em.createNativeQuery(query);
-        System.out.println(idRichiesta);
         Query q = em.createQuery("SELECT r FROM Richiesta r WHERE r.id =:custRichiesta");
         
         q.setParameter("custRichiesta", idRichiesta);
         List l = q.getResultList();
-        System.out.println(l);
         if (l.isEmpty()) {
             return null;
         } else {

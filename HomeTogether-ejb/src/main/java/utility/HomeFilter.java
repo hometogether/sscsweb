@@ -32,9 +32,6 @@ public class HomeFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) res;
         HttpSession session = request.getSession(false);
         
-        System.out.println("uri:"+request.getRequestURI());
-        System.out.println("context:"+request.getContextPath());
-
         if (session != null && session.getAttribute("id") != null && request.getRequestURI().equals(request.getContextPath()+"/")){
             System.out.println("homefilter");
             response.sendRedirect(request.getContextPath()+"/RedirectServlet");

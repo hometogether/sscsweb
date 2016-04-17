@@ -36,7 +36,6 @@ public class GestoreUtenti {
     // "Insert Code > Add Business Method")
     public Profilo aggiungiUser(String nome, String cognome, String password, String r_password, String email, String r_email, String data_nascita, String sesso, Comune comune) {
         try {
-            System.out.println("entro in aggiungi user, con la persistance spettacolari!!!wowowow");
             if (nome == null || cognome == null || password == null || r_password == null || email == null
                     || r_email == null || data_nascita == null || sesso == null) {
                 System.out.println("Non sono stati compilati tutti i campi!");
@@ -84,13 +83,6 @@ public class GestoreUtenti {
             u.setProfilo(p);
             u.setEmail(email);
             
-            // UtenteApp u = new UtenteApp();
-            /*u.setNome(nome);
-            u.setCognome(cognome);*/
-            //u.setIdUtente("0");
-            // utenteAppFacade.create(u);
-            //System.out.println("la data è:"+data_nascita);
-            // String[] data = data_nascita.split("/");
             utenteAppFacade.create(u);
             
             return p;
@@ -101,7 +93,6 @@ public class GestoreUtenti {
     }
 
     public Profilo aggiungiUserGoogle(String nome, String cognome, String idGoogle, String email, String r_email, String data_nascita, String sesso, String foto, Comune comune) {
-        System.out.println("entro in aggiungi user, con la persistance spettacolari!!!wowowow");
         if (nome == null || cognome == null || idGoogle == null || email == null
                 || r_email == null || data_nascita == null || sesso == null) {
             System.out.println("Non sono stati compilati tutti i campi!");
@@ -179,13 +170,6 @@ public class GestoreUtenti {
         u.setProfilo(profilo);
         u.setEmail(email);
 
-       // UtenteApp u = new UtenteApp();
-        /*u.setNome(nome);
-         u.setCognome(cognome);*/
-        //u.setIdUtente("0");
-        // utenteAppFacade.create(u);
-        //System.out.println("la data è:"+data_nascita);
-        // String[] data = data_nascita.split("/");
         utenteFacebookFacade.create(u);
 
         return p;
@@ -297,7 +281,7 @@ public class GestoreUtenti {
                 following.remove(i);
                 personalProfile.setFollowing(following);
                 profiloFacade.edit(personalProfile);
-                System.out.println("Abbiamo eliminato il follow!");
+                System.out.println("Eliminato il follow!");
                 return 0;
             }
         }

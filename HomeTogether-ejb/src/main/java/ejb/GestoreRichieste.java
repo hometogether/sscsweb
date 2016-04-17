@@ -8,20 +8,9 @@ package ejb;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.NotSupportedException;
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
-import javax.transaction.UserTransaction;
 
 /**
  *

@@ -38,7 +38,6 @@ public class RegioneFacade extends AbstractFacade<Regione> implements RegioneFac
         
         Query q = em.createQuery("SELECT r FROM Regione r");
         List l = q.getResultList();
-        //System.out.println(l);
         if (l.isEmpty()){
             return null;
         } else {

@@ -34,9 +34,6 @@ public class GestoreLingue {
     }
     
     public Long aggiungiLingua(Long idProfilo, String nomelingua) {
-        //il tipo di ritorno è una Stringa, perché in alcuni casi dovremo tornare un Long (tipo non primitivo) e in altri un int.
-        System.out.println("entro in agggiungi Lingua");
-        System.out.println("nome lingua:" + nomelingua);
         if (idProfilo == null || nomelingua == null) {
             System.out.println("Errore: id Profilo = 0 o nome lingua non valido");
             return null;
@@ -71,18 +68,12 @@ public class GestoreLingue {
     }
     
     public int rimuoviLingua(Long idProfilo, Long idLingua) {
-        System.out.println("entro in elimina Lingua");
-        System.out.println("id lingua:" + idLingua);
-
         if (idProfilo == null || idLingua == null) {
             System.out.println("Errore: id Profilo = 0 o id lingua non valido");
-            System.out.println("idProfilo=" + idProfilo);
-            System.out.println("idLingua=" + idLingua);
 
             return -1;
         } else {
             Lingua lingua = linguaFacade.getLingua(idLingua);
-            System.out.println("supero il get Lingua. lingua = " + lingua);
 
             if (lingua == null) {
                 System.out.println("Errore sconosciuto: si vuole eliminare una lingua inesistente");
@@ -90,7 +81,6 @@ public class GestoreLingue {
             } 
 
             Profilo p = profiloFacade.getProfilo(idProfilo);
-            System.out.println("supero il get profilo. Profilo = " + p);
 
             List<Lingua> lingue = p.getLingue();
             
@@ -101,7 +91,6 @@ public class GestoreLingue {
                 lingue.remove(lingua);
                 p.setLingue(lingue);
                 profiloFacade.edit(p);
-                System.out.println("supero l'edit");
 
                 return 0;
             } else {

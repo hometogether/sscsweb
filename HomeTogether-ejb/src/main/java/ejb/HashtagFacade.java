@@ -39,7 +39,6 @@ public class HashtagFacade extends AbstractFacade<Hashtag> implements HashtagFac
         Query q = em.createQuery("SELECT h FROM Hashtag h WHERE h.id =:custId");
         q.setParameter("custId", idhashtag);
         List l = q.getResultList();
-        System.out.println(l);
         if (l.isEmpty()){
             return null;
         } else {
@@ -53,7 +52,6 @@ public class HashtagFacade extends AbstractFacade<Hashtag> implements HashtagFac
         Query q = em.createQuery("SELECT h FROM Hashtag h WHERE h.nome =:custNome");
         q.setParameter("custNome", nomehashtag);
         List l = q.getResultList();
-        System.out.println(l);
         if (l.isEmpty()){
             return null;
         } else {
@@ -65,11 +63,9 @@ public class HashtagFacade extends AbstractFacade<Hashtag> implements HashtagFac
     @Override
     public List<Post> getPost(Hashtag hashtag) {
         //Query q = em.createNativeQuery(query);
-        System.out.println("entro in getPost");
         Query q = em.createQuery("SELECT p FROM Post p JOIN p.hashtags h WHERE h.id=:custId");
         q.setParameter("custId", hashtag.getId());
         List<Post> post = q.getResultList();
-        System.out.println("post hashtag trovati:"+q.getResultList());
         return post;
     }
     

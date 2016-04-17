@@ -60,7 +60,7 @@ public class GestoreDiari {
         em.persist(post);
         em.flush();
         diarioFacade.edit(diario);
-        System.out.println("aggiunto il nuovo post. Id: "+post.getId());
+        System.out.println("aggiunto il nuovo post.");
         return post;
 
     }
@@ -125,7 +125,7 @@ public class GestoreDiari {
         em.persist(commento);
         em.flush();
         postFacade.edit(post);
-        System.out.println("aggiunto il nuovo commento. Id: "+commento.getId());
+        System.out.println("aggiunto il nuovo commento.");
         return commento.getId();
 
     }
@@ -150,8 +150,6 @@ public class GestoreDiari {
     }
     
     public int aggiungiHashtag(Post post, String nomehashtag) {
-        System.out.println("entro in agggiungiHashtag");
-        System.out.println("nome hashtag:" + nomehashtag);
         if (post == null || nomehashtag == null) {
             System.out.println("Errore: id Profilo = 0 o nome nomehashtag non valido");
             return -1;
@@ -190,8 +188,6 @@ public class GestoreDiari {
     }
     
     public List<Post> cercaHashtag(String nomehashtag) {
-        System.out.println("entro in agggiungiHashtag");
-        System.out.println("nome hashtag:" + nomehashtag);
         if (nomehashtag == null) {
             System.out.println("Nome nomehashtag non valido");
             return null;

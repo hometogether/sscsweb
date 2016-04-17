@@ -146,14 +146,13 @@
                                                               '</button>'+
                                                             '</div>'+
                                                             
-                                                            '<div class="col-md-8 col-sm-8 col-lg-8">'+
+                                                            '<div class="col-md-10 col-sm-10 col-lg-10">'+
                                                                 '<div style="text-align: center;">'+
                                                                     '<textarea id="commento_utente'+idPost+'" placeholder="#TalkTogether" onkeydown="keyDownComment('+idPost+')" onkeyup="keyUpComment('+idPost+')" required="yes" class="postArea" style="width:100%;margin-top:0;border: 1px solid lightgray;"></textarea>'+
                                                                 '</div>'+
                                                             '</div>'+
                                                             
                                                             
-                                                            +
                                                             
                                                         '</div>'+
                                                         '</div>'+
@@ -313,26 +312,38 @@
                 xhr.onload = function () {
                     if (!(xhr.responseText.trim() === "0")) {
                         var idCommento = xhr.responseText.trim();
-                        $('#commentContainer'+idPost).append("<div id='commento'"+idCommento+" class='row'><div class='col-md-12'style='background:whitesmoke'>"+
-                                "<div class='row col-md-12 col-sm-12 col-lg-12' style='padding-top:2%;'>"+
-                                '<span class="glyphicon glyphicon-pencil pull-right btn-sm"></span>'+
-                                     "<button class='col-md-1 col-sm-1 col-lg-1 borderless-btn'><img src='${profilo.foto_profilo}' class='avatar profile-image-avatar' style='border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 35px;max-height: 35px;min-height: 35px;min-width: 35px;'/></button>"+
-                                     "<div class='col-md-10'><div class='col-md-12'>"+
+                        $('#commentContainer'+idPost).append("<div id='commento"+idCommento+"' class='row'><div class='col-md-12'style='background:whitesmoke'>"+
+                                                                "<div class='row col-md-12 col-sm-12 col-lg-12' style='padding-top:2%;'>"+
 
-                                     "<textarea id='commentArea"+idCommento+"' class='postArea' readonly='readonly' style='width:100%;margin-top:0;'></textarea></div>"+
-                                         "</div>"+
-                                         "</div>"+
-                                         
-                                         "</div>");
-                         var nome='${profilo.nome}';
-                         var cognome='${profilo.cognome}';
+                                "<div class='popover-markup pull-right'> <span class='btn btn-secodary btn-sm glyphicon glyphicon-pencil trigger' data-toggle='popover'></span>"+
+                                                                    "<div class='head hide'>Lorem Ipsum</div>"+
+                                                                    "<div class='content hide'>"+
+                                                                        "<ul class='list-unstyled'>"+
+                                                                            "<li style='margin-bottom: 5px;'><a href='javascript:goToEditComment("+idCommento+")'><span class='glyphicon glyphicon-edit'> </span> Modifica</a></li>"+
+                                                                            "<li><a href='javascript:removeComment("+idCommento+")'><span class='glyphicon glyphicon-remove'> </span> Elimina</a></li>"+
+                                                                        "</ul>"+
+                                                                    "</div>"+
+                                                                    "<div class='footer hide'>test</div>"+
+                                                                "</div>"+
+                                "<button class='col-md-1 col-sm-1 col-lg-1 borderless-btn'><img src='${profilo.foto_profilo}' class='avatar profile-image-avatar' style='border: 0px solid; box-shadow: 0px 0px 5px #888; max-width: 35px;max-height: 35px;min-height: 35px;min-width: 35px;'/></button>"+
+                                                                    "<div class='col-md-10'>"+
+                                                                        "<div class='col-md-12'>"+
+                                                                        "<p><a href='URL' title='Description'>${profilo.nome} ${profilo.cognome} </a></p>"+
+                                                                        "<p id='commentArea"+idCommento+"' onkeydown='keyDownEditComment("+idCommento+")' style='word-wrap:break-word;'> "+testo+"</p>"+
+                                                                        "</div>"+
+                                                                        
+                                                                 "</div>"+
+                                                               " </div>"+
+                                                           "</div></div>");
+                        // var nome='${profilo.nome}';
+                       //  var cognome='${profilo.cognome}';
                          /*var id='${profilo.id}';
                          console.log (nome);
                          console.log(cognome);*/
-                         var comment=nome+' '+cognome+' - '+testo;
-                         $('#commentArea'+ idCommento).append(comment);
+                      //   var comment=nome+' '+cognome+' - '+testo;
+                       //  $('#commentArea'+ idCommento).append(comment);
                          $('#commentArea'+ idCommento).css('overflow', 'hidden').autogrow({vertical: true, horizontal: false});
-                         console.log("idcommento:"+idCommento);
+                      //   console.log("idcommento:"+idCommento);
                          
                     } /*else {
                      // $('#googleForm').submit();

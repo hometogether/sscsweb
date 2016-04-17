@@ -5,29 +5,15 @@
  */
 package web;
 
-import com.google.gson.Gson;
 import ejb.Comune;
-import ejb.GestoreComuni;
 import ejb.GestoreUtenti;
 import ejb.Profilo;
-import ejb.Provincia;
-import ejb.Regione;
-import ejb.UtenteApp;
-import ejb.UtenteFacebook;
-import ejb.UtenteGoogle;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -88,7 +74,6 @@ public class RegistrationServlet extends HttpServlet {
                     String tipo_registrazione = request.getParameter("tipo_registrazione");
 
                     String localita = request.getParameter("localita").toLowerCase();
-                    System.out.println("localita:" + localita);
                     Comune comune = null;
                     ServletContext context = getServletContext();
                     List<Comune> list = (List<Comune>) context.getAttribute("list");
@@ -96,7 +81,6 @@ public class RegistrationServlet extends HttpServlet {
                     for (int i = 0; i < list.size() && trovato == false; i++) {
                         if ((list.get(i).getNome().toLowerCase()).equals(localita)) {
 
-                            System.out.println("comune trovato!");
                             comune = list.get(i);
                             trovato = true;
                         }

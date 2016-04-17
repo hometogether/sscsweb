@@ -5,19 +5,14 @@
  */
 package web;
 
-import com.google.gson.Gson;
 import ejb.GestoreInteressi;
-import ejb.GestoreUtenti;
 import ejb.Profilo;
 import ejb.ProfiloFacadeLocal;
-import ejb.UtenteApp;
-import ejb.UtenteGoogle;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -78,14 +73,11 @@ public class InterestServlet extends HttpServlet {
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
                 rd.forward(request, response);
             } else if (action.equals("add")) {
-                System.out.println("entro in action add");
                 Long idProfilo = (Long) session.getAttribute("id");
 
                 String nomeinteresse = request.getParameter("nomeinteresse");
                 nomeinteresse = nomeinteresse.toLowerCase();
                 Long res = gestoreInteressi.aggiungiInteresse(idProfilo, nomeinteresse);
-
-                System.out.println("supero aggiungi interesse, res = " + res);
 
                 if (res != null) {
                     out.println(res);
@@ -95,15 +87,12 @@ public class InterestServlet extends HttpServlet {
 
             } else if (action.equals("remove")) {
                 Long idProfilo = (Long) session.getAttribute("id");
-                System.out.println("entro in action remove");
                 Long idInteresse = Long.parseLong(request.getParameter("idinteresse"));
 
                 int res = gestoreInteressi.rimuoviInteresse(idProfilo, idInteresse);
 
-                System.out.println("supero rimuovi interesse, res = " + res);
 
                 if (res == 0) {
-                    System.out.println("pronto a tornare nella jsp");
                     out.println("0");
                 } else {
                     out.println("-1");

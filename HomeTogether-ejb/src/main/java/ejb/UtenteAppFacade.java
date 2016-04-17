@@ -34,13 +34,10 @@ public class UtenteAppFacade extends AbstractFacade<UtenteApp> implements Utente
     
     @Override
     public UtenteApp getUtente(String email, String password){
-        //Query q = em.createNativeQuery(query);
-        System.out.println("entro in getutente Google");
         Query q = em.createQuery("SELECT u FROM UtenteApp u WHERE u.email =:custEmail AND u.password =:custPassword");
         q.setParameter("custEmail", email);
         q.setParameter("custPassword", password);
         List l = q.getResultList();
-        System.out.println(l);
         if (l.isEmpty()){
             return null;
         } else {

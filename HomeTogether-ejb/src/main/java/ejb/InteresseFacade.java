@@ -39,7 +39,6 @@ public class InteresseFacade extends AbstractFacade<Interesse> implements Intere
         Query q = em.createQuery("SELECT i FROM Interesse i WHERE i.nome =:custNome");
         q.setParameter("custNome", nomeinteresse);
         List l = q.getResultList();
-        System.out.println(l);
         if (l.isEmpty()){
             return null;
         } else {
@@ -53,7 +52,6 @@ public class InteresseFacade extends AbstractFacade<Interesse> implements Intere
         Query q = em.createQuery("SELECT i FROM Interesse i WHERE i.id =:custId");
         q.setParameter("custId", idinteresse);
         List l = q.getResultList();
-        System.out.println(l);
         if (l.isEmpty()){
             return null;
         } else {

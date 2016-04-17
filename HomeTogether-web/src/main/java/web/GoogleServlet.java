@@ -73,10 +73,7 @@ public class GoogleServlet extends HttpServlet {
                         .setAudience(Arrays.asList(Constants.ID_GOOGLE))
                         .build();
 
-                // (Receive idTokenString by HTTPS POST)
                 String idTokenString = request.getParameter("token");
-                System.out.println("idTokenString:" + idTokenString);
-                //  System.out.println("verifier is:" + verifier.toString());
                 GoogleIdToken idToken = verifier.verify(idTokenString);
 
                 if (idToken != null) {
@@ -89,7 +86,17 @@ public class GoogleServlet extends HttpServlet {
                         UtenteGoogle u = gestoreUtenti.loginGoogle(email, idgoogle);
                         //Profilo p = profiloFacade.getProfilo(email);
                         if (u != null) {
-                            
+                            HttpSession s = request.getSession();
+
+                            s.setAttribute("id", u.getProfilo().getId());
+                            s.setAttribute("nome", "" + u.getProfilo().getNome());
+                            s.setAttribute("cognome", "" + u.getProfilo().getCognome());
+                            s.setAttribute("email", "" + u.getProfilo().getEmail());
+                            s.setAttribute("data", "" + u.getProfilo().getData_nascita());
+                            s.setAttribute("sesso", "" + u.getProfilo().getSesso());
+                            s.setAttribute("location", "" + u.getProfilo().getComune().getNome());
+                            s.setAttribute("foto", "" + u.getProfilo().getFoto_profilo());
+
                             out.println("1");
 
                         } else {

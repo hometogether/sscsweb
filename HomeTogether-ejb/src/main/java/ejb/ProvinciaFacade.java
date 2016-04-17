@@ -38,7 +38,6 @@ public class ProvinciaFacade extends AbstractFacade<Provincia> implements Provin
         
         Query q = em.createQuery("SELECT p FROM Provincia p");
         List l = q.getResultList();
-        //System.out.println(l);
         if (l.isEmpty()){
             return null;
         } else {

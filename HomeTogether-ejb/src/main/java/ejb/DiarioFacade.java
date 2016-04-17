@@ -36,8 +36,6 @@ public class DiarioFacade extends AbstractFacade<Diario> implements DiarioFacade
 
     @Override
     public Diario getDiario(Long idDiario) {
-        //Query q = em.createNativeQuery(query);
-        System.out.println("entro in getDiario");
         Query q = em.createQuery("SELECT d FROM Diario d LEFT JOIN d.post p WHERE d.id=:custId");
         q.setParameter("custId", idDiario);
         
@@ -45,7 +43,6 @@ public class DiarioFacade extends AbstractFacade<Diario> implements DiarioFacade
             return null;
         } else {
             Diario d = (Diario)q.getResultList().get(0);
-            System.out.println("diario:"+d);
             return d;
         }
     }

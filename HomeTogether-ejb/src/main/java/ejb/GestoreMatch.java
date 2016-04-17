@@ -5,7 +5,6 @@
  */
 package ejb;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -69,7 +68,6 @@ public class GestoreMatch {
         if (Math.min(sizeuserlistainteressi, sizeprofilolistainteressi) != 0) {
             match_interessi = (intersezioneInteressi.size()) / (double) (Math.min(sizeuserlistainteressi, sizeprofilolistainteressi));
         }
-        System.out.println("round:" + (Math.round(match_interessi * 100.0) / 100.0));
         match.setMatch_interessi((Math.round(match_interessi * 100.0) / 100.0));
 
         int sizeuserlistalingue = user.getLingue().size();

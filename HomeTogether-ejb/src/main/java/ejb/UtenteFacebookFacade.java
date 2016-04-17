@@ -33,13 +33,10 @@ public class UtenteFacebookFacade extends AbstractFacade<UtenteFacebook> impleme
     
     @Override
     public UtenteFacebook getUtente(String email, String idFacebook){
-        //Query q = em.createNativeQuery(query);
-        System.out.println("entro in getutente Facebook");
         Query q = em.createQuery("SELECT u FROM UtenteFacebook u WHERE u.email =:custEmail AND u.idFacebook =:custIdFacebook");
         q.setParameter("custEmail", email);
         q.setParameter("custIdFacebook", idFacebook);
         List l = q.getResultList();
-        System.out.println(l);
         if (l.isEmpty()){
             return null;
         } else {

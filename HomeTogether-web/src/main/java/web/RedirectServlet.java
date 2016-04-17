@@ -8,14 +8,7 @@ package web;
 import ejb.Profilo;
 import ejb.ProfiloFacade;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.List;
-import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,16 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.xml.sax.SAXException;
 
 /**
  *
@@ -84,9 +67,7 @@ public class RedirectServlet extends HttpServlet {
                         Profilo personalProfile = profiloFacade.getProfilo((Long) (session.getAttribute("id")));
                         List<Profilo> listafollowing = personalProfile.getFollowing();
                         boolean trovato = false;
-                        System.out.println("id dell'amico:" + idprofile);
                         for (int i = 0; i < listafollowing.size() && trovato == false; i++) {
-                            System.out.println("id:" + i + ": " + listafollowing.get(i).getId());
                             if (listafollowing.get(i).getId().equals(idprofile)) {
                                 trovato = true;
                             }

@@ -6,14 +6,12 @@
 package web;
 
 import com.google.gson.Gson;
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
 import ejb.Comune;
 import ejb.GestoreMatch;
 import ejb.Profilo;
 import ejb.ProfiloFacade;
 import ejb.Provincia;
 import ejb.Regione;
-import ejb.UtenteGoogle;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;

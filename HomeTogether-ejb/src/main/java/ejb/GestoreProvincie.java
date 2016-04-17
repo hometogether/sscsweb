@@ -26,7 +26,6 @@ public class GestoreProvincie {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     public List<Provincia> creaListaProvincie() {
-        System.out.println("entro in crea listaComuni");
         List<Provincia> list = provinciaFacade.getProvincie();
         return list;
     }

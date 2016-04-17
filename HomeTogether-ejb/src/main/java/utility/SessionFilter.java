@@ -34,7 +34,6 @@ public class SessionFilter implements Filter {
         
         if (session == null || session.getAttribute("id") == null){
             System.out.println("sessionfilter");
-
             response.sendRedirect(request.getContextPath()); 
         }else {
             chain.doFilter(req, res); // Logged-in user found, so just continue request.

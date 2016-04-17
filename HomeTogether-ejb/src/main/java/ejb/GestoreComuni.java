@@ -25,7 +25,6 @@ public class GestoreComuni {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     public List<Comune> creaListaComuni() {
-        System.out.println("entro in crea listaComuni");
         List<Comune> list = comuneFacade.getComuni();
         return list;
     }
